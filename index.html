@@ -232,6 +232,15 @@
 
         }
 
+        @media (max-width: 1024px) {
+        #quickMenuContainer.force-open .quick-btn {
+            width: 100px !important;
+        }
+        #quickMenuContainer.force-open span {
+            opacity: 1 !important;
+        }
+    }
+
     </style>
 
 </head>
@@ -320,7 +329,7 @@
 
                 <h1 class="text-3xl sm:text-5xl md:text-7xl font-black mb-6 md:mb-8 tracking-tight leading-[1.3] md:leading-[1.4]">
 
-                    기의 잠재력을 깨워<br>
+                    기업의 잠재력을 깨워<br>
 
                     <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300 italic pr-5">실질적인 도약으로</span><br>
 
@@ -842,22 +851,18 @@
 
 
 
-    <!-- ▼ 우측 퀵 메뉴 (위치 상승 및 강력 터치 제어) 시작 ▼ -->
+    <!-- ▼ 우측 퀵 메뉴 최종 통합본 ▼ -->
     <div id="quickMenuContainer" class="fixed right-2 top-[25%] -translate-y-1/2 z-[90] md:right-6 group">
-        
-        <!-- 외부 컨테이너 -->
         <div class="relative p-[1.5px] md:p-[2px] rounded-[26px] md:rounded-[32px] overflow-hidden shadow-[0_0_20px_rgba(0,102,255,0.4)] transition-all duration-300">
-            
             <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] -z-10" 
                  style="background: conic-gradient(transparent, rgba(34, 211, 238, 0.5), rgba(0, 102, 255, 0.9), transparent 40%); animation: rotate-gradient 4s linear infinite;">
             </div>
 
-            <!-- 내부 UI 박스 -->
             <div class="relative flex flex-col items-end gap-1.5 md:gap-3 bg-gradient-to-b from-[#00143c]/80 to-[#003399]/80 backdrop-blur-md p-1.5 md:p-2.5 rounded-[24px] md:rounded-[30px] border border-white/10 w-full h-full">
                 
                 <!-- 1. 카카오톡 문의 -->
                 <a href="https://open.kakao.com/o/sKh1Q3Li" target="_blank" onclick="return handleMobileMenu(event)"
-                   class="relative flex items-center w-10 h-10 md:w-14 md:h-14 group-hover:w-[100px] md:group-hover:w-[140px] bg-[#FEE500] rounded-full shadow-sm transition-all duration-300 overflow-hidden" 
+                   class="quick-btn relative flex items-center w-10 h-10 md:w-14 md:h-14 group-hover:w-[100px] md:group-hover:w-[140px] bg-[#FEE500] rounded-full shadow-sm transition-all duration-300 overflow-hidden" 
                    title="카카오톡 문의">
                     <span class="absolute right-10 md:right-14 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-extrabold text-[#371D1E] text-[11px] md:text-base">카카오톡</span>
                     <div class="absolute right-0 w-10 h-10 md:w-14 md:h-14 flex items-center justify-center shrink-0">
@@ -869,7 +874,7 @@
 
                 <!-- 2. 전화 상담 -->
                 <a href="tel:050-7878-6361" onclick="return handleMobileMenu(event)"
-                   class="relative flex items-center w-10 h-10 md:w-14 md:h-14 group-hover:w-[100px] md:group-hover:w-[140px] bg-[#0066FF] rounded-full shadow-sm transition-all duration-300 overflow-hidden" 
+                   class="quick-btn relative flex items-center w-10 h-10 md:w-14 md:h-14 group-hover:w-[100px] md:group-hover:w-[140px] bg-[#0066FF] rounded-full shadow-sm transition-all duration-300 overflow-hidden" 
                    title="전화 상담">
                     <span class="absolute right-10 md:right-14 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-bold text-white text-[11px] md:text-base">전화상담</span>
                     <div class="absolute right-0 w-10 h-10 md:w-14 md:h-14 flex items-center justify-center shrink-0">
@@ -881,7 +886,7 @@
 
                 <!-- 3. 상담 문의 -->
                 <a href="#contact-section" onclick="return handleMobileMenu(event)"
-                   class="relative flex items-center w-10 h-10 md:w-14 md:h-14 group-hover:w-[100px] md:group-hover:w-[140px] bg-gray-800 rounded-full shadow-sm transition-all duration-300 overflow-hidden" 
+                   class="quick-btn relative flex items-center w-10 h-10 md:w-14 md:h-14 group-hover:w-[100px] md:group-hover:w-[140px] bg-gray-800 rounded-full shadow-sm transition-all duration-300 overflow-hidden" 
                    title="상담 신청하기">
                     <span class="absolute right-10 md:right-14 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-bold text-white text-[11px] md:text-base">상담문의</span>
                     <div class="absolute right-0 w-10 h-10 md:w-14 md:h-14 flex items-center justify-center shrink-0">
@@ -894,7 +899,6 @@
             </div>
         </div>
     </div>
-    <!-- ▲ 우측 퀵 메뉴 (위치 상승 및 강력 터치 제어) 끝 ▲ -->
 
 
 
@@ -1671,91 +1675,48 @@
 
         }
 
-        // 5. 모바일 퀵메뉴 터치 제어
-        let isMobileMenuOpen = false;
-        let scrollTimer;
-        let isUserScrolling = false;
-
-        function forceCloseVisual() {
-            const quickBtns = document.querySelectorAll('.quick-btn');
-            if(quickBtns.length > 0) {
-                const groupEl = document.getElementById('quickMenuContainer');
-                if (groupEl && groupEl.classList.contains('group')) {
-                    groupEl.classList.remove('group'); 
-                    quickBtns.forEach(btn => btn.blur()); 
-                    setTimeout(() => {
-                        groupEl.classList.add('group'); 
-                    }, 400);
-                }
-            }
-        }
+        // 6. 모바일 퀵메뉴 터치 제어
+        let isMobileMenuOpen = false; // 현재 메뉴가 열려있는지 기억하는 상태 스위치
 
         function handleMobileMenu(e) {
             if (window.innerWidth <= 1024) {
-                // 만약 스크롤 중이거나 스크롤 직후 쿨다운 시간이라면 클릭을 완전 무시
-                if (isUserScrolling) {
-                    e.preventDefault();
-                    return false;
-                }
+                const container = document.getElementById('quickMenuContainer');
 
                 if (!isMobileMenuOpen) {
+                    // [1단계] 닫혀있을 때 첫 터치: 링크 이동을 막고 메뉴를 염
                     e.preventDefault(); 
-                    isMobileMenuOpen = true; 
+                    isMobileMenuOpen = true; // 스위치를 '열림'으로 켬
+                    if (container) container.classList.add('force-open');
                     return false; 
                 } else {
-                    setTimeout(() => {
-                        isMobileMenuOpen = false; 
-                        forceCloseVisual();
-                    }, 50); 
-                    return true; 
+                    // [2단계] 열려있는 상태에서 두 번째 터치: 즉시 바로가기 이동 허용 및 상태 리셋
+                    isMobileMenuOpen = false; // 스위치를 '닫힘'으로 초기화
+                    if (container) container.classList.remove('force-open');
+                    return true; // 바로가기(링크 이동) 정상 작동!
                 }
             }
-            return true; 
+            return true; // PC 환경은 기존 Hover 그대로 유지
         }
 
+        // [3단계] 선택 없이 외부 빈 화면을 터치하거나 스크롤할 경우 무조건 닫힘으로 리셋
         function resetMenuState(e) {
             if (window.innerWidth <= 1024) {
-                const groupEl = document.getElementById('quickMenuContainer');
-                if (e.type === 'click' && groupEl && groupEl.contains(e.target)) return;
+                const container = document.getElementById('quickMenuContainer');
                 
+                // 클릭한 영역이 퀵메뉴 박스 내부라면 리셋 대상에서 제외 (handleMobileMenu가 처리)
+                if (e.type === 'click' && container && container.contains(e.target)) return;
+                
+                // 메뉴가 열려있던 상태라면 강제로 닫음
                 if (isMobileMenuOpen) {
                     isMobileMenuOpen = false;
-                    forceCloseVisual();
+                    if (container) container.classList.remove('force-open');
                 }
             }
         }
 
+        // 화면 터치(click) 및 스크롤(scroll) 감지 시 3단계 리셋 가동
         document.addEventListener('click', resetMenuState);
-
-        // [핵심 로직] 스크롤하는 동안 퀵메뉴의 터치/호버 인식을 완전히 꺼버림 (Pointer-Events 차단)
-        window.addEventListener('scroll', function(e) {
-            if (window.innerWidth <= 1024) {
-                isUserScrolling = true;
-                const container = document.getElementById('quickMenuContainer');
-                
-                if (container) {
-                    // 스크롤이 감지되는 순간 퀵메뉴의 모든 터치 인식을 강제로 끔
-                    container.style.pointerEvents = 'none';
-                    container.classList.remove('group');
-                }
-
-                clearTimeout(scrollTimer);
-                // 스크롤이 멈추고 0.15초 뒤에 스크롤 상태 해제
-                scrollTimer = setTimeout(() => {
-                    isUserScrolling = false;
-                    
-                    if (container) {
-                        // 스크롤이 완전히 끝난 뒤 0.2초의 '안전 쿨다운'을 거친 후 터치 인식을 다시 켬
-                        setTimeout(() => {
-                            if (!isUserScrolling) {
-                                container.style.pointerEvents = 'auto';
-                                container.classList.add('group');
-                            }
-                        }, 200);
-                    }
-                }, 150);
-            }
-        }, { passive: true });
+        document.addEventListener('scroll', resetMenuState, { passive: true });
        
 
     </script>
