@@ -842,22 +842,22 @@
 
 
 
-    <!-- ▼ 우측 퀵 메뉴 (모바일 최적화 및 터치 제어) 시작 ▼ -->
-    <div class="fixed right-2 top-1/2 -translate-y-1/2 z-[90] md:right-6 group">
+    <!-- ▼ 우측 퀵 메뉴 (위치 상승 및 강력 터치 제어) 시작 ▼ -->
+    <div class="fixed right-2 top-[40%] -translate-y-1/2 z-[90] md:right-6 group">
         
-        <!-- 외부 컨테이너 (모바일 크기 축소) -->
+        <!-- 외부 컨테이너 -->
         <div class="relative p-[1.5px] md:p-[2px] rounded-[26px] md:rounded-[32px] overflow-hidden shadow-[0_0_20px_rgba(0,102,255,0.4)] transition-all duration-300">
             
             <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] -z-10" 
                  style="background: conic-gradient(transparent, rgba(34, 211, 238, 0.5), rgba(0, 102, 255, 0.9), transparent 40%); animation: rotate-gradient 4s linear infinite;">
             </div>
 
-            <!-- 내부 UI 박스 (모바일 크기 축소) -->
+            <!-- 내부 UI 박스 -->
             <div class="relative flex flex-col items-end gap-1.5 md:gap-3 bg-gradient-to-b from-[#00143c]/80 to-[#003399]/80 backdrop-blur-md p-1.5 md:p-2.5 rounded-[24px] md:rounded-[30px] border border-white/10 w-full h-full">
                 
                 <!-- 1. 카카오톡 문의 -->
-                <a href="https://open.kakao.com/o/sKh1Q3Li" target="_blank" 
-                   class="quick-btn relative flex items-center w-10 h-10 md:w-14 md:h-14 group-hover:w-[100px] md:group-hover:w-[140px] bg-[#FEE500] rounded-full shadow-sm transition-all duration-300 overflow-hidden" 
+                <a href="https://open.kakao.com/o/sKh1Q3Li" target="_blank" onclick="return handleMobileMenu(event)"
+                   class="relative flex items-center w-10 h-10 md:w-14 md:h-14 group-hover:w-[100px] md:group-hover:w-[140px] bg-[#FEE500] rounded-full shadow-sm transition-all duration-300 overflow-hidden" 
                    title="카카오톡 문의">
                     <span class="absolute right-10 md:right-14 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-extrabold text-[#371D1E] text-[11px] md:text-base">카카오톡</span>
                     <div class="absolute right-0 w-10 h-10 md:w-14 md:h-14 flex items-center justify-center shrink-0">
@@ -868,8 +868,8 @@
                 </a>
 
                 <!-- 2. 전화 상담 -->
-                <a href="tel:050-7878-6361" 
-                   class="quick-btn relative flex items-center w-10 h-10 md:w-14 md:h-14 group-hover:w-[100px] md:group-hover:w-[140px] bg-[#0066FF] rounded-full shadow-sm transition-all duration-300 overflow-hidden" 
+                <a href="tel:050-7878-6361" onclick="return handleMobileMenu(event)"
+                   class="relative flex items-center w-10 h-10 md:w-14 md:h-14 group-hover:w-[100px] md:group-hover:w-[140px] bg-[#0066FF] rounded-full shadow-sm transition-all duration-300 overflow-hidden" 
                    title="전화 상담">
                     <span class="absolute right-10 md:right-14 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-bold text-white text-[11px] md:text-base">전화상담</span>
                     <div class="absolute right-0 w-10 h-10 md:w-14 md:h-14 flex items-center justify-center shrink-0">
@@ -880,8 +880,8 @@
                 </a>
 
                 <!-- 3. 상담 문의 -->
-                <a href="#contact-section" 
-                   class="quick-btn relative flex items-center w-10 h-10 md:w-14 md:h-14 group-hover:w-[100px] md:group-hover:w-[140px] bg-gray-800 rounded-full shadow-sm transition-all duration-300 overflow-hidden" 
+                <a href="#contact-section" onclick="return handleMobileMenu(event)"
+                   class="relative flex items-center w-10 h-10 md:w-14 md:h-14 group-hover:w-[100px] md:group-hover:w-[140px] bg-gray-800 rounded-full shadow-sm transition-all duration-300 overflow-hidden" 
                    title="상담 신청하기">
                     <span class="absolute right-10 md:right-14 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-bold text-white text-[11px] md:text-base">상담문의</span>
                     <div class="absolute right-0 w-10 h-10 md:w-14 md:h-14 flex items-center justify-center shrink-0">
@@ -894,7 +894,7 @@
             </div>
         </div>
     </div>
-    <!-- ▲ 우측 퀵 메뉴 (모바일 최적화 및 터치 제어) 끝 ▲ -->
+    <!-- ▲ 우측 퀵 메뉴 (위치 상승 및 강력 터치 제어) 끝 ▲ -->
 
 
 
@@ -1656,28 +1656,28 @@
 
         }
 
-        // 5. 모바일 퀵메뉴 터치 제어
-        let isQuickMenuOpen = false; // 메뉴가 열려있는지 기억하는 스위치
+        // 5. 모바일 퀵메뉴 터치 제어 (물리적 차단 방식)
+        let isMobileMenuOpen = false;
 
-        document.querySelectorAll('.quick-btn').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                // 모바일 환경(가로 768px 미만)일 때만 작동
-                if (window.innerWidth < 768) {
-                    // 메뉴가 닫혀있는 상태에서 누른 첫 번째 터치라면
-                    if (!isQuickMenuOpen) {
-                        e.preventDefault(); // 1. 링크 이동을 강제로 막음
-                        isQuickMenuOpen = true; // 2. 상태를 '열림'으로 변경
-                    }
-                    // 두 번째 터치일 때는 if문이 무시되므로 정상적으로 링크가 이동됨
+        function handleMobileMenu(e) {
+            // 태블릿 및 모바일 기기 (가로 1024px 이하)일 때만 개입
+            if (window.innerWidth <= 1024) {
+                if (!isMobileMenuOpen) {
+                    e.preventDefault(); // 첫 터치: 브라우저의 이동 기능을 100% 끊어버림
+                    isMobileMenuOpen = true; // 스위치를 켬
+                    return false; // 클릭 이벤트 완전 취소
+                } else {
+                    isMobileMenuOpen = false; // 두 번째 터치: 스위치를 끄고 
+                    return true; // 링크 정상 이동 허용
                 }
-            });
-        });
+            }
+            return true; // PC 환경에서는 개입 없이 항상 정상 작동
+        }
 
-        // 퀵메뉴 바깥쪽(빈 화면)을 터치하면 다시 '닫힘' 상태로 초기화
+        // 빈 화면 터치 시 열림 상태 초기화
         document.addEventListener('click', function(e) {
-            // 터치한 곳이 퀵메뉴(.group) 내부가 아니라면
-            if (window.innerWidth < 768 && !e.target.closest('.group')) {
-                isQuickMenuOpen = false; // 스위치를 다시 '닫힘'으로 되돌림
+            if (window.innerWidth <= 1024 && !e.target.closest('.group')) {
+                isMobileMenuOpen = false;
             }
         });
 
