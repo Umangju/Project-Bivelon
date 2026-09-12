@@ -240,11 +240,19 @@
             opacity: 1 !important;
         }
 
-        /* 스크롤 중 퀵메뉴 투명화 스타일 */
         @media (max-width: 1024px) {
-        #quickMenuContainer.is-scrolling {
-            opacity: 0.3;
-            transition: opacity 0.2s ease;
+            #quickMenuContainer.force-open .quick-btn {
+                width: 100px !important;
+            }
+            #quickMenuContainer.force-open span {
+                opacity: 1 !important;
+            }
+            
+            /* 스크롤 중 UI 박스가 흰색 투명으로 변하는 효과 */
+            #quickMenuContainer.is-scrolling > div > div {
+                background: rgba(255, 255, 255, 0.25) !important;
+                backdrop-filter: blur(8px);
+                transition: background 0.2s ease;
             }
         }
     }
@@ -337,7 +345,7 @@
 
                 <h1 class="text-3xl sm:text-5xl md:text-7xl font-black mb-6 md:mb-8 tracking-tight leading-[1.3] md:leading-[1.4]">
 
-                    기의 잠재력을 깨워<br>
+                    기업의 잠재력을 깨워<br>
 
                     <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300 italic pr-5">실질적인 도약으로</span><br>
 
@@ -1684,8 +1692,30 @@
         }
 
         // 6. 모바일 퀵메뉴 터치 제어
-        let isMobileMenuOpen = false; // 1단계(열림)/2단계(이동) 스위치
+        let isMobileMenuOpen = false; // 1단계(열림) / 2단계(이동) 스위치
         let scrollTimer;
+
+        // 바로가기 실행 후 모바일 브라우저에 남는 Hover 잔상을 물리적으로 부수기 위한 강제 리셋 함수
+        function forceResetVisual(container) {
+            if (!container) return;
+            
+            // 1단계: 강제 열림 클래스 제거
+            container.classList.remove('force-open');
+            isMobileMenuOpen = false;
+            
+            // 2단계: 박스 자체를 0.05초 동안 화면에서 지웠다가 켜서 브라우저가 강제로 Hover를 풀도록 유도
+            const innerBox = container.querySelector('div');
+            if (innerBox) {
+                const prevDisplay = innerBox.style.display;
+                innerBox.style.display = 'none';
+                void innerBox.offsetHeight; // 브라우저 리플로우 강제 유도
+                innerBox.style.display = prevDisplay;
+            }
+            
+            // 3단계: 버튼 포커스(잔상) 해제
+            const btns = container.querySelectorAll('.quick-btn');
+            btns.forEach(b => b.blur());
+        }
 
         function handleMobileMenu(e) {
             if (window.innerWidth <= 1024) {
@@ -1698,19 +1728,11 @@
                     if (container) container.classList.add('force-open');
                     return false; 
                 } else {
-                    // [2단계] 열린 상태에서 두 번째 터치: 바로가기 이동 허용 후, 즉시 박스 강제 닫기
-                    isMobileMenuOpen = false; 
-                    if (container) container.classList.remove('force-open');
-                    
-                    // 포커스 해제로 사파리 잔상 방지
-                    setTimeout(() => {
-                        if (container) {
-                            const btns = container.querySelectorAll('.quick-btn');
-                            btns.forEach(b => b.blur());
-                        }
-                    }, 100);
-
-                    return true; // 바로가기 정상 작동!
+                    // [2단계] 열린 상태에서 두 번째 터치: 바로가기 이동 허용 후, 즉시 박스 물리적 강제 닫기
+                    if (container) {
+                        forceResetVisual(container);
+                    }
+                    return true; // 바로가기(링크 이동) 정상 작동!
                 }
             }
             return true; // PC 환경은 기존 Hover 그대로 유지
@@ -1723,28 +1745,26 @@
                 if (e.type === 'click' && container && container.contains(e.target)) return;
                 
                 if (isMobileMenuOpen) {
-                    isMobileMenuOpen = false;
-                    if (container) container.classList.remove('force-open');
+                    forceResetVisual(container);
                 }
             }
         }
 
         document.addEventListener('click', resetMenuState);
 
-        // [스크롤 감지 및 투명화 제어]
+        // [스크롤 감지 및 흰색 투명화 제어]
         window.addEventListener('scroll', function(e) {
             if (window.innerWidth <= 1024) {
                 const container = document.getElementById('quickMenuContainer');
                 
                 if (container) {
-                    // 스크롤하는 동안 퀵메뉴를 반투명하게 만들어 가독성 높임
+                    // 스크롤 중 UI 박스가 흰색 투명 계열로 변함
                     container.classList.add('is-scrolling');
-                    // 스크롤 시 메뉴 강제 닫기 (3단계 리셋)
-                    container.classList.remove('force-open');
+                    // 스크롤 시 메뉴 강제 닫기
+                    forceResetVisual(container);
                 }
-                isMobileMenuOpen = false;
 
-                // 스크롤이 멈추고 0.15초 뒤에 투명도 복구
+                // 스크롤이 멈추고 0.15초 뒤에 원래 파란색 UI 박스 색상으로 복구
                 clearTimeout(scrollTimer);
                 scrollTimer = setTimeout(() => {
                     if (container) {
