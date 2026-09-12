@@ -843,7 +843,7 @@
 
 
     <!-- ▼ 우측 퀵 메뉴 (위치 상승 및 강력 터치 제어) 시작 ▼ -->
-    <div class="fixed right-2 top-[25%] -translate-y-1/2 z-[90] md:right-6 group">
+    <div id="quickMenuContainer" class="fixed right-2 top-[25%] -translate-y-1/2 z-[90] md:right-6 group">
         
         <!-- 외부 컨테이너 -->
         <div class="relative p-[1.5px] md:p-[2px] rounded-[26px] md:rounded-[32px] overflow-hidden shadow-[0_0_20px_rgba(0,102,255,0.4)] transition-all duration-300">
@@ -1416,7 +1416,15 @@
 
         }
 
-       
+       // 브라우저 자체의 스크롤 기억 기능을 강제로 끔
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+
+        // 페이지가 새로고침되거나 로드될 때 무조건 최상단(0,0)으로 강제 이동
+        window.addEventListener('load', function() {
+            window.scrollTo(0, 0);
+        });
 
         document.addEventListener('DOMContentLoaded', () => {
 
@@ -1525,6 +1533,13 @@
             window.scrollTo(0, 0);
 
             location.reload();
+
+            if ('scrollRestoration' in history) {
+                history.scrollRestoration = 'manual';
+                }
+                window.addEventListener('load', function() {
+                    window.scrollTo(0, 0);
+                });
 
         }
 
@@ -1658,17 +1673,16 @@
 
         // 5. 모바일 퀵메뉴 터치 제어
         let isMobileMenuOpen = false;
-        let scrollTimeout;
-        let isScrolling = false; // [핵심] 스크롤 중인지 판단하는 자물쇠 변수
+        let scrollTimer;
+        let isUserScrolling = false;
 
         function forceCloseVisual() {
             const quickBtns = document.querySelectorAll('.quick-btn');
             if(quickBtns.length > 0) {
-                const groupEl = quickBtns[0].closest('.fixed'); 
+                const groupEl = document.getElementById('quickMenuContainer');
                 if (groupEl && groupEl.classList.contains('group')) {
                     groupEl.classList.remove('group'); 
                     quickBtns.forEach(btn => btn.blur()); 
-                    
                     setTimeout(() => {
                         groupEl.classList.add('group'); 
                     }, 400);
@@ -1678,8 +1692,8 @@
 
         function handleMobileMenu(e) {
             if (window.innerWidth <= 1024) {
-                // [자물쇠 방어막] 스크롤 중이거나 스와이프 직후 0.15초 이내라면 터치를 완전히 무시!
-                if (isScrolling) {
+                // 만약 스크롤 중이거나 스크롤 직후 쿨다운 시간이라면 클릭을 완전 무시
+                if (isUserScrolling) {
                     e.preventDefault();
                     return false;
                 }
@@ -1701,11 +1715,9 @@
 
         function resetMenuState(e) {
             if (window.innerWidth <= 1024) {
-                const quickBtns = document.querySelectorAll('.quick-btn');
-                if (quickBtns.length > 0) {
-                    const groupEl = quickBtns[0].closest('.fixed');
-                    if (e.type === 'click' && groupEl && groupEl.contains(e.target)) return;
-                }
+                const groupEl = document.getElementById('quickMenuContainer');
+                if (e.type === 'click' && groupEl && groupEl.contains(e.target)) return;
+                
                 if (isMobileMenuOpen) {
                     isMobileMenuOpen = false;
                     forceCloseVisual();
@@ -1714,38 +1726,34 @@
         }
 
         document.addEventListener('click', resetMenuState);
-        
-        // 1. 손가락이 화면에서 미끄러질 때 (스크롤 시작점) 자물쇠 켜기
-        window.addEventListener('touchmove', function() {
-            isScrolling = true;
-        }, { passive: true });
 
-        // 2. 손가락을 뗄 때 자물쇠 풀기 (단, 마지막 가짜 터치를 막기 위해 0.15초 딜레이)
-        window.addEventListener('touchend', function() {
-            setTimeout(() => {
-                isScrolling = false;
-            }, 150);
-        }, { passive: true });
-
-        // 3. 브라우저 스크롤 이벤트 
-        document.addEventListener('scroll', function(e) {
-            isScrolling = true; // 화면이 굴러가는 동안 무조건 자물쇠 유지
-            resetMenuState(e);
-            
+        // [핵심 로직] 스크롤하는 동안 퀵메뉴의 터치/호버 인식을 완전히 꺼버림 (Pointer-Events 차단)
+        window.addEventListener('scroll', function(e) {
             if (window.innerWidth <= 1024) {
-                const quickBtns = document.querySelectorAll('.quick-btn');
-                if(quickBtns.length > 0) {
-                    const groupEl = quickBtns[0].closest('.fixed');
-                    if (groupEl) {
-                        groupEl.classList.remove('group'); 
-                        
-                        clearTimeout(scrollTimeout);
-                        scrollTimeout = setTimeout(() => {
-                            groupEl.classList.add('group');
-                            isScrolling = false; // 화면이 완전히 멈추면 자물쇠 해제
+                isUserScrolling = true;
+                const container = document.getElementById('quickMenuContainer');
+                
+                if (container) {
+                    // 스크롤이 감지되는 순간 퀵메뉴의 모든 터치 인식을 강제로 끔
+                    container.style.pointerEvents = 'none';
+                    container.classList.remove('group');
+                }
+
+                clearTimeout(scrollTimer);
+                // 스크롤이 멈추고 0.15초 뒤에 스크롤 상태 해제
+                scrollTimer = setTimeout(() => {
+                    isUserScrolling = false;
+                    
+                    if (container) {
+                        // 스크롤이 완전히 끝난 뒤 0.2초의 '안전 쿨다운'을 거친 후 터치 인식을 다시 켬
+                        setTimeout(() => {
+                            if (!isUserScrolling) {
+                                container.style.pointerEvents = 'auto';
+                                container.classList.add('group');
+                            }
                         }, 200);
                     }
-                }
+                }, 150);
             }
         }, { passive: true });
        
