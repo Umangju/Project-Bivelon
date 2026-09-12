@@ -1656,30 +1656,49 @@
 
         }
 
-        // 5. 모바일 퀵메뉴 터치 제어 (물리적 차단 방식)
+        // 5. 모바일 퀵메뉴 터치 제어
         let isMobileMenuOpen = false;
 
         function handleMobileMenu(e) {
-            // 태블릿 및 모바일 기기 (가로 1024px 이하)일 때만 개입
             if (window.innerWidth <= 1024) {
                 if (!isMobileMenuOpen) {
-                    e.preventDefault(); // 첫 터치: 브라우저의 이동 기능을 100% 끊어버림
-                    isMobileMenuOpen = true; // 스위치를 켬
-                    return false; // 클릭 이벤트 완전 취소
+                    // [1단계] 닫혀있을 때: 링크 이동을 물리적으로 막고 메뉴만 엶
+                    e.preventDefault(); 
+                    isMobileMenuOpen = true; 
+                    return false; 
                 } else {
-                    isMobileMenuOpen = false; // 두 번째 터치: 스위치를 끄고 
-                    return true; // 링크 정상 이동 허용
+                    // [2단계 & 3단계] 열려있을 때: 링크 이동 허용 후 즉시 상태 리셋
+                    setTimeout(() => {
+                        isMobileMenuOpen = false; // 스위치 끄기
+                        
+                        // 모바일 브라우저에 고정되는 잔상(Hover)을 강제로 없애서 1단계로 되돌리는 트릭
+                        const menuContainer = document.querySelector('.group');
+                        if (menuContainer) {
+                            menuContainer.style.display = 'none';
+                            setTimeout(() => { menuContainer.style.display = ''; }, 10);
+                        }
+                    }, 50);
+                    
+                    return true; 
                 }
             }
-            return true; // PC 환경에서는 개입 없이 항상 정상 작동
+            return true; // PC 환경은 기존대로 개입 없음
         }
 
-        // 빈 화면 터치 시 열림 상태 초기화
-        document.addEventListener('click', function(e) {
-            if (window.innerWidth <= 1024 && !e.target.closest('.group')) {
+        // [3단계] 선택 없이 외부 클릭 또는 스크롤 시 1단계로 강제 리셋
+        function resetMenuState(e) {
+            if (window.innerWidth <= 1024) {
+                // 클릭한 영역이 퀵메뉴 내부라면 무시 (handleMobileMenu에서 처리)
+                if (e.type === 'click' && e.target.closest('.group')) return;
+                
+                // 빈 화면 터치나 화면 스크롤 시 스위치를 무조건 끔
                 isMobileMenuOpen = false;
             }
-        });
+        }
+
+        // 화면 터치(click)와 스크롤(scroll) 이벤트를 모두 감지하여 리셋 함수 연결
+        document.addEventListener('click', resetMenuState);
+        document.addEventListener('scroll', resetMenuState, { passive: true });
 
        
 
