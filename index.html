@@ -14,7 +14,7 @@
 
     <meta name="naver-site-verification" content="685b6a462ffe3bd95195390ec035204c8ecbf60a" />
 
-    <meta name="description" content="비벨온(BIVELON) - 기 잠재력을 깨워 실질적인 도약으로 연결하는 Business 실행 시스템 기업입니다. 맞춤형 성장 전략 컨설팅 및 자금 조달 가이드를 제공합니다.">
+    <meta name="description" content="비벨온(BIVELON) - 기업의 잠재력을 깨워 실질적인 도약으로 연결하는 Business 실행 시스템 기업입니다. 맞춤형 성장 전략 컨설팅 및 자금 조달 가이드를 제공합니다.">
 
     <meta name="google-site-verification" content="zSeur5BYweVhK0z6RJUyIr2oISxwLHDzuFZhdWgF70I" />
 
@@ -320,7 +320,7 @@
 
                 <h1 class="text-3xl sm:text-5xl md:text-7xl font-black mb-6 md:mb-8 tracking-tight leading-[1.3] md:leading-[1.4]">
 
-                    기업의 잠재력을 깨워<br>
+                    기의 잠재력을 깨워<br>
 
                     <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300 italic pr-5">실질적인 도약으로</span><br>
 
@@ -1658,70 +1658,72 @@
 
         // 5. 모바일 퀵메뉴 터치 제어
         let isMobileMenuOpen = false;
+        let isClosing = false; // 스크롤 시 중복 실행을 막아주는 잠금장치
 
-        // 애니메이션(Hover)을 일으키는 group 클래스 자체를 물리적으로 뗐다 붙이는 강제 초기화 함수
         function forceCloseVisual() {
+            if (isClosing) return; // 이미 닫히는 중이라면 무시 (스크롤 렉 완벽 방지)
+            isClosing = true;
+
             const quickBtns = document.querySelectorAll('.quick-btn');
             if(quickBtns.length > 0) {
-                // 퀵메뉴를 감싸고 있는 최상단 부모 컨테이너 찾기
                 const groupEl = quickBtns[0].closest('.fixed'); 
                 
                 if (groupEl && groupEl.classList.contains('group')) {
-                    // 1. 애니메이션 트리거(group)를 강제로 삭제하여 무조건 닫히게 만듦
-                    groupEl.classList.remove('group');
+                    groupEl.classList.remove('group'); // 애니메이션 클래스 뜯어내기
+                    quickBtns.forEach(btn => btn.blur()); // 남아있는 터치 잔상 지우기
                     
-                    // 2. 버튼에 남아있는 터치 포커스 해제
-                    quickBtns.forEach(btn => btn.blur());
-                    
-                    // 3. 0.4초 뒤에 1단계 작동을 위해 group 클래스만 조용히 다시 붙여둠
                     setTimeout(() => {
-                        groupEl.classList.add('group');
+                        groupEl.classList.add('group'); // 0.4초 뒤 원래대로 복구
+                        isClosing = false; // 잠금장치 해제
                     }, 400);
+                } else {
+                    isClosing = false;
                 }
+            } else {
+                isClosing = false;
             }
         }
 
         function handleMobileMenu(e) {
-            // 태블릿 및 모바일(가로 1024px 이하) 환경
             if (window.innerWidth <= 1024) {
                 if (!isMobileMenuOpen) {
-                    // [1단계] 닫혀있을 때: 무조건 이동을 막고 메뉴만 엶
+                    // [1단계] 무조건 이동 막고 메뉴만 열기
                     e.preventDefault(); 
                     isMobileMenuOpen = true; 
                     return false; 
                 } else {
-                    // [2단계] 열려있을 때: 이동 허용 후, 즉시 물리적 닫기 실행
+                    // [2단계] 이동 허용 후 즉시 닫기
                     setTimeout(() => {
                         isMobileMenuOpen = false; 
                         forceCloseVisual();
-                    }, 50); // 링크로 넘어갈 0.05초의 짧은 시간만 허용
+                    }, 50);
                     return true; 
                 }
             }
-            return true; // PC는 그대로 작동
+            return true;
         }
 
-        // [3단계] 빈 화면 터치 및 스크롤 시 무조건 1단계로 강제 리셋
+        // [3단계] 빈 화면 터치 및 스크롤 시 강제 리셋
         function resetMenuState(e) {
             if (window.innerWidth <= 1024) {
                 const quickBtns = document.querySelectorAll('.quick-btn');
                 if (quickBtns.length > 0) {
                     const groupEl = quickBtns[0].closest('.fixed');
-                    // 터치한 곳이 퀵메뉴 박스 내부라면 무시 (handleMobileMenu가 알아서 처리함)
-                    if (e.type === 'click' && groupEl && groupEl.contains(e.target)) return;
+                    // 클릭한 곳이 메뉴 내부라면 무시 (handleMobileMenu가 처리)
+                    if (groupEl && groupEl.contains(e.target)) return;
                 }
                 
-                // 메뉴가 열려있다고 인식될 때만 닫기 실행
-                if (isMobileMenuOpen) {
-                    isMobileMenuOpen = false;
-                    forceCloseVisual();
-                }
+                // CSS 혼자 열려있는 버그를 잡기 위해, 스위치 상태와 무관하게 
+                // 스크롤이나 터치가 감지되면 무조건 강제 초기화 함수를 호출!
+                isMobileMenuOpen = false;
+                forceCloseVisual();
             }
         }
 
-        // 화면 터치와 스크롤 움직임을 모두 감시
-        document.addEventListener('click', resetMenuState);
-        document.addEventListener('scroll', resetMenuState, { passive: true });
+        // 기존 click, scroll에 더해 모바일의 가장 즉각적인 터치 반응인 'touchstart' 추가
+        window.addEventListener('click', resetMenuState);
+        window.addEventListener('touchstart', resetMenuState, { passive: true });
+        window.addEventListener('scroll', resetMenuState, { passive: true });
        
 
     </script>
