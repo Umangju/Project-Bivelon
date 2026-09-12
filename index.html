@@ -1656,17 +1656,29 @@
 
         }
 
-        // 5. 모바일 퀵메뉴 터치 제어 (첫 터치: 확장, 두 번째 터치: 링크 이동)
+        // 5. 모바일 퀵메뉴 터치 제어
+        let isQuickMenuOpen = false; // 메뉴가 열려있는지 기억하는 스위치
+
         document.querySelectorAll('.quick-btn').forEach(btn => {
             btn.addEventListener('click', function(e) {
-                // 모바일 화면(가로 768px 미만)일 때만 작동
+                // 모바일 환경(가로 768px 미만)일 때만 작동
                 if (window.innerWidth < 768) {
-                    // 버튼 너비가 완전히 확장되기 전(60px 미만)이라면 클릭 이동 방지
-                    if (this.offsetWidth < 60) {
-                        e.preventDefault(); 
+                    // 메뉴가 닫혀있는 상태에서 누른 첫 번째 터치라면
+                    if (!isQuickMenuOpen) {
+                        e.preventDefault(); // 1. 링크 이동을 강제로 막음
+                        isQuickMenuOpen = true; // 2. 상태를 '열림'으로 변경
                     }
+                    // 두 번째 터치일 때는 if문이 무시되므로 정상적으로 링크가 이동됨
                 }
             });
+        });
+
+        // 퀵메뉴 바깥쪽(빈 화면)을 터치하면 다시 '닫힘' 상태로 초기화
+        document.addEventListener('click', function(e) {
+            // 터치한 곳이 퀵메뉴(.group) 내부가 아니라면
+            if (window.innerWidth < 768 && !e.target.closest('.group')) {
+                isQuickMenuOpen = false; // 스위치를 다시 '닫힘'으로 되돌림
+            }
         });
 
        
