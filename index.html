@@ -161,6 +161,7 @@
 
     </style>
 </head>
+<body class="bg-white text-gray-900">
 <header id="main-header" class="fixed w-full z-50 top-0 left-0 py-4 px-6 md:py-5">
     <div class="max-w-7xl mx-auto flex justify-between items-center">
         <div onclick="resetAndReload()" 
@@ -696,45 +697,23 @@
         </div>
     </div>
 
-    <!-- 개인정보처리방침: 기존 txt 파일 내용을 기준으로 표시 -->
-    <div id="policyModal" class="fixed inset-0 z-[100] bg-black/60 hidden items-center justify-center p-4" onclick="closeModal()" aria-hidden="true">
-        <div class="bg-white text-black w-full max-w-3xl max-h-[88vh] rounded-3xl shadow-2xl p-6 md:p-8 relative flex flex-col" onclick="event.stopPropagation()" role="dialog" aria-modal="true" aria-labelledby="policyModalTitle">
-            <div class="flex items-center justify-between gap-4 border-b pb-5 shrink-0">
-                <h3 id="policyModalTitle" class="text-2xl font-black">개인정보 처리방침</h3>
-                <button type="button" onclick="closeModal()" class="w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 font-black text-xl" aria-label="개인정보 처리방침 닫기">×</button>
+    <!-- 개인정보처리방침: index.ver1.html 방식 적용(직접 작성된 하드코딩) -->
+    <div id="policyModal" class="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center p-4" onclick="closeModal()">
+        <div class="bg-white text-black w-full max-w-lg rounded-3xl shadow-2xl p-8 md:p-10 relative" onclick="event.stopPropagation()">
+            <h3 class="text-2xl font-black mb-6 border-b pb-4">개인정보 처리방침</h3>
+            <div class="text-sm text-gray-600 leading-relaxed overflow-y-auto max-h-[350px] pr-4">
+                <p class="font-bold mb-3 text-blue-600">[수집 및 이용 안내]</p>
+                <p class="mb-4 font-medium">BIVELON은 최적의 비즈니스 솔루션 제공을 위해 아래 정보를 수집합니다.</p>
+                <ul class="space-y-2 list-disc pl-5">
+                    <li>수집항목: 기업명, 대표자명, 연락처, 지역, 업종, 매출규모 등</li>
+                    <li>목적: 맞춤형 성장 전략 컨설팅 및 자금 조달 가이드 제공</li>
+                    <li>보유: 원칙적으로 상담 목적 달성 후 즉시 파기</li>
+                </ul>
             </div>
-            <div id="policyContent" class="mt-5 text-sm text-gray-700 leading-7 overflow-y-auto pr-2 whitespace-pre-wrap break-words" tabindex="0"></div>
-            <div class="pt-5 mt-5 border-t shrink-0">
-                <button type="button" onclick="closeModal()" class="w-full bg-blue-600 text-white py-4 rounded-xl font-bold hover:bg-blue-700 shadow-lg shadow-blue-100">확인</button>
-            </div>
+            <button onclick="closeModal()" class="mt-8 w-full bg-blue-600 text-white py-4 rounded-xl font-bold hover:bg-blue-700 shadow-lg shadow-blue-100">확인</button>
         </div>
     </div>
 
-    <script>
-        // 개인정보처리방침은 HTML 소스에 저장하지 않고 호스팅된 policy.txt를 불러옵니다.
-        let policyLoaded = false;
-
-        async function loadPolicyText() {
-            const content = document.getElementById('policyContent');
-            if (!content || policyLoaded) return;
-
-            content.textContent = '개인정보처리방침을 불러오는 중입니다...';
-
-            try {
-                const response = await fetch('./policy.txt', { cache: 'no-cache' });
-                if (!response.ok) throw new Error('policy.txt fetch failed: ' + response.status);
-
-                const text = await response.text();
-                if (!text.trim()) throw new Error('policy.txt is empty');
-
-                content.textContent = text;
-                policyLoaded = true;
-            } catch (error) {
-                console.error('개인정보처리방침 불러오기 실패:', error);
-                content.textContent = '개인정보처리방침을 불러오지 못했습니다.\n\n호스팅 서버에 policy.txt 파일이 정상적으로 업로드되어 있는지 확인해 주세요.';
-            }
-        }
-    </script>
     <script>
         const menuBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
@@ -1110,19 +1089,12 @@
             const amount = a.amount || '3천만~1억원';
             const region = a.region || '서울·경기';
 
-            /*
-             * 홈페이지에서 동작하는 AI 사전진단 엔진입니다.
-             * 단순히 목적 하나만 보는 것이 아니라 업종/업력/매출/목적/금액/지역을
-             * 각각 점수화하고, 기업 상황에 맞춰 우선순위·이유·준비사항을 조합합니다.
-             * 실제 기관의 승인 판정이 아니라 상담 전 사전분석 용도입니다.
-             */
             const score = { policy: 0, guarantee: 0, support: 0, finance: 0 };
             const reasons = [];
             const checklist = [];
 
             const add = (bucket, points) => score[bucket] += points;
 
-            // 업종별 가중치
             if (industry === '제조업') { add('policy', 18); add('finance', 12); reasons.push('제조업 특성상 시설·운전자금 모두 검토할 필요가 있습니다.'); checklist.push('최근 재무제표 및 설비·시설 투자계획'); }
             else if (industry === '건설업') { add('guarantee', 16); add('policy', 12); reasons.push('건설업은 보증 연계와 운전자금 구조를 함께 확인하는 것이 중요합니다.'); checklist.push('수주현황·공사계약 및 금융부채 현황'); }
             else if (industry === '도소매업') { add('policy', 12); add('finance', 10); reasons.push('매출 흐름과 재고·운전자금 수요를 중심으로 검토하는 유형입니다.'); checklist.push('최근 매출증빙 및 운전자금 사용계획'); }
@@ -1131,35 +1103,30 @@
             else if (industry === '운수업') { add('guarantee', 14); add('policy', 11); reasons.push('운영비와 차량·설비 관련 금융수요를 함께 확인하는 것이 좋습니다.'); checklist.push('차량·장비 현황 및 기존 대출내역'); }
             else { add('policy', 10); add('guarantee', 10); reasons.push('업종만으로 특정 자금을 단정하기보다 기업 재무와 자금 목적을 함께 보는 것이 적절합니다.'); checklist.push('최근 재무자료 및 자금 사용계획'); }
 
-            // 업력
             if (age === '1년 미만') { add('support', 16); add('guarantee', 12); reasons.push('초기기업은 창업·성장 지원과 보증 연계 여부가 중요합니다.'); checklist.push('사업계획서 및 초기 매출·투자 현황'); }
             else if (age === '1~3년') { add('policy', 12); add('support', 12); reasons.push('초기 성장단계라 정책자금과 지원사업을 함께 비교할 가치가 있습니다.'); }
             else if (age === '3~7년') { add('policy', 14); add('guarantee', 8); reasons.push('사업 운영 이력이 있어 일반적인 정책금융 검토 범위가 넓어질 수 있습니다.'); }
             else if (age === '7~10년') { add('policy', 15); add('finance', 10); reasons.push('운영기간이 긴 기업으로 성장·운전자금 및 금융구조를 함께 보는 것이 좋습니다.'); }
             else { add('policy', 13); add('finance', 14); reasons.push('장기 운영기업은 재무구조와 기존 금융비용을 함께 분석하는 것이 중요합니다.'); checklist.push('최근 2개년 재무제표 및 기존 금융기관 대출현황'); }
 
-            // 매출 규모
             if (sales === '1억 미만') { add('support', 13); add('guarantee', 12); }
             else if (sales === '1억~5억') { add('guarantee', 12); add('policy', 8); }
             else if (sales === '5억~10억') { add('policy', 13); add('guarantee', 10); }
             else if (sales === '10억~30억') { add('policy', 16); add('finance', 12); reasons.push('매출 규모를 고려하면 단순 소액자금보다 기업금융 구조를 함께 검토하는 것이 유리합니다.'); }
             else { add('policy', 17); add('finance', 16); add('support', 8); reasons.push('매출 규모가 큰 편이므로 정책금융뿐 아니라 금융구조·성장지원까지 폭넓게 비교할 필요가 있습니다.'); checklist.push('재무비율·부채현황 및 중장기 사업계획'); }
 
-            // 목적은 가장 강한 신호로 반영
             if (purpose === '운전자금') { add('policy', 22); add('guarantee', 14); reasons.push('운전자금 수요가 명확해 정책자금과 보증 연계를 우선 비교하는 것이 적절합니다.'); checklist.push('운전자금 사용계획 및 최근 매출증빙'); }
             else if (purpose === '시설자금') { add('policy', 24); add('finance', 18); reasons.push('시설자금은 투자규모와 자금조달 구조를 함께 보는 것이 핵심입니다.'); checklist.push('시설 견적서·계약서 및 투자계획'); }
-            else if (purpose === '대환·금융비용') { add('guarantee', 28); add('finance', 22); add('policy', 8); reasons.push('대환·금융비용 절감 목적이므로 기존 부채와 보증 가능성을 우선 확인해야 합니다.'); checklist.push('기존 대출 잔액·금리·만기 현황'); }
+            else if (purpose === '대환·금융비용') { add('guarantee', 28); add('finance', 22); add('policy', 8); reasons.push('대환·금융비용 절감 목적이므로 기존 부채와 보증 가능성을 우선 확인해야 정합니다.'); checklist.push('기존 대출 잔액·금리·만기 현황'); }
             else if (purpose === '사업확장') { add('policy', 18); add('support', 24); add('finance', 14); reasons.push('사업확장은 정책금융과 성장지원사업을 함께 비교하는 것이 효과적입니다.'); checklist.push('확장계획·투자금액·고용계획'); }
             else { add('policy', 8); add('support', 10); add('guarantee', 8); reasons.push('자금 목적이 아직 명확하지 않아 여러 자금 경로를 비교한 뒤 우선순위를 정하는 것이 좋습니다.'); }
 
-            // 필요금액
             if (amount === '3천만원 미만') { add('guarantee', 7); add('support', 6); }
             else if (amount === '3천만~1억원') { add('guarantee', 10); add('policy', 8); }
             else if (amount === '1억~3억원') { add('policy', 12); add('guarantee', 10); }
             else if (amount === '3억~5억원') { add('policy', 16); add('finance', 12); reasons.push('필요금액이 커질수록 단일 상품보다 복수 자금원의 조합을 검토할 필요가 있습니다.'); }
             else { add('policy', 18); add('finance', 18); add('guarantee', 12); reasons.push('대규모 자금 수요로 보여 자금원 분산과 금융구조 설계가 중요합니다.'); }
 
-            // 지역은 실제 정책을 단정하지 않고 지역사업 검토 가중치만 적용
             if (region !== '서울·경기') { add('support', 5); reasons.push(`${region} 소재 기업이므로 중앙정부 자금과 함께 지역 지원사업도 비교하는 것이 좋습니다.`); }
 
             const sorted = Object.entries(score).sort((a,b) => b[1] - a[1]);
@@ -1169,7 +1136,6 @@
             const rawScore = Math.round(55 + Math.min(40, sorted[0][1] * 0.55 + sorted[1][1] * 0.2));
             const finalScore = Math.max(55, Math.min(96, rawScore));
 
-            // 특수 상황 보정
             let main = labels[mainKey];
             let secondary = labels[secondaryKey];
             if (purpose === '대환·금융비용') { main = '보증 연계'; secondary = '금융구조 개선'; }
@@ -1280,21 +1246,9 @@
                 });
         });
 
-        function openModal() {
-            const modal = document.getElementById('policyModal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            modal.setAttribute('aria-hidden', 'false');
-            document.body.style.overflow = 'hidden';
-            loadPolicyText();
-        }
-        function closeModal() {
-            const modal = document.getElementById('policyModal');
-            modal.classList.remove('flex');
-            modal.classList.add('hidden');
-            modal.setAttribute('aria-hidden', 'true');
-            document.body.style.overflow = '';
-        }
+        // 모달창 여닫기 기능 변경 (하드코딩 방식)
+        function openModal() { document.getElementById('policyModal').classList.add('active'); document.body.style.overflow = 'hidden'; }
+        function closeModal() { document.getElementById('policyModal').classList.remove('active'); document.body.style.overflow = 'auto'; }
     </script>
 
 </body>
