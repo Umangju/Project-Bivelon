@@ -28,7 +28,6 @@
         @media (min-width: 768px) { .ticker-container { height: 450px; } }
         
         .ticker-move { animation: ticker 35s linear infinite; }
-        /* .ticker-move:hover { animation-play-state: paused; } */
 
         /* 체크박스/라디오 버튼 커스텀 */
         input[type="radio"], input[type="checkbox"] {
@@ -37,9 +36,6 @@
             height: 18px;
             cursor: pointer;
         }
-
-        #policyModal { display: none; }
-        #policyModal.active { display: flex; }
 
         header { transition: all 0.4s ease; }
         header.scrolled {
@@ -159,6 +155,11 @@
         }
         .progress { transition: width .3s ease; }
 
+        /* 모달 스크롤바 커스텀 */
+        .policy-scroll::-webkit-scrollbar { width: 6px; }
+        .policy-scroll::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+        .policy-scroll::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
+        .policy-scroll::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
     </style>
 </head>
 <body class="bg-white text-gray-900">
@@ -194,7 +195,7 @@
     </div>
 </header>
 <main id="top">
-    <!-- HERO / 기존 비벨온 메인 비주얼 유지 + AI 진단 유입 -->
+    <!-- HERO -->
     <section class="relative overflow-hidden text-white pt-36 pb-16 md:pt-44 md:pb-24 px-6 bg-gray-900 bg-cover bg-center"
         style="background-image: linear-gradient(90deg, rgba(0,43,91,0.93) 0%, rgba(0,37,92,0.82) 48%, rgba(0,22,70,0.76) 100%), url('https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069');">
         <div class="absolute inset-0 hero-grid opacity-60 pointer-events-none"></div>
@@ -270,7 +271,7 @@
         </div>
     </section>
 
-    <!-- PROBLEM / 기존 Brand Identity 영역의 콘텐츠 업데이트 -->
+    <!-- PROBLEM -->
     <section class="py-20 lg:py-24 bg-white">
         <div class="max-w-7xl mx-auto px-5 lg:px-8">
             <div class="max-w-3xl">
@@ -376,7 +377,7 @@
         </div>
     </section>
 
-    <!-- WHY / 기존 Business Model·Brand Identity 영역의 콘텐츠 업데이트 -->
+    <!-- WHY -->
     <section id="about" class="py-20 lg:py-28 bg-white">
         <div class="max-w-7xl mx-auto px-5 lg:px-8">
             <div class="text-center">
@@ -404,7 +405,7 @@
         </div>
     </section>
 
-    <!-- HOW / 기존 6단계 프로세스 영역의 내용 업데이트 -->
+    <!-- HOW -->
     <section id="process" class="py-20 lg:py-28 bg-[#07152f] text-white">
         <div class="max-w-7xl mx-auto px-5 lg:px-8">
             <div class="text-center">
@@ -583,8 +584,7 @@
                     <div class="flex items-center gap-3 py-2 border-t pt-6">
                         <input type="checkbox" id="agree" class="accent-blue-600" required>
                         <label for="agree" class="text-sm text-gray-600 cursor-pointer">개인정보 수집 및 이용 동의</label>
-                        <!-- '자세히 보기' 버튼: openModal() 실행 -->
-                        <button type="button" onclick="openModal()" class="text-blue-600 text-xs underline font-bold">자세히 보기</button>
+                        <button type="button" onclick="openPolicyModal()" class="text-blue-600 text-xs underline font-bold">자세히 보기</button>
                     </div>
 
                     <input type="hidden" name="diagnosis_industry" id="diagnosis-industry">
@@ -610,7 +610,6 @@
         
         <!-- LED 테두리 효과를 위한 외부 컨테이너 -->
         <div class="relative p-[2px] rounded-[32px] overflow-hidden shadow-[0_0_20px_rgba(0,102,255,0.4)] transition-all duration-300">
-            
             <!-- 회전하는 LED 빛 -->
             <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] -z-10" 
                  style="background: conic-gradient(transparent, rgba(34, 211, 238, 0.5), rgba(0, 102, 255, 0.9), transparent 40%); animation: rotate-gradient 4s linear infinite;">
@@ -620,11 +619,10 @@
             <div class="relative flex flex-col items-end gap-2 md:gap-3 bg-gradient-to-b from-[#00143c]/80 to-[#003399]/80 backdrop-blur-md p-2.5 rounded-[30px] border border-white/10 w-full h-full">
                 
                 <!-- 1. 카카오톡 문의 -->
-                <a href="https://open.kakao.com/o/여기에_오픈채팅_주소_입력" target="_blank" 
+                <a href="https://open.kakao.com/o/sKh1Q3Li" target="_blank" 
                    class="relative flex items-center w-12 h-12 md:w-14 md:h-14 group-hover:w-[120px] md:group-hover:w-[140px] bg-[#FEE500] rounded-full shadow-sm transition-all duration-300 overflow-hidden" 
                    title="카카오톡 문의">
                     <span class="absolute right-12 md:right-14 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-extrabold text-[#371D1E] text-sm md:text-base">카카오톡</span>
-                    <!-- 아이콘 찌그러짐 방지를 위해 shrink-0 추가 -->
                     <div class="absolute right-0 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center shrink-0">
                         <svg viewBox="0 0 24 24" class="w-6 h-6 md:w-7 md:h-7" fill="#371D1E">
                             <path d="M12 3c-5.52 0-10 3.53-10 7.89 0 2.8 1.83 5.26 4.67 6.64-.16.6-.58 2.15-.67 2.45-.1.35.13.34.34.2.16-.1 2.2-1.42 3.09-2.02.83.1 1.69.15 2.57.15 5.52 0 10-3.53 10-7.89S17.52 3 12 3z"/>
@@ -679,7 +677,8 @@
     </div>
 </footer>
 
-<div id="successModal" class="fixed inset-0 z-[110] hidden items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+    <!-- 완료 안내 모달 -->
+    <div id="successModal" class="fixed inset-0 z-[110] hidden items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
         <div class="bg-white w-full max-w-md rounded-[32px] p-8 md:p-10 shadow-2xl transform transition-all scale-95 opacity-0 duration-300" id="successModalContent">
             <div class="text-center">
                 <div class="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -698,48 +697,46 @@
         </div>
     </div>
 
-    <!-- 개인정보처리방침: index.ver1.html의 UI 디자인 적용 및 policy.txt 호출 기능 연동 -->
-    <div id="policyModal" class="fixed inset-0 z-[100] bg-black/60 items-center justify-center p-4" onclick="closeModal()">
-        <div class="bg-white text-black w-full max-w-lg rounded-3xl shadow-2xl p-8 md:p-10 relative" onclick="event.stopPropagation()">
-            <h3 class="text-2xl font-black mb-6 border-b pb-4">개인정보 처리방침</h3>
-            <div id="policyContent" class="text-sm text-gray-600 leading-relaxed overflow-y-auto max-h-[350px] pr-4 whitespace-pre-wrap break-words">
-                <!-- 파일 로드 전 또는 로드 실패 시 보일 기본 텍스트 (index.ver1.html 내용 유지) -->
-                <p class="font-bold mb-3 text-blue-600">[수집 및 이용 안내]</p>
-                <p class="mb-4 font-medium">BIVELON은 최적의 비즈니스 솔루션 제공을 위해 아래 정보를 수집합니다.</p>
-                <ul class="space-y-2 list-disc pl-5">
-                    <li>수집항목: 기업명, 대표자명, 연락처, 지역, 업종, 매출규모 등</li>
-                    <li>목적: 맞춤형 성장 전략 컨설팅 및 자금 조달 가이드 제공</li>
-                    <li>보유: 원칙적으로 상담 목적 달성 후 즉시 파기</li>
-                </ul>
+    <!-- 전체화면 개인정보처리방침 모달 (동적으로 policy.txt 불러오기 적용) -->
+    <div id="policyModal" class="fixed inset-0 z-[150] bg-white hidden flex-col transition-opacity duration-300 opacity-0" aria-hidden="true">
+        
+        <!-- 헤더 영역 -->
+        <div class="flex items-center justify-between px-6 md:px-10 py-5 border-b border-gray-200 shrink-0 bg-white">
+            <h3 id="policyModalTitle" class="text-xl md:text-2xl font-black text-gray-900">이용약관 및 개인정보처리방침</h3>
+            <button type="button" onclick="closePolicyModal()" class="text-gray-400 hover:text-gray-700 focus:outline-none transition-colors" aria-label="닫기">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- 컨텐츠 (스크롤) 영역 -->
+        <div class="flex-1 overflow-y-auto bg-gray-50/50 p-6 md:p-10 policy-scroll">
+            <div id="policyContent" class="max-w-4xl mx-auto bg-white p-6 md:p-10 rounded-2xl border border-gray-100 shadow-sm text-sm text-gray-700 leading-relaxed whitespace-pre-wrap font-medium">이용약관 및 개인정보처리방침을 불러오는 중입니다...</div>
+        </div>
+
+        <!-- 하단 고정 버튼 영역 -->
+        <div class="p-4 md:p-6 border-t border-gray-200 bg-white shrink-0 shadow-[0_-4px_15px_rgba(0,0,0,0.03)]">
+            
+            <!-- 1. 로딩 중 버튼 (초기 상태) -->
+            <div id="loadingButtons" class="max-w-2xl mx-auto flex gap-3 md:gap-4">
+                <button type="button" disabled class="w-full bg-gray-100 text-gray-400 py-3.5 md:py-4 rounded-xl font-black text-lg cursor-not-allowed transition-colors">불러오는 중...</button>
             </div>
-            <button onclick="closeModal()" class="mt-8 w-full bg-blue-600 text-white py-4 rounded-xl font-bold hover:bg-blue-700 shadow-lg shadow-blue-100">확인</button>
+            
+            <!-- 2. 정상 로드 후 액션 버튼 (동의/비동의) -->
+            <div id="actionButtons" class="max-w-2xl mx-auto hidden gap-3 md:gap-4">
+                <button type="button" onclick="disagreePolicy()" class="flex-1 bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 py-3.5 md:py-4 rounded-xl font-black text-lg transition-colors">비동의</button>
+                <button type="button" onclick="agreePolicy()" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3.5 md:py-4 rounded-xl font-black text-lg shadow-lg shadow-blue-100 transition-colors">동의</button>
+            </div>
+            
+            <!-- 3. 로드 실패 시 에러 버튼 (닫기 전용) -->
+            <div id="errorButtons" class="max-w-2xl mx-auto hidden gap-3 md:gap-4">
+                <button type="button" onclick="closePolicyModal()" class="w-full bg-gray-200 hover:bg-gray-300 text-gray-700 py-3.5 md:py-4 rounded-xl font-black text-lg transition-colors">닫기</button>
+            </div>
+
         </div>
     </div>
 
-    <script>
-        // 개인정보처리방침을 외부 policy.txt에서 불러오는 기능
-        let policyLoaded = false;
-
-        async function loadPolicyText() {
-            const content = document.getElementById('policyContent');
-            if (!content || policyLoaded) return;
-
-            try {
-                // policy.txt 호출 (성공 시 하드코딩된 내용 위에 덮어씀)
-                const response = await fetch('./policy.txt', { cache: 'no-cache' });
-                if (!response.ok) throw new Error('policy.txt fetch failed: ' + response.status);
-
-                const text = await response.text();
-                if (!text.trim()) throw new Error('policy.txt is empty');
-
-                content.textContent = text;
-                policyLoaded = true;
-            } catch (error) {
-                console.error('개인정보처리방침 불러오기 실패:', error);
-                // 파일 로딩 실패 시 기존 HTML의 기본 문구를 그대로 유지합니다.
-            }
-        }
-    </script>
     <script>
         const menuBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
@@ -799,7 +796,7 @@
             }
         });
 
-        /* 상담/승인 현황 데이터 */
+        /* 기존 상담/승인 현황 데이터 유지 */
         const consultingData = [
             { name: "메*레븐", owner: "박*빈", region: "부산", phone: "010-****-4576" },
             { name: "무*수산", owner: "조*진", region: "대구", phone: "010-****-2155" },
@@ -1143,7 +1140,7 @@
 
             if (purpose === '운전자금') { add('policy', 22); add('guarantee', 14); reasons.push('운전자금 수요가 명확해 정책자금과 보증 연계를 우선 비교하는 것이 적절합니다.'); checklist.push('운전자금 사용계획 및 최근 매출증빙'); }
             else if (purpose === '시설자금') { add('policy', 24); add('finance', 18); reasons.push('시설자금은 투자규모와 자금조달 구조를 함께 보는 것이 핵심입니다.'); checklist.push('시설 견적서·계약서 및 투자계획'); }
-            else if (purpose === '대환·금융비용') { add('guarantee', 28); add('finance', 22); add('policy', 8); reasons.push('대환·금융비용 절감 목적이므로 기존 부채와 보증 가능성을 우선 확인해야 합니다.'); checklist.push('기존 대출 잔액·금리·만기 현황'); }
+            else if (purpose === '대환·금융비용') { add('guarantee', 28); add('finance', 22); add('policy', 8); reasons.push('대환·금융비용 절감 목적이므로 기존 부채와 보증 가능성을 우선 확인해야 정합니다.'); checklist.push('기존 대출 잔액·금리·만기 현황'); }
             else if (purpose === '사업확장') { add('policy', 18); add('support', 24); add('finance', 14); reasons.push('사업확장은 정책금융과 성장지원사업을 함께 비교하는 것이 효과적입니다.'); checklist.push('확장계획·투자금액·고용계획'); }
             else { add('policy', 8); add('support', 10); add('guarantee', 8); reasons.push('자금 목적이 아직 명확하지 않아 여러 자금 경로를 비교한 뒤 우선순위를 정하는 것이 좋습니다.'); }
 
@@ -1243,23 +1240,7 @@
 
         renderQuestion();
 
-        /* -------------------------------------
-           모달 열기 / 닫기 (index.ver1.html 로직)
-           ------------------------------------- */
-        function openModal() {
-            document.getElementById('policyModal').classList.add('active');
-            document.body.style.overflow = 'hidden';
-            loadPolicyText(); // 외부 policy.txt 파일 내용 불러오기
-        }
-
-        function closeModal() {
-            document.getElementById('policyModal').classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-
-        /* -------------------------------------
-           상담 신청 제출 폼 전송
-           ------------------------------------- */
+        /* 기존 폼 제출 스크립트 */
         document.getElementById('consulting-form').addEventListener('submit', function(e) {
             e.preventDefault();
             if (!document.getElementById('agree').checked) {
@@ -1287,6 +1268,104 @@
                     submitBtn.innerText = "무료 상담 신청하기";
                 });
         });
+
+        /* =========================
+           전체화면 개인정보 처리방침 (파일 로드 방식)
+           ========================= */
+        let policyLoaded = false;
+
+        async function loadPolicyText() {
+            const content = document.getElementById('policyContent');
+            const loadBtn = document.getElementById('loadingButtons');
+            const actionBtn = document.getElementById('actionButtons');
+            const errorBtn = document.getElementById('errorButtons');
+
+            if (policyLoaded) {
+                // 이미 로드된 상태면 바로 액션 버튼 노출
+                loadBtn.classList.add('hidden');
+                errorBtn.classList.remove('flex');
+                errorBtn.classList.add('hidden');
+                actionBtn.classList.remove('hidden');
+                actionBtn.classList.add('flex');
+                return;
+            }
+
+            // 초기 상태: 로딩 중 (모든 액션 버튼 숨김)
+            content.textContent = '이용약관 및 개인정보처리방침을 불러오는 중입니다...';
+            loadBtn.classList.remove('hidden');
+            actionBtn.classList.remove('flex');
+            actionBtn.classList.add('hidden');
+            errorBtn.classList.remove('flex');
+            errorBtn.classList.add('hidden');
+
+            try {
+                // 브라우저 캐시 방지를 위해 시간 파라미터 추가
+                const response = await fetch('./policy.txt?t=' + new Date().getTime());
+                if (!response.ok) throw new Error('policy.txt fetch failed: ' + response.status);
+
+                const text = await response.text();
+                if (!text.trim()) throw new Error('policy.txt is empty');
+
+                content.textContent = text;
+                policyLoaded = true;
+
+                // 불러오기 성공: 동의/비동의 버튼 표시
+                loadBtn.classList.add('hidden');
+                actionBtn.classList.remove('hidden');
+                actionBtn.classList.add('flex');
+            } catch (error) {
+                console.error('개인정보처리방침 불러오기 실패:', error);
+                content.textContent = '약관을 불러오는데 실패했습니다. 잠시 후 다시 시도해 주세요.';
+                
+                // 불러오기 실패: 닫기 전용 버튼 표시 (동의 불가)
+                loadBtn.classList.add('hidden');
+                errorBtn.classList.remove('hidden');
+                errorBtn.classList.add('flex');
+            }
+        }
+
+        function openPolicyModal() {
+            const modal = document.getElementById('policyModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            
+            // 파일 로드 실행
+            loadPolicyText();
+
+            // 페이드 인 애니메이션
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+            }, 10);
+            
+            document.body.style.overflow = 'hidden'; // 배경 스크롤 방지 (기존 페이지 숨김 효과)
+        }
+
+        function closePolicyModal() {
+            const modal = document.getElementById('policyModal');
+            
+            // 페이드 아웃 애니메이션
+            modal.classList.add('opacity-0');
+            
+            setTimeout(() => {
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
+                document.body.style.overflow = ''; // 배경 스크롤 원복
+            }, 300); // transition 시간(300ms) 대기
+        }
+
+        // 동의 버튼 클릭 시
+        function agreePolicy() {
+            document.getElementById('agree').checked = true; // 자동 체크
+            closePolicyModal();
+        }
+
+        // 비동의 버튼 클릭 시
+        function disagreePolicy() {
+            alert("비동의 선택 시 상담이 거부될 수 있습니다."); // 알림창 출력
+            document.getElementById('agree').checked = false; // 체크 해제 유지
+            closePolicyModal();
+        }
     </script>
+
 </body>
 </html>
