@@ -618,7 +618,7 @@
             <div class="relative flex flex-col items-end gap-2 md:gap-3 bg-gradient-to-b from-[#00143c]/80 to-[#003399]/80 backdrop-blur-md p-2.5 rounded-[30px] border border-white/10 w-full h-full">
                 
                 <!-- 1. 카카오톡 문의 -->
-                <a href="https://open.kakao.com/o/sKh1Q3Li" target="_blank" 
+                <a href="https://open.kakao.com/o/여기에_오픈채팅_주소_입력" target="_blank" 
                    class="relative flex items-center w-12 h-12 md:w-14 md:h-14 group-hover:w-[120px] md:group-hover:w-[140px] bg-[#FEE500] rounded-full shadow-sm transition-all duration-300 overflow-hidden" 
                    title="카카오톡 문의">
                     <span class="absolute right-12 md:right-14 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-extrabold text-[#371D1E] text-sm md:text-base">카카오톡</span>
@@ -696,21 +696,45 @@
         </div>
     </div>
 
-    <div id="policyModal" class="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center p-4" onclick="closeModal()">
-        <div class="bg-white text-black w-full max-w-lg rounded-3xl shadow-2xl p-8 md:p-10 relative" onclick="event.stopPropagation()">
-            <h3 class="text-2xl font-black mb-6 border-b pb-4">개인정보 처리방침</h3>
-            <div class="text-sm text-gray-600 leading-relaxed overflow-y-auto max-h-[350px] pr-4">
-                <p class="font-bold mb-3 text-blue-600">[수집 및 이용 안내]</p>
-                <p class="mb-4 font-medium">BIVELON은 최적의 비즈니스 솔루션 제공을 위해 아래 정보를 수집합니다.</p>
-                <ul class="space-y-2 list-disc pl-5">
-                    <li>수집항목: 기업명, 대표자명, 연락처, 지역, 업종, 매출규모 등</li>
-                    <li>목적: 맞춤형 성장 전략 컨설팅 및 자금 조달 가이드 제공</li>
-                    <li>보유: 원칙적으로 상담 목적 달성 후 즉시 파기</li>
-                </ul>
+    <!-- 개인정보처리방침: 기존 txt 파일 내용을 기준으로 표시 -->
+    <div id="policyModal" class="fixed inset-0 z-[100] bg-black/60 hidden items-center justify-center p-4" onclick="closeModal()" aria-hidden="true">
+        <div class="bg-white text-black w-full max-w-3xl max-h-[88vh] rounded-3xl shadow-2xl p-6 md:p-8 relative flex flex-col" onclick="event.stopPropagation()" role="dialog" aria-modal="true" aria-labelledby="policyModalTitle">
+            <div class="flex items-center justify-between gap-4 border-b pb-5 shrink-0">
+                <h3 id="policyModalTitle" class="text-2xl font-black">개인정보 처리방침</h3>
+                <button type="button" onclick="closeModal()" class="w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 font-black text-xl" aria-label="개인정보 처리방침 닫기">×</button>
             </div>
-            <button onclick="closeModal()" class="mt-8 w-full bg-blue-600 text-white py-4 rounded-xl font-bold hover:bg-blue-700 shadow-lg shadow-blue-100">확인</button>
+            <div id="policyContent" class="mt-5 text-sm text-gray-700 leading-7 overflow-y-auto pr-2 whitespace-pre-wrap break-words" tabindex="0"></div>
+            <div class="pt-5 mt-5 border-t shrink-0">
+                <button type="button" onclick="closeModal()" class="w-full bg-blue-600 text-white py-4 rounded-xl font-bold hover:bg-blue-700 shadow-lg shadow-blue-100">확인</button>
+            </div>
         </div>
     </div>
+
+    <script>
+        // 개인정보처리방침은 HTML 소스에 저장하지 않고 호스팅된 policy.txt를 불러옵니다.
+        let policyLoaded = false;
+
+        async function loadPolicyText() {
+            const content = document.getElementById('policyContent');
+            if (!content || policyLoaded) return;
+
+            content.textContent = '개인정보처리방침을 불러오는 중입니다...';
+
+            try {
+                const response = await fetch('./policy.txt', { cache: 'no-cache' });
+                if (!response.ok) throw new Error('policy.txt fetch failed: ' + response.status);
+
+                const text = await response.text();
+                if (!text.trim()) throw new Error('policy.txt is empty');
+
+                content.textContent = text;
+                policyLoaded = true;
+            } catch (error) {
+                console.error('개인정보처리방침 불러오기 실패:', error);
+                content.textContent = '개인정보처리방침을 불러오지 못했습니다.\n\n호스팅 서버에 policy.txt 파일이 정상적으로 업로드되어 있는지 확인해 주세요.';
+            }
+        }
+    </script>
     <script>
         const menuBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
@@ -1257,12 +1281,19 @@
         });
 
         function openModal() {
-            document.getElementById('policyModal').classList.add('active');
+            const modal = document.getElementById('policyModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            modal.setAttribute('aria-hidden', 'false');
             document.body.style.overflow = 'hidden';
+            loadPolicyText();
         }
         function closeModal() {
-            document.getElementById('policyModal').classList.remove('active');
-            document.body.style.overflow = 'auto';
+            const modal = document.getElementById('policyModal');
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+            modal.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
         }
     </script>
 
