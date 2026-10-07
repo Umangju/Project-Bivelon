@@ -160,6 +160,59 @@
         .policy-scroll::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
         .policy-scroll::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
         .policy-scroll::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
+
+        /* =========================================
+           퀵메뉴 관련 스타일
+           ========================================= */
+        /* 퀵메뉴 기본 상태: 닫힘 */
+        #quickMenuContainer .quick-btn {
+            width: 40px;
+            touch-action: manipulation;
+        }
+
+        #quickMenuContainer .quick-btn > span {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* 태블릿 및 PC 기본 아이콘 크기 */
+        @media (min-width: 768px) {
+            #quickMenuContainer .quick-btn {
+                width: 56px;
+            }
+        }
+
+        /* 실제 탭으로 열린 상태 */
+        #quickMenuContainer.force-open .quick-btn {
+            width: 100px;
+        }
+
+        #quickMenuContainer.force-open .quick-btn > span {
+            opacity: 1;
+        }
+
+        @media (min-width: 768px) {
+            #quickMenuContainer.force-open .quick-btn {
+                width: 140px;
+            }
+        }
+
+        /* 마우스 hover는 큰 화면 + 정밀 포인터 환경에서만 허용 */
+        @media (min-width: 1025px) and (hover: hover) and (pointer: fine) {
+            #quickMenuContainer:hover .quick-btn {
+                width: 140px;
+            }
+        
+            #quickMenuContainer:hover .quick-btn > span {
+                opacity: 1;
+            }
+        }
+
+        /* 스크롤 중에는 내부 패널만 투명하게 변경 */
+        #quickMenuContainer.is-scrolling > div > div:last-child {
+            background: rgba(255, 255, 255, 0.25) !important;
+            backdrop-filter: blur(8px);
+        }
     </style>
 </head>
 <body class="bg-white text-gray-900">
@@ -582,8 +635,10 @@
                     </div>
 
                     <div class="flex items-center gap-3 py-2 border-t pt-6">
-                        <input type="checkbox" id="agree" class="accent-blue-600" required>
-                        <label for="agree" class="text-sm text-gray-600 cursor-pointer">개인정보 수집 및 이용 동의</label>
+                        <!-- 체크박스 클릭 시 기본 동작(체크) 막고 모달 열기 -->
+                        <input type="checkbox" id="agree" class="accent-blue-600 cursor-pointer" onclick="event.preventDefault(); openPolicyModal();" required>
+                        <!-- 라벨 클릭 시 모달 열기 -->
+                        <label class="text-sm text-gray-600 cursor-pointer" onclick="openPolicyModal();">개인정보 수집 및 이용 동의</label>
                         <button type="button" onclick="openPolicyModal()" class="text-blue-600 text-xs underline font-bold">자세히 보기</button>
                     </div>
 
@@ -606,49 +661,46 @@
             </div>
         </div>
     
-<div class="fixed right-4 top-1/2 -translate-y-1/2 z-[90] md:right-6 group">
-        
-        <!-- LED 테두리 효과를 위한 외부 컨테이너 -->
-        <div class="relative p-[2px] rounded-[32px] overflow-hidden shadow-[0_0_20px_rgba(0,102,255,0.4)] transition-all duration-300">
-            <!-- 회전하는 LED 빛 -->
+    <!-- ▼ 퀵메뉴 시작 (기존.html 소스 기반) ▼ -->
+    <div id="quickMenuContainer" class="fixed right-2 top-[25%] -translate-y-1/2 z-[90] md:right-6 group">
+        <div class="relative p-[1.5px] md:p-[2px] rounded-[26px] md:rounded-[32px] overflow-hidden shadow-[0_0_20px_rgba(0,102,255,0.4)] transition-all duration-300">
             <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] -z-10" 
                  style="background: conic-gradient(transparent, rgba(34, 211, 238, 0.5), rgba(0, 102, 255, 0.9), transparent 40%); animation: rotate-gradient 4s linear infinite;">
             </div>
 
-            <!-- 내부 UI 박스 -->
-            <div class="relative flex flex-col items-end gap-2 md:gap-3 bg-gradient-to-b from-[#00143c]/80 to-[#003399]/80 backdrop-blur-md p-2.5 rounded-[30px] border border-white/10 w-full h-full">
+            <div class="relative flex flex-col items-end gap-1.5 md:gap-3 bg-gradient-to-b from-[#00143c]/80 to-[#003399]/80 backdrop-blur-md p-1.5 md:p-2.5 rounded-[24px] md:rounded-[30px] border border-white/10 w-full h-full">
                 
                 <!-- 1. 카카오톡 문의 -->
-                <a href="https://open.kakao.com/o/sKh1Q3Li" target="_blank" 
-                   class="relative flex items-center w-12 h-12 md:w-14 md:h-14 group-hover:w-[120px] md:group-hover:w-[140px] bg-[#FEE500] rounded-full shadow-sm transition-all duration-300 overflow-hidden" 
+                <a href="https://open.kakao.com/o/sKh1Q3Li" target="_blank"
+                   class="quick-btn relative flex items-center w-10 h-10 md:w-14 md:h-14 bg-[#FEE500] rounded-full shadow-sm transition-all duration-300 overflow-hidden" 
                    title="카카오톡 문의">
-                    <span class="absolute right-12 md:right-14 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-extrabold text-[#371D1E] text-sm md:text-base">카카오톡</span>
-                    <div class="absolute right-0 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center shrink-0">
-                        <svg viewBox="0 0 24 24" class="w-6 h-6 md:w-7 md:h-7" fill="#371D1E">
+                    <span class="absolute right-10 md:right-14 whitespace-nowrap opacity-0 transition-opacity duration-300 font-extrabold text-[#371D1E] text-[11px] md:text-base">카카오톡</span>
+                    <div class="absolute right-0 w-10 h-10 md:w-14 md:h-14 flex items-center justify-center shrink-0">
+                        <svg viewBox="0 0 24 24" class="w-5 h-5 md:w-7 md:h-7" fill="#371D1E">
                             <path d="M12 3c-5.52 0-10 3.53-10 7.89 0 2.8 1.83 5.26 4.67 6.64-.16.6-.58 2.15-.67 2.45-.1.35.13.34.34.2.16-.1 2.2-1.42 3.09-2.02.83.1 1.69.15 2.57.15 5.52 0 10-3.53 10-7.89S17.52 3 12 3z"/>
                         </svg>
                     </div>
                 </a>
 
                 <!-- 2. 전화 상담 -->
-                <a href="tel:050-7878-6361" 
-                   class="relative flex items-center w-12 h-12 md:w-14 md:h-14 group-hover:w-[120px] md:group-hover:w-[140px] bg-[#0066FF] rounded-full shadow-sm transition-all duration-300 overflow-hidden" 
+                <a href="tel:050-7878-6361"
+                   class="quick-btn relative flex items-center w-10 h-10 md:w-14 md:h-14 bg-[#0066FF] rounded-full shadow-sm transition-all duration-300 overflow-hidden" 
                    title="전화 상담">
-                    <span class="absolute right-12 md:right-14 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-bold text-white text-sm md:text-base">전화상담</span>
-                    <div class="absolute right-0 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center shrink-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 md:w-7 md:h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <span class="absolute right-10 md:right-14 whitespace-nowrap opacity-0 transition-opacity duration-300 font-bold text-white text-[11px] md:text-base">전화상담</span>
+                    <div class="absolute right-0 w-10 h-10 md:w-14 md:h-14 flex items-center justify-center shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 md:w-7 md:h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                         </svg>
                     </div>
                 </a>
 
                 <!-- 3. 상담 문의 -->
-                <a href="#contact-section" 
-                   class="relative flex items-center w-12 h-12 md:w-14 md:h-14 group-hover:w-[120px] md:group-hover:w-[140px] bg-gray-800 rounded-full shadow-sm transition-all duration-300 overflow-hidden" 
+                <a href="#contact-section"
+                   class="quick-btn relative flex items-center w-10 h-10 md:w-14 md:h-14 bg-gray-800 rounded-full shadow-sm transition-all duration-300 overflow-hidden" 
                    title="상담 신청하기">
-                    <span class="absolute right-12 md:right-14 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-bold text-white text-sm md:text-base">상담문의</span>
-                    <div class="absolute right-0 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center shrink-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 md:w-7 md:h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <span class="absolute right-10 md:right-14 whitespace-nowrap opacity-0 transition-opacity duration-300 font-bold text-white text-[11px] md:text-base">상담문의</span>
+                    <div class="absolute right-0 w-10 h-10 md:w-14 md:h-14 flex items-center justify-center shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 md:w-7 md:h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                         </svg>
                     </div>
@@ -659,21 +711,24 @@
     </div>
 </section>
 
-<footer class="border-t-[3px] border-[#0b3765] bg-white">
-    <div class="max-w-6xl mx-auto px-5 lg:px-8 py-12 md:py-14">
-        <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-8">
-            <div>
-                <div class="text-[#2563eb] font-black text-xl tracking-tight">BIVELON</div>
-                <div class="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2 text-[11px] md:text-xs text-gray-500">
-                    <a href="tel:050-7878-6361" class="hover:text-blue-600 transition-colors" title="050-7878-6361 전화 걸기">대표번호: 050-7878-6361</a>
-                    <span class="text-gray-300">|</span>
-                    <span>사업자등록번호: 758-01-03762</span>
-                    <span class="text-gray-300">|</span>
-                    <span>이메일: pfc9222@naver.com</span>
-                </div>
+<footer class="bg-gray-50 py-12 md:py-16 px-6 border-t text-gray-500">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8 md:gap-10">
+        <div class="text-center md:text-left">
+            <div class="text-2xl font-black mb-4 tracking-tighter text-blue-600">BIVELON</div>
+            
+            <div class="text-sm leading-relaxed flex flex-col md:flex-row items-center md:items-start gap-1 md:gap-3">
+                <span class="whitespace-nowrap">
+                    <a href="tel:050-7878-6361" class="hover:text-blue-600">대표번호: 050-7878-6361</a>
+                </span>
+                <span class="hidden md:inline text-gray-300">|</span>
+                
+                <span class="whitespace-nowrap">사업자등록번호: 758-01-03762</span>
+                <span class="hidden md:inline text-gray-300">|</span>
+                
+                <span class="whitespace-nowrap">이메일: pfc9222@naver.com</span>
             </div>
-            <div class="text-[10px] md:text-xs text-gray-400 italic md:pt-2">© 2026 BIVELON. All Rights Reserved.</div>
         </div>
+        <div class="text-xs italic opacity-60">© 2026 BIVELON. All Rights Reserved.</div>
     </div>
 </footer>
 
@@ -1365,6 +1420,215 @@
             document.getElementById('agree').checked = false; // 체크 해제 유지
             closePolicyModal();
         }
+
+        /* =========================
+           모바일 퀵메뉴 터치 제어 스크립트 (기존.html)
+           ========================= */
+        (() => {
+            const container = document.getElementById('quickMenuContainer');
+            if (!container) return;
+        
+            const desktopHover = window.matchMedia(
+                '(min-width: 1025px) and (hover: hover) and (pointer: fine)'
+            );
+        
+            const MOVE_LIMIT = 10;       // 이 거리 이상 움직이면 탭이 아닌 드래그
+            const TAP_LIMIT = 600;       // 길게 누르기는 메뉴 열기에서 제외
+            const SCROLL_GUARD = 250;    // 스크롤 직후 오작동 방지 시간(ms)
+        
+            let pointerState = null;
+            let validTap = null;
+            let lastScrollAt = -Infinity;
+            let scrollTimer;
+        
+            function usesTapMenu() {
+                return !desktopHover.matches;
+            }
+        
+            function closeQuickMenu() {
+                container.classList.remove('force-open');
+            
+                const focused = document.activeElement;
+                if (focused instanceof HTMLElement && container.contains(focused)) {
+                    focused.blur();
+                }
+            }
+        
+            function clearGesture() {
+                pointerState = null;
+                validTap = null;
+            }
+        
+            function resetQuickMenu() {
+                closeQuickMenu();
+                clearGesture();
+            }
+        
+            function getQuickButton(target) {
+                return target instanceof Element
+                    ? target.closest('.quick-btn')
+                    : null;
+            }
+        
+            // 누르기 시작한 위치와 시간을 기록합니다.
+            container.addEventListener('pointerdown', (event) => {
+                if (!usesTapMenu()) return;
+            
+                clearGesture();
+            
+                if (!event.isPrimary || event.button !== 0) return;
+                if (performance.now() - lastScrollAt < SCROLL_GUARD) return;
+            
+                const button = getQuickButton(event.target);
+                if (!button) return;
+            
+                pointerState = {
+                    id: event.pointerId,
+                    button,
+                    x: event.clientX,
+                    y: event.clientY,
+                    time: performance.now(),
+                    moved: false
+                };
+            });
+        
+            // 메뉴 밖으로 손가락이 이동한 경우도 감지합니다.
+            document.addEventListener('pointermove', (event) => {
+                if (!pointerState || event.pointerId !== pointerState.id) return;
+            
+                const distance = Math.hypot(
+                    event.clientX - pointerState.x,
+                    event.clientY - pointerState.y
+                );
+            
+                if (distance > MOVE_LIMIT) {
+                    pointerState.moved = true;
+                }
+            }, { passive: true });
+        
+            // 같은 버튼에서 시작하고 끝난 짧은 탭만 인정합니다.
+            document.addEventListener('pointerup', (event) => {
+                if (!pointerState || event.pointerId !== pointerState.id) return;
+            
+                const state = pointerState;
+                const now = performance.now();
+            
+                const distance = Math.hypot(
+                    event.clientX - state.x,
+                    event.clientY - state.y
+                );
+            
+                const releasedElement = document.elementFromPoint(
+                    event.clientX,
+                    event.clientY
+                );
+            
+                const releasedButton = getQuickButton(releasedElement);
+            
+                if (
+                    !state.moved &&
+                    distance <= MOVE_LIMIT &&
+                    now - state.time <= TAP_LIMIT &&
+                    now - lastScrollAt >= SCROLL_GUARD &&
+                    releasedButton === state.button
+                ) {
+                    validTap = {
+                        button: state.button,
+                        time: now
+                    };
+                } else {
+                    validTap = null;
+                }
+            
+                pointerState = null;
+            }, { passive: true });
+        
+            document.addEventListener('pointercancel', clearGesture);
+        
+            container.addEventListener('click', (event) => {
+                const button = getQuickButton(event.target);
+                if (!button) return;
+            
+                // PC는 기존처럼 바로가기 실행
+                if (!usesTapMenu()) return;
+            
+                // 키보드 및 보조기술로 실행한 링크는 정상 동작
+                if (event.detail === 0) {
+                    resetQuickMenu();
+                    return;
+                }
+            
+                const now = performance.now();
+            
+                const isIntentionalTap =
+                    validTap &&
+                    validTap.button === button &&
+                    now - validTap.time < 700 &&
+                    now - lastScrollAt >= SCROLL_GUARD;
+            
+                validTap = null;
+            
+                // 스크롤 끝이나 드래그 후 발생한 click은 무시
+                if (!isIntentionalTap) {
+                    event.preventDefault();
+                    return;
+                }
+            
+                if (!container.classList.contains('force-open')) {
+                    // 첫 번째 탭: 펼치기만 함
+                    event.preventDefault();
+                    container.classList.add('force-open');
+                    return;
+                }
+            
+                // 두 번째 탭: 닫은 뒤 링크의 기본 동작 허용
+                // 카카오톡, tel:, 페이지 내 앵커 모두 그대로 동작합니다.
+                resetQuickMenu();
+            });
+        
+            // 외부를 누르면 닫기
+            document.addEventListener('pointerdown', (event) => {
+                if (!container.contains(event.target)) {
+                    resetQuickMenu();
+                }
+            }, { passive: true });
+        
+            // 스크롤 중에는 닫고, 탭 판정도 취소
+            window.addEventListener('scroll', () => {
+                if (!usesTapMenu()) return;
+            
+                lastScrollAt = performance.now();
+                resetQuickMenu();
+            
+                container.classList.add('is-scrolling');
+            
+                clearTimeout(scrollTimer);
+                scrollTimer = setTimeout(() => {
+                    container.classList.remove('is-scrolling');
+                }, 150);
+            }, { passive: true });
+        
+            // 다른 앱이나 페이지로 이동했다 돌아와도 닫힌 상태 유지
+            function resetAll() {
+                clearTimeout(scrollTimer);
+                container.classList.remove('is-scrolling');
+                resetQuickMenu();
+            }
+        
+            window.addEventListener('pagehide', resetAll);
+            window.addEventListener('pageshow', resetAll);
+            window.addEventListener('blur', resetAll);
+        
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) resetAll();
+            });
+        
+            desktopHover.addEventListener('change', resetAll);
+        
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape') resetAll();
+            });
+        })();
     </script>
 
 </body>
