@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BIVELON | 상담 관리 시스템 (로컬 전용)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+        body { font-family: 'Pretendard', sans-serif; background-color: #f1f5f9; }
+        .custom-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <!-- 로그인 모달 -->
+    <div id="loginScreen" class="fixed inset-0 z-50 bg-[#07152f] flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl">
+            <div class="text-center mb-6">
+                <span class="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-xs font-black">LOCAL ADMIN</span>
+                <h1 class="text-2xl font-black mt-2 text-slate-900">BIVELON 관리자 접속</h1>
+                <p class="text-sm text-slate-500 mt-1">앱스 스크립트에 설정한 관리자 비밀번호를 입력하세요.</p>
+            </div>
+            <form onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="text-xs font-bold text-slate-500">관리자 비밀번호 (기본값: 1234)</label>
+                    <input type="password" id="adminKeyInput" class="w-full mt-1 p-3.5 rounded-xl border border-slate-200 focus:border-blue-600 outline-none font-bold" placeholder="비밀번호 입력" required>
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-slate-500">Google Apps Script URL</label>
+                    <div id="scriptUrlDisplay" class="w-full mt-1 p-3 rounded-xl border border-slate-200 bg-slate-50 text-xs text-slate-500 outline-none select-none cursor-default" style="-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;overflow-wrap:anywhere;word-break:break-all;overflow:hidden" aria-label="고정된 Google Apps Script URL" draggable="false">https://script.google.com/macros/s/AKfycbyCPZLPUTW8wGQAqs92EI4QbKj8oCSGUsMyKaFUMsYHWkLgoA74v977FICv3ET0DO-Vag/exec</div>
+                </div>
+                <label class="flex items-center gap-2 text-sm font-bold text-slate-600">
+                    <input type="checkbox" id="rememberLogin" class="h-4 w-4 accent-blue-600">
+                    로그인 유지 (이 기기에서 로그인 유지)
+                </label>
+                <button type="submit" id="loginBtn" class="w-full py-4 bg-[#0066FF] hover:bg-blue-700 text-white font-black rounded-xl transition">
+                    데이터 불러오기
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 메인 대시보드 -->
+    <div id="dashboard" class="hidden min-h-screen flex flex-col">
+        <!-- 상단 헤더 -->
+        <header class="bg-[#07152f] text-white px-6 py-4 shadow-md sticky top-0 z-30">
+            <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-4">
+                <div class="flex items-center gap-3">
+                    <span class="text-xl font-black tracking-tight text-white">BIVELON</span>
+                    <span class="text-xs bg-blue-600 px-2.5 py-1 rounded-full font-bold">상담 관리 센터</span>
+                </div>
+                <div class="flex items-center gap-4 text-sm">
+                    <label class="flex items-center gap-2 cursor-pointer bg-white/10 px-3 py-1.5 rounded-lg">
+                        <input type="checkbox" id="autoRefreshToggle" checked onchange="toggleAutoRefresh()" class="accent-blue-500">
+                        <span class="text-xs font-bold">30초 자동 새로고침</span>
+                    </label>
+                    <span id="lastUpdated" class="text-xs text-slate-400 hidden sm:inline">최근 동기화: -</span>
+                    <button onclick="fetchData(false)" id="refreshBtn" class="bg-[#0066FF] hover:bg-blue-500 px-4 py-2 rounded-lg font-bold text-xs transition flex items-center gap-1.5">
+                        🔄 즉시 새로고침
+                    </button>
+                    <button onclick="logout()" class="text-xs text-slate-400 hover:text-white">로그아웃</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- 본문 컨텐츠 -->
+        <main class="max-w-7xl w-full mx-auto p-6 flex-1 space-y-6">
+            <!-- 요약 카드 -->
+            <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4">
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                    <p class="text-xs font-bold text-slate-400">전체 상담 건수</p>
+                    <p id="statTotal" class="text-3xl font-black mt-1 text-slate-900">0</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-blue-200 shadow-sm">
+                    <p class="text-xs font-bold text-blue-600">오늘 신규 접수</p>
+                    <p id="statToday" class="text-3xl font-black mt-1 text-blue-600">0</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-amber-200 shadow-sm">
+                    <p class="text-xs font-bold text-amber-600">상담대기</p>
+                    <p id="statWaiting" class="text-3xl font-black mt-1 text-amber-500">0</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-indigo-200 shadow-sm">
+                    <p class="text-xs font-bold text-indigo-600">진행중 / 통화완료</p>
+                    <p id="statProgress" class="text-3xl font-black mt-1 text-indigo-600">0</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-emerald-200 shadow-sm">
+                    <p class="text-xs font-bold text-emerald-600">계약/승인완료</p>
+                    <p id="statDone" class="text-3xl font-black mt-1 text-emerald-600">0</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-red-200 shadow-sm">
+                    <p class="text-xs font-bold text-red-600">보류/취소</p>
+                    <p id="statHold" class="text-3xl font-black mt-1 text-red-600">0</p>
+                </div>
+            </div>
+
+            <!-- 검색 및 필터 바 -->
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row gap-3 justify-between items-center">
+                <div class="flex flex-wrap gap-2 w-full md:w-auto">
+                    <select id="filterStatus" onchange="renderTable()" class="p-2.5 rounded-xl border border-slate-200 text-sm font-bold outline-none">
+                        <option value="ALL">전체 처리상태</option>
+                        <option value="상담대기">🟡 상담대기</option>
+                        <option value="통화완료">🔵 통화완료</option>
+                        <option value="진행중">⚪ 진행중</option>
+                        <option value="승인완료">🟢 승인완료</option>
+                        <option value="보류/취소">🔴 보류/취소</option>
+                    </select>
+                    <select id="filterUrgency" onchange="renderTable()" class="p-2.5 rounded-xl border border-slate-200 text-sm font-bold outline-none">
+                        <option value="ALL">신청자 상황 전체</option>
+                        <option value="자금만 있다면 바로 진행">🔥 바로 진행 희망</option>
+                        <option value="단순 상담 희망">💬 단순 상담 희망</option>
+                        <option value="수수료 있으면 불가">⚠️ 수수료 거부</option>
+                    </select>
+                </div>
+                <div class="w-full md:w-80">
+                    <input type="text" id="searchInput" oninput="renderTable()" placeholder="회사명, 대표자, 연락처, 지역 검색..." class="w-full p-2.5 px-4 rounded-xl border border-slate-200 text-sm outline-none focus:border-blue-600">
+                </div>
+            </div>
+
+            <!-- 상담 목록 테이블 -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="overflow-x-auto custom-scroll">
+                    <table class="w-full text-left border-collapse text-sm">
+                        <thead>
+                            <tr class="bg-slate-50 border-b border-slate-200 text-slate-500 text-xs font-extrabold uppercase">
+                                <th class="py-3.5 px-4">처리상태</th>
+                                <th class="py-3.5 px-4">접수일시</th>
+                                <th class="py-3.5 px-4">회사명 / 대표자</th>
+                                <th class="py-3.5 px-4">연락처 / 지역</th>
+                                <th class="py-3.5 px-4">업종 / 연매출 / 필요자금</th>
+                                <th class="py-3.5 px-4">신청자 성향</th>
+                                <th class="py-3.5 px-4">AI 진단</th>
+                                <th class="py-3.5 px-4 text-right">관리</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody" class="divide-y divide-slate-100">
+                            <tr><td colspan="8" class="text-center py-12 text-slate-400">데이터를 불러오는 중입니다...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 상세 보기 및 메모 수정 모달 -->
+    <div id="detailModal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+            <div class="px-6 py-5 bg-[#07152f] text-white flex justify-between items-center">
+                <div>
+                    <span id="modalDate" class="text-xs text-blue-300 font-bold"></span>
+                    <h2 id="modalTitle" class="text-xl font-black mt-0.5"></h2>
+                </div>
+                <button onclick="closeModal()" class="text-white/60 hover:text-white text-2xl font-bold">&times;</button>
+            </div>
+
+            <div class="p-6 overflow-y-auto custom-scroll space-y-6 flex-1">
+                <!-- 기본 신청 정보 -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 bg-slate-50 p-4 rounded-2xl border border-slate-200 text-sm">
+                    <div><p class="text-xs text-slate-400 font-bold">대표자명</p><p id="mOwner" class="font-bold mt-0.5"></p></div>
+                    <div><p class="text-xs text-slate-400 font-bold">연락처</p><p id="mPhone" class="font-bold text-blue-600 mt-0.5"></p></div>
+                    <div><p class="text-xs text-slate-400 font-bold">지역</p><p id="mRegion" class="font-bold mt-0.5"></p></div>
+                    <div><p class="text-xs text-slate-400 font-bold">업종</p><p id="mBiz" class="font-bold mt-0.5"></p></div>
+                    <div><p class="text-xs text-slate-400 font-bold">연매출</p><p id="mSales" class="font-bold mt-0.5"></p></div>
+                    <div><p class="text-xs text-slate-400 font-bold">필요자금</p><p id="mFund" class="font-bold mt-0.5"></p></div>
+                    <div class="col-span-2 sm:col-span-3 pt-2 border-t border-slate-200">
+                        <p class="text-xs text-slate-400 font-bold">신청자 현재 상황</p>
+                        <p id="mStatus" class="font-extrabold text-slate-800 mt-0.5"></p>
+                    </div>
+                </div>
+
+                <!-- 고객 문의내용 -->
+                <div>
+                    <p class="text-xs font-black text-slate-500 mb-2">고객 문의내용</p>
+                    <div id="mMessage" class="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-sm whitespace-pre-wrap min-h-[60px]"></div>
+                </div>
+
+                <!-- AI 사전진단 결과 영역 -->
+                <div id="mDiagBox" class="rounded-2xl bg-blue-50/70 border border-blue-200 p-5 space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-black text-blue-700 bg-blue-100 px-2.5 py-1 rounded-full">AI 기업자금 사전진단 데이터</span>
+                        <span id="mDiagScore" class="text-lg font-black text-blue-700"></span>
+                    </div>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs bg-white p-3 rounded-xl border border-blue-100">
+                        <div><span class="text-slate-400">업력:</span> <b id="mDiagAge"></b></div>
+                        <div><span class="text-slate-400">필요규모:</span> <b id="mDiagAmount"></b></div>
+                        <div><span class="text-slate-400">자금목적:</span> <b id="mDiagPurpose"></b></div>
+                        <div><span class="text-slate-400">1순위 추천:</span> <b id="mDiagMain" class="text-blue-600"></b></div>
+                        <div><span class="text-slate-400">2순위 방향:</span> <b id="mDiagSec"></b></div>
+                        <div><span class="text-slate-400">핵심 준비:</span> <b id="mDiagTip"></b></div>
+                    </div>
+                    <p id="mDiagSummary" class="text-xs text-slate-600 leading-relaxed"></p>
+                </div>
+
+                <!-- 관리자 처리상태 및 메모 입력 -->
+                <div class="border-t pt-5 space-y-4">
+                    <h3 class="text-sm font-black text-slate-800">관리자 처리 기록 (구글 시트 실시간 연동)</h3>
+                    <div class="grid sm:grid-cols-3 gap-4">
+                        <div>
+                            <label class="text-xs font-bold text-slate-500">처리 상태 변경</label>
+                            <select id="editAdminStatus" class="w-full mt-1 p-3 rounded-xl border border-slate-300 font-bold text-sm outline-none focus:border-blue-600">
+                                <option value="상담대기">🟡 상담대기</option>
+                                <option value="통화완료">🔵 통화완료</option>
+                                <option value="진행중">⚪ 진행중</option>
+                                <option value="승인완료">🟢 승인완료</option>
+                                <option value="보류/취소">🔴 보류/취소</option>
+                            </select>
+                            <button type="button" onclick="openContractForCurrentItem()" class="w-full mt-3 px-4 py-3 rounded-xl border border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-100 font-extrabold text-sm transition">
+                                📄 계약서 작성 / 열기
+                            </button>
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="text-xs font-bold text-slate-500">관리자 상담 메모</label>
+                            <textarea id="editAdminMemo" rows="3" class="w-full mt-1 p-3 rounded-xl border border-slate-300 text-sm outline-none focus:border-blue-600" placeholder="통화 내용, 대표님 요청사항, 심사 특이사항 등을 기록하세요."></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="px-6 py-4 bg-slate-50 border-t flex justify-between items-center">
+                <button onclick="deleteCurrentRow()" id="deleteBtn" class="text-xs font-bold text-red-500 hover:text-red-700 px-3 py-2">🗑️ 이 내역 삭제</button>
+                <div class="flex gap-2">
+                    <button onclick="closeModal()" class="px-5 py-2.5 rounded-xl border border-slate-300 font-bold text-sm bg-white">닫기</button>
+                    <button onclick="saveAdminUpdate()" id="saveBtn" class="px-6 py-2.5 rounded-xl bg-[#0066FF] hover:bg-blue-700 text-white font-black text-sm shadow">저장하기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let allData = [];
+        let currentItem = null;
+        let autoRefreshTimer = null;
+        let ADMIN_KEY = '';
+        const FIXED_SCRIPT_URL = document.getElementById('scriptUrlDisplay').textContent.trim();
+        let SCRIPT_URL = FIXED_SCRIPT_URL;
+
+        const scriptUrlDisplay = document.getElementById('scriptUrlDisplay');
+        ['copy', 'cut', 'contextmenu', 'dragstart', 'selectstart'].forEach(eventName => {
+            scriptUrlDisplay.addEventListener(eventName, event => event.preventDefault());
+        });
+        scriptUrlDisplay.addEventListener('pointerdown', event => event.preventDefault());
+
+        function readSavedAdminLogin() {
+            try {
+                const remembered = localStorage.getItem('bivelon_remember_login');
+                const savedKey = localStorage.getItem('bivelon_admin_key');
+                if (savedKey && (remembered === 'true' || remembered === null)) {
+                    // 이전 버전에서 저장한 로그인은 기존 설정을 유지합니다.
+                    if (remembered === null && savedKey) localStorage.setItem('bivelon_remember_login', 'true');
+                    return {
+                        key: savedKey || '',
+                        url: FIXED_SCRIPT_URL,
+                        remember: true
+                    };
+                }
+            } catch (err) {}
+
+            try {
+                const key = sessionStorage.getItem('bivelon_session_admin_key');
+                if (key) {
+                    return {
+                        key,
+                        url: FIXED_SCRIPT_URL,
+                        remember: false
+                    };
+                }
+            } catch (err) {}
+            return null;
+        }
+
+        function storeAdminLogin() {
+            const remember = document.getElementById('rememberLogin').checked;
+            try {
+                sessionStorage.setItem('bivelon_session_admin_key', ADMIN_KEY);
+                sessionStorage.setItem('bivelon_session_script_url', SCRIPT_URL);
+            } catch (err) {}
+
+            try {
+                if (remember) {
+                    localStorage.setItem('bivelon_admin_key', ADMIN_KEY);
+                    localStorage.setItem('bivelon_script_url', SCRIPT_URL);
+                    localStorage.setItem('bivelon_remember_login', 'true');
+                } else {
+                    localStorage.removeItem('bivelon_admin_key');
+                    localStorage.removeItem('bivelon_script_url');
+                    localStorage.removeItem('bivelon_remember_login');
+                }
+            } catch (err) {}
+        }
+
+        function clearSavedAdminLogin() {
+            try {
+                sessionStorage.removeItem('bivelon_session_admin_key');
+                sessionStorage.removeItem('bivelon_session_script_url');
+            } catch (err) {}
+            try {
+                localStorage.removeItem('bivelon_admin_key');
+                localStorage.removeItem('bivelon_script_url');
+                localStorage.removeItem('bivelon_remember_login');
+            } catch (err) {}
+        }
+
+        // 페이지 로드 시 자동 로그인 체크
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedLogin = readSavedAdminLogin();
+            if (!savedLogin || !savedLogin.key) return;
+            ADMIN_KEY = savedLogin.key;
+            SCRIPT_URL = FIXED_SCRIPT_URL;
+            document.getElementById('adminKeyInput').value = ADMIN_KEY;
+            document.getElementById('rememberLogin').checked = savedLogin.remember;
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
+            document.getElementById('lastUpdated').textContent = '최근 동기화: 다시 불러오는 중...';
+            fetchData(false, true);
+        });
+
+        function handleLogin(e) {
+            e.preventDefault();
+            ADMIN_KEY = document.getElementById('adminKeyInput').value.trim();
+            SCRIPT_URL = FIXED_SCRIPT_URL;
+            fetchData(true);
+        }
+
+        function logout() {
+            clearSavedAdminLogin();
+            location.reload();
+        }
+
+        // 로컬 파일(file://) 환경에서도 차단되지 않는 JSONP 방식 데이터 호출
+        function fetchData(isInitialLogin = false, isSessionRestore = false) {
+            const loginBtn = document.getElementById('loginBtn');
+            const refreshBtn = document.getElementById('refreshBtn');
+            if (isInitialLogin) { loginBtn.textContent = "접속 중..."; loginBtn.disabled = true; }
+            if (refreshBtn) refreshBtn.textContent = "⏳ 불러오는 중...";
+
+            const callbackName = 'bivelonCallback_' + Date.now();
+            const script = document.createElement('script');
+
+            window[callbackName] = function(json) {
+                delete window[callbackName];
+                if (script.parentNode) document.body.removeChild(script);
+
+                if (isInitialLogin) { loginBtn.textContent = "데이터 불러오기"; loginBtn.disabled = false; }
+                if (refreshBtn) refreshBtn.textContent = "🔄 즉시 새로고침";
+
+                if (json.result !== 'success') {
+                    if (isSessionRestore) {
+                        clearSavedAdminLogin();
+                        document.getElementById('rememberLogin').checked = false;
+                        document.getElementById('dashboard').classList.add('hidden');
+                        document.getElementById('loginScreen').classList.remove('hidden');
+                    }
+                    alert(json.message || '비밀번호가 틀렸거나 오류가 발생했습니다.');
+                    return;
+                }
+
+                storeAdminLogin();
+
+                allData = json.data || [];
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('dashboard').classList.remove('hidden');
+
+                updateStats();
+                renderTable();
+
+                const now = new Date();
+                document.getElementById('lastUpdated').textContent = `최근 동기화: ${now.toLocaleTimeString()}`;
+                toggleAutoRefresh();
+            };
+
+            script.onerror = function() {
+                delete window[callbackName];
+                if (script.parentNode) document.body.removeChild(script);
+                if (isInitialLogin) { loginBtn.textContent = "데이터 불러오기"; loginBtn.disabled = false; }
+                if (refreshBtn) refreshBtn.textContent = "🔄 즉시 새로고침";
+                alert("구글 시트 연결 실패!\n\n앱스 스크립트에서 [배포] > [배포 관리] > [수정(연필 아이콘)] > 버전을 [새 버전]으로 선택 후 배포했는지 꼭 확인해주세요.");
+            };
+
+            script.src = `${SCRIPT_URL}?key=${encodeURIComponent(ADMIN_KEY)}&callback=${callbackName}&t=${Date.now()}`;
+            document.body.appendChild(script);
+        }
+
+        function toggleAutoRefresh() {
+            if (autoRefreshTimer) clearInterval(autoRefreshTimer);
+            const checked = document.getElementById('autoRefreshToggle').checked;
+            if (checked) {
+                autoRefreshTimer = setInterval(() => fetchData(false), 30000);
+            }
+        }
+
+        function updateStats() {
+            const todayStr = getSeoulDateKey(new Date());
+
+            document.getElementById('statTotal').textContent = allData.length;
+            document.getElementById('statToday').textContent = allData.filter(d => getSeoulDateKey(d.date) === todayStr).length;
+            document.getElementById('statWaiting').textContent = allData.filter(d => (d.admin_status || '상담대기') === '상담대기').length;
+            document.getElementById('statProgress').textContent = allData.filter(d => ['통화완료', '진행중'].includes(d.admin_status)).length;
+            document.getElementById('statDone').textContent = allData.filter(d => d.admin_status === '승인완료').length;
+            document.getElementById('statHold').textContent = allData.filter(d => d.admin_status === '보류/취소').length;
+        }
+
+        function getStatusBadge(status) {
+            const st = status || '상담대기';
+            const styles = {
+                '상담대기': 'bg-amber-100 text-amber-800 border-amber-200',
+                '통화완료': 'bg-blue-100 text-blue-800 border-blue-200',
+                '진행중': 'bg-slate-100 text-slate-600 border-slate-200',
+                '승인완료': 'bg-emerald-100 text-emerald-800 border-emerald-200',
+                '보류/취소': 'bg-red-100 text-red-700 border-red-200'
+            };
+            return `<span class="px-2.5 py-1 rounded-full text-xs font-extrabold border ${styles[st] || styles['상담대기']}">${st}</span>`;
+        }
+
+        function datePartsInSeoul(value) {
+            if (!value) return null;
+            const date = value instanceof Date ? value : new Date(value);
+            if (Number.isNaN(date.getTime())) return null;
+            const parts = new Intl.DateTimeFormat('en-US', {
+                timeZone: 'Asia/Seoul', year: 'numeric', month: 'numeric', day: 'numeric',
+                weekday: 'short', hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23'
+            }).formatToParts(date).reduce((result, part) => {
+                if (part.type !== 'literal') result[part.type] = part.value;
+                return result;
+            }, {});
+            return parts;
+        }
+
+        function formatDateTime(value) {
+            const parts = datePartsInSeoul(value);
+            if (!parts) return value || '-';
+            const weekdays = { Sun: '일요일', Mon: '월요일', Tue: '화요일', Wed: '수요일', Thu: '목요일', Fri: '금요일', Sat: '토요일' };
+            return `${parts.year}년 ${Number(parts.month)}월 ${Number(parts.day)}일 (${weekdays[parts.weekday] || parts.weekday}) ${parts.hour}:${parts.minute}:${parts.second}`;
+        }
+
+        function getSeoulDateKey(value) {
+            const parts = datePartsInSeoul(value);
+            return parts ? `${parts.year}-${String(parts.month).padStart(2, '0')}-${String(parts.day).padStart(2, '0')}` : '';
+        }
+
+        function formatPhone(p) {
+            const clean = String(p || '').replace(/[^0-9]/g, '');
+            if (clean.length === 11) return clean.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+            if (clean.length === 10) return clean.replace(/(\d{3})(\d{3,4})(\d{4})/, '$1-$2-$3');
+            return p;
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('tableBody');
+            const statusFilter = document.getElementById('filterStatus').value;
+            const urgencyFilter = document.getElementById('filterUrgency').value;
+            const keyword = document.getElementById('searchInput').value.trim().toLowerCase();
+
+            const filtered = allData.filter(item => {
+                const st = item.admin_status || '상담대기';
+                if (statusFilter !== 'ALL' && st !== statusFilter) return false;
+                if (urgencyFilter !== 'ALL' && item.status !== urgencyFilter) return false;
+                if (keyword) {
+                    const target = `${item.company} ${item.owner} ${item.phone} ${item.region} ${item.message} ${item.admin_memo}`.toLowerCase();
+                    if (!target.includes(keyword)) return false;
+                }
+                return true;
+            });
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" class="text-center py-12 text-slate-400">조건에 맞는 상담 내역이 없습니다. (현재 총 ${allData.length}건)</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = filtered.map(item => {
+                const hasDiag = item.diag_main || item.diag_score;
+                const urgencyColor = item.status === '자금만 있다면 바로 진행' ? 'text-blue-600 font-extrabold' : item.status === '수수료 있으면 불가' ? 'text-red-500 font-bold' : 'text-slate-600';
+                
+                // 에러 방지를 위해 조건부 HTML을 미리 변수로 분리
+                const memoHtml = item.admin_memo 
+                    ? '<div class="text-[11px] text-amber-700 bg-amber-50 px-2 py-0.5 rounded mt-1 truncate max-w-[180px]">📝 ' + item.admin_memo + '</div>' 
+                    : '';
+                
+                const scoreText = item.diag_score ? item.diag_score : '-';
+                const diagHtml = hasDiag 
+                    ? '<span class="px-2 py-1 rounded-lg bg-indigo-50 text-indigo-700 text-xs font-extrabold">' + scoreText + '점 · ' + item.diag_main + '</span>' 
+                    : '<span class="text-xs text-slate-300">미진행</span>';
+
+                return `
+                <tr class="hover:bg-blue-50/40 transition cursor-pointer" onclick="openDetail(${item.rowNumber})">
+                    <td class="py-3.5 px-4 whitespace-nowrap">${getStatusBadge(item.admin_status)}</td>
+                    <td class="py-3.5 px-4 text-xs text-slate-500 whitespace-nowrap">${formatDateTime(item.date)}</td>
+                    <td class="py-3.5 px-4">
+                        <div class="font-extrabold text-slate-900">${item.company || '-'}</div>
+                        <div class="text-xs text-slate-500">${item.owner || '-'} 대표님</div>
+                    </td>
+                    <td class="py-3.5 px-4 whitespace-nowrap">
+                        <div class="font-bold text-slate-800">${formatPhone(item.phone)}</div>
+                        <div class="text-xs text-slate-500">${item.region || '-'}</div>
+                    </td>
+                    <td class="py-3.5 px-4">
+                        <div class="font-bold text-slate-800">${item.biz_type || '-'} · ${item.sales || '-'}</div>
+                        <div class="text-xs text-blue-600 font-bold">${item.fund || '-'}</div>
+                    </td>
+                    <td class="py-3.5 px-4">
+                        <div class="text-xs ${urgencyColor}">${item.status || '-'}</div>
+                        ${memoHtml}
+                    </td>
+                    <td class="py-3.5 px-4 whitespace-nowrap">
+                        ${diagHtml}
+                    </td>
+                    <td class="py-3.5 px-4 text-right whitespace-nowrap">
+                        <button class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-blue-600 hover:text-white text-xs font-bold transition">상세/메모</button>
+                    </td>
+                </tr>`;
+            }).join('');
+        }
+
+        function openDetail(rowNumber) {
+            currentItem = allData.find(d => d.rowNumber === rowNumber);
+            if (!currentItem) return;
+
+            document.getElementById('modalDate').textContent = `접수일시: ${formatDateTime(currentItem.date)} (시트 #${currentItem.rowNumber}행)`;
+            document.getElementById('modalTitle').textContent = `${currentItem.company} (${currentItem.owner} 대표님)`;
+            document.getElementById('mOwner').textContent = currentItem.owner || '-';
+            document.getElementById('mPhone').textContent = formatPhone(currentItem.phone);
+            document.getElementById('mRegion').textContent = currentItem.region || '-';
+            document.getElementById('mBiz').textContent = currentItem.biz_type || '-';
+            document.getElementById('mSales').textContent = currentItem.sales || '-';
+            document.getElementById('mFund').textContent = currentItem.fund || '-';
+            document.getElementById('mStatus').textContent = currentItem.status || '-';
+            document.getElementById('mMessage').textContent = currentItem.message || '(작성된 문의내용 없음)';
+
+            const diagBox = document.getElementById('mDiagBox');
+            if (currentItem.diag_main || currentItem.diag_score) {
+                diagBox.classList.remove('hidden');
+                document.getElementById('mDiagScore').textContent = currentItem.diag_score ? `적합도 ${currentItem.diag_score}점` : '';
+                document.getElementById('mDiagAge').textContent = currentItem.diag_age || '-';
+                document.getElementById('mDiagAmount').textContent = currentItem.diag_amount || '-';
+                document.getElementById('mDiagPurpose').textContent = currentItem.diag_purpose || '-';
+                document.getElementById('mDiagMain').textContent = currentItem.diag_main || '-';
+                document.getElementById('mDiagSec').textContent = currentItem.diag_secondary || '-';
+                document.getElementById('mDiagTip').textContent = currentItem.diag_tip || '-';
+                document.getElementById('mDiagSummary').textContent = currentItem.diag_summary || '';
+            } else {
+                diagBox.classList.add('hidden');
+            }
+
+            document.getElementById('editAdminStatus').value = currentItem.admin_status || '상담대기';
+            document.getElementById('editAdminMemo').value = currentItem.admin_memo || '';
+
+            const modal = document.getElementById('detailModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function contractCaseId(item) {
+            const identity = `${item.rowNumber}|${item.date || ''}|${item.phone || ''}|${item.company || ''}`;
+            let hash = 2166136261;
+            for (let i = 0; i < identity.length; i++) {
+                hash ^= identity.charCodeAt(i);
+                hash = Math.imul(hash, 16777619);
+            }
+            return `r${item.rowNumber}-${(hash >>> 0).toString(36)}`;
+        }
+
+        const pendingContractWindows = new Map();
+        window.addEventListener('message', event => {
+            const message = event.data;
+            if (!message || message.type !== 'bivelon-contract-ready' || !message.caseId) return;
+            const pending = pendingContractWindows.get(message.caseId);
+            if (!pending || event.source !== pending.window) return;
+            event.source.postMessage({
+                type: 'bivelon-contract-data',
+                caseId: message.caseId,
+                customer: pending.customer
+            }, '*');
+            pendingContractWindows.delete(message.caseId);
+        });
+
+        function openContractForCurrentItem() {
+            if (!currentItem) return;
+            const item = currentItem;
+            const caseId = contractCaseId(item);
+            const contractUrl = new URL('contract.html', window.location.href);
+            contractUrl.searchParams.set('case', caseId);
+            const contractWindow = window.open(contractUrl.href, `bivelon_contract_${caseId}`);
+            if (!contractWindow) {
+                alert('팝업이 차단되었습니다. 이 사이트의 팝업을 허용한 뒤 다시 눌러주세요.');
+                return;
+            }
+
+            pendingContractWindows.set(caseId, {
+                window: contractWindow,
+                customer: {
+                    company: item.company || '',
+                    representative: item.owner || '',
+                    phone: formatPhone(item.phone) || '',
+                    purpose: item.diag_purpose || item.fund || ''
+                }
+            });
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('detailModal');
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+        }
+
+        async function saveAdminUpdate() {
+            if (!currentItem) return;
+            const saveBtn = document.getElementById('saveBtn');
+            saveBtn.textContent = "저장 중...";
+            saveBtn.disabled = true;
+
+            const newStatus = document.getElementById('editAdminStatus').value;
+            const newMemo = document.getElementById('editAdminMemo').value;
+
+            const formData = new FormData();
+            formData.append('action', 'update');
+            formData.append('key', ADMIN_KEY);
+            formData.append('rowNumber', currentItem.rowNumber);
+            formData.append('admin_status', newStatus);
+            formData.append('admin_memo', newMemo);
+
+            try {
+                await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: formData });
+                currentItem.admin_status = newStatus;
+                currentItem.admin_memo = newMemo;
+                updateStats();
+                renderTable();
+                closeModal();
+            } catch (err) {
+                alert("저장에 실패했습니다.");
+            } finally {
+                saveBtn.textContent = "저장하기";
+                saveBtn.disabled = false;
+            }
+        }
+
+        async function deleteCurrentRow() {
+            if (!currentItem) return;
+            if (!confirm(`[${currentItem.company}] 상담 내역을 구글 시트에서 정말 삭제하시겠습니까?`)) return;
+
+            const formData = new FormData();
+            formData.append('action', 'delete');
+            formData.append('key', ADMIN_KEY);
+            formData.append('rowNumber', currentItem.rowNumber);
+
+            try {
+                await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: formData });
+                closeModal();
+                setTimeout(() => fetchData(false), 800);
+            } catch (err) {
+                alert("삭제 중 오류가 발생했습니다.");
+            }
+        }
+    </script>
+</body>
+</html>

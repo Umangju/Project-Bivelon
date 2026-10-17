@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>비벨온 그룹 경영지도 및 자문계약서</title>
+<style>
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+:root{--navy:#0d0e11;--blue:#111b35;--gold:#d2a33a;--paper:#fff;--ink:#292d33}
+*{box-sizing:border-box}
+.page,.page *{-webkit-user-select:none!important;user-select:none!important;-ms-user-select:none!important}
+body{margin:0;font-family:Pretendard,Arial,sans-serif;color:var(--ink);background:#e3e9f1}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+.topbar{height:78px;padding:12px 22px;display:flex;align-items:center;justify-content:space-between;gap:15px;background:var(--navy);color:white;box-shadow:0 3px 15px #0c1c3140}
+.brand-title{color:#edc65e;font-weight:900;font-size:16px}.brand-sub{margin-top:4px;color:#9aaec6;font-size:11px}
+.actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.actions button,.actions a{border:0;border-radius:6px;padding:10px 14px;font-size:13px;font-weight:800;text-decoration:none}
+.status{padding:8px 12px;border-radius:99px;background:#222329;color:#c7d2df;font-size:12px;font-weight:800}
+.btn-light{background:white;color:#1c3552}.btn-gold{background:#d8ab42;color:#172c45}.btn-muted{background:#304762;color:#fff}
+.layout{height:calc(100vh - 78px);min-height:600px;display:grid;grid-template-columns:minmax(0,1fr) 354px}
+.preview{overflow:auto;padding:20px 22px 48px;scroll-behavior:smooth}
+.page{position:relative;width:min(100%,820px);min-height:1123px;margin:10px auto 24px;padding:62px 68px 76px;background:var(--paper);color:var(--ink);box-shadow:0 9px 35px #23354b25;font-size:14px;line-height:1.7}
+.page:before{content:"";position:absolute;top:0;left:0;right:0;height:6px;background:linear-gradient(90deg,#111b35 0 36%,#d2a33a 36% 47%,#111b35 47%)}
+.cover{padding-left:118px;background-image:linear-gradient(#1e3b5905 1px,transparent 1px),linear-gradient(90deg,#1e3b5905 1px,transparent 1px);background-size:26px 26px;overflow:hidden}
+.cover:after{content:"";position:absolute;width:510px;height:510px;border:1px solid #edf1f5;border-radius:50%;right:-155px;top:260px;box-shadow:0 0 0 60px #fff,0 0 0 61px #f3f5f8,0 0 0 125px #fff,0 0 0 126px #f3f5f8;pointer-events:none}
+.rail{position:absolute;inset:0 auto 0 0;width:72px;background:#111b35}.rail:after{content:"";position:absolute;left:0;right:0;top:47%;height:20px;background:var(--gold)}
+.rail span{position:absolute;top:165px;left:28px;writing-mode:vertical-rl;letter-spacing:5px;color:#8197af;font-size:9px;font-weight:900}
+.cover-inner{position:relative;z-index:1;padding-top:88px}
+.brandline{display:flex;align-items:center;gap:14px;color:var(--blue);border-bottom:1px solid #d8dce2;padding-bottom:17px}
+.mark{color:#111b35;padding-right:14px;border-right:1px solid #d5d9df;font-size:20px;font-weight:900;letter-spacing:1px;white-space:nowrap}
+.gold-type{color:#c18a20}.brandline strong{display:block;font-size:17px;line-height:1.35}.brandline small{display:block;margin-top:5px;color:#9aa0a8;font-size:9px;letter-spacing:1.5px;font-weight:800}
+.doc-tag{display:inline-block;margin-top:35px;padding:5px 16px;border:1px solid #d39b27;color:#bd871b;font-size:10px;font-weight:900;letter-spacing:4px}
+.cover h1{margin:44px 0 3px;color:var(--blue);font-size:34px;line-height:1.25;letter-spacing:-1.5px}.english{margin:0;color:#777;font-size:14px}
+.meta{margin-top:36px;width:100%;border-top:1px solid #e1e4e8}.meta-row{display:grid;grid-template-columns:112px 1fr;padding:9px 0;border-bottom:1px solid #e1e4e8}.meta-row b{color:var(--blue);font-size:11px;letter-spacing:.7px}
+.cover-foot{position:absolute;z-index:1;left:118px;bottom:72px;color:var(--blue);font-size:10px;font-weight:800}.cover-foot small{display:block;color:#7b828a;font-weight:500}
+.page-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:4px 0 15px;margin-bottom:32px;border-bottom:1px solid #d7d7d7;color:var(--blue)}
+.page-head .mark{font-size:16px}.tag{padding:5px 12px;color:#b98728;border:1px solid #dec58e;font-size:10px;font-weight:900;letter-spacing:3px;white-space:nowrap}
+.page-body{min-height:850px}.page-foot{position:absolute;bottom:0;left:0;right:0;height:56px;padding:10px 68px;display:flex;align-items:center;justify-content:space-between;color:#d5deea;background:var(--blue);font-size:10px;line-height:1.4}.page-foot strong{color:#fff;display:block}.page-num{font-size:12px;font-weight:900;letter-spacing:2px}
+.preamble{margin:0 0 17px;font-size:15px;line-height:1.7;text-align:justify}.clause{margin:14px 0 16px}.clause h2{margin:0 0 8px;padding-left:11px;border-left:4px solid var(--gold);color:var(--blue);font-size:18px;line-height:1.35;font-weight:900}.clause p{margin:5px 0;text-align:justify}.clause ol{margin:5px 0 4px;padding-left:36px}.clause li{margin:4px 0;padding-left:2px;text-align:justify}.clause li::marker{color:var(--blue);font-weight:900}.subpoints{margin:5px 0 5px 24px}.bound{color:var(--blue)}
+.bank{margin:14px 0 10px;padding:14px 18px;border:2px solid var(--blue);border-radius:5px;background:#f7f9fb}.bank strong{color:var(--blue);font-size:16px}.bank small{display:block;margin-top:4px;color:#777;font-weight:700}
+.confirm{text-align:center;margin:18px 0 8px;color:#555}.sig-date{text-align:center;margin:14px 0 18px;color:var(--blue);font-weight:900;font-size:18px;letter-spacing:2px}
+.sig-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.sig-card{border:1px solid #d5d8dc;border-radius:6px;padding:15px 17px 12px;min-height:218px}.sig-card h3{margin:0 0 9px;color:#b98728;font-size:14px}.sig-row{display:flex;justify-content:space-between;align-items:center;gap:8px;min-height:36px;border-bottom:1px solid #ececec}.sig-row:last-child{border:0}.sig-row>span:first-child{color:#96999d;font-weight:700;white-space:nowrap}.sig-row strong{text-align:right;overflow-wrap:anywhere}
+.sig-img{display:none;max-width:100px;max-height:36px;object-fit:contain}.sig-placeholder{display:inline-flex;align-items:center;justify-content:center;width:43px;height:43px;border:1px dashed #c9cdd1;color:#a1a5aa;font-size:9px;border-radius:50%;font-weight:500;white-space:nowrap}
+.special{border:1px solid var(--blue);border-radius:4px;padding:9px 12px;background:#f8f9fb;font-size:10px;line-height:1.5}.special h3{margin:0 0 4px;color:var(--blue);font-size:12px}.special p{margin:3px 0}
+.totals{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:6px 0}.totals>div{text-align:center;padding:7px 4px;border:1px solid #ddd;border-radius:4px}.totals small{display:block;color:#999;font-size:9px;font-weight:800}.totals b{display:block;margin-top:3px;font-size:17px}.totals .grand{color:#fff;background:#111b35}.totals .grand small{color:#cbd4df}.quote-signs{display:grid;grid-template-columns:1fr 1fr;gap:12px}.panel{overflow:auto;padding:18px 17px 22px;color:#e8eef5;background:var(--navy)}
+.group{padding:0 0 12px;margin:0 0 12px;border-bottom:1px solid #29415b}.group-title{color:#e4b646;font-size:12px;letter-spacing:.5px;font-weight:900;margin:0 0 11px}
+.field{min-width:0;margin-bottom:9px}.field label{display:block;margin-bottom:4px;color:#d6e0eb;font-size:10px;font-weight:700}.field input,.field textarea,.field select{width:100%;color:#fff;background:#23242a;border:1px solid #484950;border-radius:4px;padding:9px 10px;font-size:12px;outline:none}.field input:focus,.field textarea:focus{border-color:#d9ae48;box-shadow:0 0 0 2px #d9ae4820}.field input::placeholder,.field textarea::placeholder{color:#8192a6}.field textarea{min-height:86px;resize:vertical}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px}.required{color:#e0b343}.note{margin:0 0 13px;color:#9eafc2;font-size:10px;line-height:1.55}
+.breakdown{margin:3px 0 12px;border-top:1px solid #29415b}.breakdown summary{padding:9px 0;color:#d9e4ef;cursor:pointer;font-size:11px;font-weight:800}
+.sign-cta{display:block;width:100%;margin-top:7px;padding:12px;border:0;border-radius:5px;color:#182d44;background:#d8ab42;font-size:14px;font-weight:900}
+.sign-status{margin-top:9px;color:#a9bdd2;font-size:10px;line-height:1.7}
+.dialog{display:none;position:fixed;inset:0;z-index:20;align-items:center;justify-content:center;padding:18px;background:#07152fc0}.dialog.open{display:flex}
+.dialog-box{width:min(100%,520px);padding:22px;border-radius:12px;background:#fff;color:#17212f;box-shadow:0 20px 70px #0006}.dialog-box h2{margin:0;color:var(--blue);font-size:21px}.dialog-box p{margin:7px 0 14px;color:#667085;font-size:12px}.dialog-box select{width:100%;margin-bottom:12px;padding:10px;border:1px solid #cbd5df;border-radius:6px}
+#sigCanvas{display:block;width:100%;height:190px;border:1px solid #ccd4dd;border-radius:7px;background:repeating-linear-gradient(0deg,#fff,#fff 31px,#f1f4f7 32px);touch-action:none}
+.dialog-actions{display:flex;justify-content:space-between;gap:8px;margin-top:12px}.dialog-actions button{padding:10px 14px;border:0;border-radius:5px;font-weight:800}.cancel{color:#344054;background:#edf1f5}.save{color:#fff;background:var(--blue)}
+.toast{position:fixed;left:50%;bottom:20px;z-index:25;transform:translateX(-50%);padding:10px 16px;border-radius:50px;color:#fff;background:#152d49;font-size:12px;font-weight:800;opacity:0;pointer-events:none;transition:opacity .2s}.toast.show{opacity:1}
+@media(max-width:900px){.layout{grid-template-columns:minmax(0,1fr) 320px}.page{padding-left:45px;padding-right:45px}.cover{padding-left:95px}.cover-foot{left:95px}.page-foot{padding-left:45px;padding-right:45px}}
+@media(max-width:640px){.totals{gap:4px}.totals b{font-size:12px}.quote-signs{grid-template-columns:1fr}.topbar{height:auto;min-height:66px;padding:9px 10px}.brand-title{font-size:11px}.brand-sub,.status{display:none}.actions{gap:4px}.actions button,.actions a{padding:8px;font-size:10px}.layout{height:calc(100vh - 66px);grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) 43vh}.preview{padding:8px}.page{width:100%;min-height:1000px;padding:40px 23px 68px;font-size:12px}.cover{padding-left:68px}.rail{width:46px}.rail span{left:17px}.cover-inner{padding-top:58px}.cover h1{font-size:27px}.cover-foot{left:68px;bottom:54px}.page-head{margin-bottom:22px}.page-body{min-height:0}.page-foot{padding:8px 23px}.clause h2{font-size:16px}.sig-grid{grid-template-columns:1fr}}
+@page{size:A4;margin:0}
+@media print{html,body{width:210mm!important;min-width:0!important;height:auto!important;overflow:visible!important;background:#fff!important}body *{visibility:hidden!important}#contractApp,#contractApp *{visibility:visible!important}#contractApp{display:block!important;position:absolute!important;inset:0 auto auto 0!important;width:210mm!important;height:auto!important;overflow:visible!important;background:#fff!important}.topbar,.panel,.dialog,.toast{display:none!important}.layout,.preview{display:block!important;width:210mm!important;height:auto!important;overflow:visible!important;padding:0!important;background:#fff!important}.page{display:block!important;width:210mm!important;height:297mm!important;min-height:297mm!important;max-width:none!important;margin:0!important;padding:14mm 17mm 19mm!important;box-shadow:none!important;overflow:hidden!important;font-size:10.5pt!important;line-height:1.52!important;break-after:page!important;page-break-after:always!important}.cover{padding-left:32mm!important}.rail{width:19mm!important}.rail span{left:7mm!important}.cover-foot{left:32mm!important;bottom:19mm!important}.page-head{margin-bottom:8mm!important}.page-body{min-height:0!important}.page-foot{padding-left:17mm!important;padding-right:17mm!important;height:14mm!important}.clause{margin:2.5mm 0!important}.clause h2{font-size:13pt!important}.clause p,.clause li{margin-top:1mm!important;margin-bottom:1mm!important}.page:last-of-type{break-after:auto!important;page-break-after:auto!important}}
+@media print{#quotePage.page{display:flex!important;flex-direction:column!important;height:auto!important;min-height:297mm!important;overflow:visible!important;padding:9mm 12mm 8mm!important;break-inside:auto!important;page-break-inside:auto!important}#quotePage>*{flex-shrink:0!important}#quotePage .page-head{margin-bottom:4mm!important;padding-bottom:3mm!important}#quotePage .quote-meta{margin-top:2mm!important;padding-bottom:2mm!important}#quotePage .quote-title{font-size:20pt!important;margin:3mm 0!important}#quotePage .quote-target{padding:5px 10px!important}#quotePage .quote-section-title{margin:4px 0!important}#quotePage table{font-size:8pt!important;line-height:1.25!important}#quotePage th,#quotePage td{padding:2px 3px!important;vertical-align:middle!important}#quotePage .totals{margin:3mm 0!important}#quotePage .totals>div{padding:3px 2px!important}#quotePage .special{padding:6px 9px!important;font-size:8pt!important;line-height:1.3!important}#quotePage .special p{margin:2px 0!important}#quotePage .quote-confirm{margin:4px 0!important}#quotePage .quote-signs{gap:8px!important;break-inside:avoid!important;page-break-inside:avoid!important}#quotePage .quote-signs .sig-card{min-height:25mm!important;padding:3mm 4mm!important;break-inside:avoid!important;page-break-inside:avoid!important}#quotePage .page-foot{position:relative!important;bottom:auto!important;height:14mm!important;margin-top:auto!important;break-inside:avoid!important;page-break-inside:avoid!important}#quotePage tr,#quotePage .totals,#quotePage .special{break-inside:avoid!important;page-break-inside:avoid!important}}
+</style>
+</head>
+<body>
+<div id="contractApp">
+<header class="topbar">
+  <div><div class="brand-title">BIVELON 계약서 + 견적서 통합 시스템</div><div class="brand-sub">고객정보 입력 / 계약 조건 입력 / 전자서명 / PDF 다운로드</div></div>
+  <div class="actions"><span class="status">● 실시간 미리보기</span><button class="btn-light" type="button" onclick="resetContract()">초기화 ↻</button><button class="btn-muted" type="button" onclick="document.getElementById('quotePage').scrollIntoView({behavior:'smooth'})">견적서 보기</button><button class="btn-gold" type="button" onclick="downloadPdf()">PDF 다운로드 ↓</button><a class="btn-muted" href="index.html">홈페이지</a></div>
+</header>
+<div class="layout">
+<main class="preview" id="preview">
+  <!-- 표지 -->
+  <article class="page cover">
+    <div class="rail"><span>BIVELON GROUP</span></div><div class="cover-inner">
+      <div class="brandline"><div class="mark">BIVE<span class="gold-type">LON</span></div><div><strong>비벨온 그룹 경영지원센터</strong><small>BIVELON GROUP · MANAGEMENT SUPPORT CENTER</small></div></div>
+      <span class="doc-tag">OFFICIAL DOCUMENT</span><h1>비벨온 그룹<br>경영지도 및 자문계약서</h1><p class="english">Management Advisory &amp; Consulting Agreement</p>
+      <div class="meta">
+        <div class="meta-row"><b>DOC. NO</b><span data-bind="contractNo"></span></div><div class="meta-row"><b>DATE</b><span data-bind="date"></span></div><div class="meta-row"><b>TO</b><span data-bind="toParty"></span></div><div class="meta-row"><b>REFERENCE</b><span>심화경영자문 용역 계약 체결 건</span></div><div class="meta-row"><b>CLASSIFICATION</b><span>대외비 (Confidential)</span></div>
+      </div>
+    </div><div class="cover-foot">비벨온 그룹 경영지원센터<small>www.bivelon.com | 1688-2684</small></div>
+  </article>
+
+  <!-- 계약서 본문 수정 위치: 아래 제1조~제17조의 문구를 편집하세요. data-bind 값은 우측 입력칸과 실시간 연동됩니다. -->
+  <article class="page">
+    <div class="page-head"><div class="brandline"><div class="mark">BIVE<span class="gold-type">LON</span></div><div><strong>비벨온 그룹 경영지원센터</strong><small>BIVELON GROUP · MANAGEMENT SUPPORT CENTER</small></div></div><span class="tag">AGREEMENT</span></div>
+    <div class="page-body">
+      <p class="preamble">경영지도 및 자문을 의뢰하는 <b class="bound" data-bind="company"></b>(이하 "갑")과, 경영 컨설팅을 수행하는 <b class="bound">비벨온 경영지원센터</b>(이하 "을")은 아래와 같이 경영 컨설팅 계약을 체결한다.</p>
+      <section class="clause"><h2>제 1 조 【목 적】</h2><p>본 계약은 "갑"이 경영하는 사업의 각종 재무·경영상의 문제를 진단 및 개선하여 기업가치를 제고하는 데 목적이 있다. 이를 위해 "을"은 관련 법령을 엄격히 준수하는 범위 내에서 "갑"에게 전문적인 경영 지도 및 자문을 제공하며, 양 당사자는 상호 신의성실의 원칙에 따라 본 계약을 이행한다.</p></section>
+      <section class="clause"><h2>제 2 조 【지도 및 자문의 범위】</h2><p>"을"은 본 계약에 의거하여 다음 각 호의 업무를 수행한다.</p><ol>
+        <li>"갑"의 기업 재무 현황 간이 점검 및 자문 방향 수립</li><li>"갑"의 기업 신용등급 관리 및 재무 구조 개선에 관한 자문</li><li>"갑"의 경영 상황에 부합하는 정책자금 및 지원금 매칭 가능성 사전 안내</li><li>"갑"의 경영에 필요한 기업 인증(벤처, 이노비즈 등) 획득 요건 자문</li><li>"갑"의 기업부설연구소 또는 전담부서 설립 요건 및 사후 관리 자문</li>
+        <li><b>【직접 수행의 원칙】</b> 제1호 내지 제5호와 관련하여, "을"은 "갑"에게 합법적인 경영 자문과 전략 제시에 국한된 용역만을 제공한다. 자금의 신청, 기관 면담, 대출 약정 등의 제반 실행 행위는 전적으로 "갑"이 직접 수행하며, "을"은 금융기관에 대한 부당한 알선이나 서류 대리 제출 등의 불법행위를 절대 금지한다.</li>
+        <li><b>【심화 자문 용역】</b> 위 기본 자문 외에 "갑"이 특정한 목적(자금 조달, 인증 등) 달성을 위해 별도의 고도화된 컨설팅을 요청하는 경우, 양 당사자는 별도의 『심화경영자문 용역 견적서』를 작성하여 실행하며, 해당 견적서는 본 계약의 일부로서 동일한 효력을 가진다. 심화 자문 용역의 세부 과업 범위, 각 과업별 납품 산출물, 과업별 정액 단가는 견적서에 명시한다.</li>
+      </ol></section>
+      <section class="clause"><h2>제 3 조 【업무수행 및 산출물 납품】</h2><ol>
+        <li>"을"은 "갑"의 사업장 또는 지정 장소에 방문하거나 유선/온라인 매체를 통해 컨설팅 업무를 수행하며, 사전에 면밀한 분석 자료를 준비하여 원활한 과업이 이루어지도록 성실히 임한다.</li>
+        <li><b>【산출물 납품】</b> "을"은 심화 자문 용역의 각 과업 단계별로 『심화경영자문 용역 견적서』에 명시된 산출물(보고서, 전략서, 가이드북 등)을 "갑"에게 교부한다. 산출물의 교부 사실은 과업 수행의 객관적 증거로서 최종 정산의 기초가 된다.</li>
+        <li>"갑"은 "을"의 정확한 자문 업무 수행을 위해 기업의 재무, 세무, 노무 등 경영 전반에 관한 진실된 자료와 정보를 적시에 제공하여야 한다.</li>
+        <li><b>【컨설팅 전략의 일관성 유지】</b> 정책자금 및 금융 지원은 기관별 중복 수혜 제한 및 한도 연계성이 매우 높으므로, "갑"은 본 계약 체결 이후 신규로 착수하는 자금 조달 및 인증 업무에 대하여 반드시 사전에 "을"과 협의하여야 한다. 이는 "갑"의 금융 포트폴리오 충돌 및 재무 리스크를 방지하기 위함이며, 기존 진행 중인 건 역시 상호 공유하여 병행 전략을 수립한다.</li>
+      </ol></section>
+    </div>
+    <div class="page-foot"><div><strong>비벨온 그룹 경영지원센터</strong>www.bivelon.com · TEL 1688-2684 · FAX 0504-417-4620</div><span class="page-num">1 / 5</span><b>BIVELON GROUP</b></div>
+  </article>
+
+  <!-- 계약서 본문: 제4조~제6조 제1항 -->
+  <article class="page">
+    <div class="page-head"><div class="brandline"><div class="mark">BIVE<span class="gold-type">LON</span></div><div><strong>비벨온 그룹 경영지원센터</strong><small>BIVELON GROUP · MANAGEMENT SUPPORT CENTER</small></div></div><span class="tag">AGREEMENT</span></div>
+    <div class="page-body">
+      <section class="clause"><h2>제 4 조 【자문료의 책정 및 지급】</h2><ol>
+        <li><b>연간 경영 자문료 :</b> "갑"은 "을"에게 본 계약 체결과 동시에 금 <b class="bound" data-bind="annualFee"></b>원(부가가치세 별도)을 지급한다. 이는 단순한 자금 조달 착수금이 아니며, 계약일로부터 1년간 "갑"에게 제공되는 다음 각 호의 '상시 경영 자문 서비스'에 대한 확정 용역비이다. 따라서 기초 점검이 개시된 이후에는 기업의 변심, 목적 미달성 등 어떠한 사유로도 반환되지 아니한다.
+          <div class="subpoints">① 기업 재무 현황 간이 점검 및 자문 방향 수립<br>② 기업 신용등급 관리 및 개선 방안 자문 (연간)<br>③ 정책자금 매칭 가능성 사전 안내 (연간)<br>④ 기타 경영 애로사항 수시 상담</div>
+        </li>
+        <li><b>심화 경영 자문 용역 수수료의 성격 :</b> 본 자문료는 자금 조달의 성공 여부나 최종 조달 금액에 비례하여 산정되는 성공보수가 아니며, 제2조 제7항에서 정한 심화 자문 업무를 수행하기 위해 "을"이 투입하는 <b>전문 인력의 숙련도와 과업별 업무 난이도</b>에 따라 책정된 정액 용역비임을 명확히 한다.</li>
+        <li><b>견적서 교부 및 과업별 단가 :</b> 심화 자문 용역의 구체적 범위와 과업별 정액 단가는 상호 합의하여 별도로 작성하는 『심화경영자문 용역 사전 견적서』에 따르며, 견적서에는 각 과업 단계(P1~P6)의 개별 정액 단가, 납품 산출물명, 총 견적 합계를 명시한다.</li>
+        <li><b>과업 범위 변동에 따른 조정 :</b> 단, 자문업무의 범위·난이도·업무량이 축소 또는 확장된 경우, 자문료는 각 <b>과업 단계별 실제 수행 범위</b>를 기준으로 상호 합의하여 조정할 수 있다. 조정의 기준은 오직 "을"의 과업 수행 여부 및 투입 업무량이며, 기관의 심사 결과나 자금 조달 금액과는 무관하다.</li>
+        <li><b>과업 완료 확인 및 최종 청구 :</b><br>① "을"은 프로젝트 종결 시 각 과업 단계의 수행 내역(수행일자, 납품 산출물명, 수행 상태)을 기재한 『과업 수행 완료 확인서』를 작성하여 "갑"에게 교부한다. "갑"은 교부일로부터 3영업일 이내에 서면으로 이의를 제기하지 않을 경우 과업 수행 내역 전체를 확인한 것으로 간주한다.<br>② "을"은 완료 확인서에 근거하여 각 과업 단계의 수행 상태(전량/경량/미수행)를 반영한 『최종 청구서』를 발행한다. 최종 청구 금액은 사전 견적서의 총 견적 합계를 초과하지 아니한다.<br>③ "갑"은 "을"이 최종 청구서를 발행한 날로부터 <b>7일 이내</b>에 지정된 계좌로 청구 금액을 지급하여야 한다. 단, "갑"의 사전 요청이 있는 경우, 상호 협의하에 지급일을 조정할 수 있다.</li>
+        <li><b>【대금 지급의 원칙 및 면책】</b> "갑"은 본 계약에 따른 모든 대금(연간 자문료, 심화 자문 수수료 등)을 반드시 계약서 하단에 명시된 <b>"을"의 전용 입금 계좌로만</b> 지급하여야 한다. "을"의 임직원, 영업담당자, 대리인 등은 어떠한 경우에도 개인 계좌로 대금을 수령할 권한이 없으며, "갑"이 지정 계좌 외의 방식으로 대금을 지급한 경우 "을"은 이를 유효한 결제로 인정하지 아니하며 세금계산서 발행 및 계약 이행의 책임이 즉시 면제된다.</li>
+        <li><b>기타 추가 자문 :</b> 본 조에 명시되지 않은 기타 별도의 자문 항목에 대한 비용은 상호 협의하여 별도의 계약으로 정한다.</li>
+      </ol></section>
+      <section class="clause"><h2>제 5 조 【자료 제공 의무 및 진실성 보증】</h2><ol>
+        <li>"갑"은 "을"의 자문 업무 수행에 필요한 재무, 세무, 사업 현황 등 제반 자료를 적시에 성실히 제공하여야 한다.</li>
+        <li>"갑"이 제공한 모든 자료는 사실에 부합하여야 하며, "갑"의 고의 또는 중과실로 인한 허위 자료 제공으로 인해 발생하는 불이익(기관의 제재, 심사 탈락 등)이나 법적 책임은 전적으로 "갑"이 부담한다.</li>
+        <li>"을"은 "갑"이 제공한 자료를 신뢰하여 자문을 진행하며, "갑"의 서면 동의 없이 이를 목적 외로 사용하거나 제3자에게 누설하지 아니한다.</li>
+      </ol></section>
+      <section class="clause"><h2>제 6 조 【과업 수행 방해 금지 및 과업 완료 간주】</h2><ol><li><b>【협력 의무】</b> "갑"은 "을"의 과업 수행에 필요한 자료 제출, 일정 협의, 기관 접수 등 제반 절차에 성실히 협력하여야 한다. "을"이 산출물을 납품하거나 교부를 요청하였음에도 "갑"이 정당한 사유 없이 수령을 거부하거나 확인을 회피하는 경우, 해당 산출물은 교부된 것으로 간주한다.</li></ol></section>
+    </div>
+    <div class="page-foot"><div><strong>비벨온 그룹 경영지원센터</strong>www.bivelon.com · TEL 1688-2684 · FAX 0504-417-4620</div><span class="page-num">2 / 5</span><b>BIVELON GROUP</b></div>
+  </article>
+  <!-- 계약서 본문: 제6조 제2~3항, 제7조~제8조 -->
+  <article class="page">
+    <div class="page-head"><div class="brandline"><div class="mark">BIVE<span class="gold-type">LON</span></div><div><strong>비벨온 그룹 경영지원센터</strong><small>BIVELON GROUP · MANAGEMENT SUPPORT CENTER</small></div></div><span class="tag">AGREEMENT</span></div>
+    <div class="page-body">
+      <section class="clause"><ol start="2">
+        <li><b>【과업 완료 간주】</b> "갑"이 정당한 사유 없이 다음 각 호의 행위를 한 경우, "을"이 수행한 심화 경영 자문 과업은 견적서에 명시된 전체 과업 범위(P1~P6)가 100% 수행 완료된 것으로 간주하며, "을"은 과업 축소에 따른 조정을 적용하지 아니하고 『심화경영자문 용역 견적서』상의 총 견적 합계(공급가액) 전액을 청구한다.
+          <div class="subpoints">① "갑"이 "을"의 과업 수행 중 연락을 두절하거나 자료 제공을 거부하여 과업 진행을 사실상 중단시킨 경우<br>② "갑"이 "을"이 납품한 산출물의 수령 또는 『과업 수행 완료 확인서』에 대한 확인을 정당한 사유 없이 거부하는 경우<br>③ "갑"이 단순 변심 등으로 과업 도중 일방적으로 용역 중단을 요구하는 경우</div>
+        </li>
+        <li>제2항의 사유는 "갑"의 중대한 계약 위반에 해당하므로, "을"은 수수료 청구권과 별개로 제8조에 따른 위약금을 추가로 청구할 수 있다.</li>
+      </ol></section>
+      <section class="clause"><h2>제 7 조 【의사결정과 결과에 대한 면책】</h2><ol>
+        <li>본 계약에 따른 "을"의 자문 용역은 "갑"의 기업가치 제고 및 경영 개선을 위한 최선의 '경영 전략 제공'에 해당하며, 정부 기관이나 금융기관의 고유 심사 권한인 '최종 승인 및 특정 한도의 배정'을 확정적으로 보장하는 불법적 행위가 아님을 상호 명확히 인지한다.</li>
+        <li>"갑"은 "을"의 자문 및 전략 내용을 참고하여 최종 경영 의사결정을 내리며, 기관의 심사 기준 변동, 예산 소진, "갑"의 재무/신용 상태 변동 등으로 인해 목적(자금 조달 등)이 달성되지 않거나 축소되더라도, "을"의 고의나 중대한 과실이 입증되지 않는 한 "을"에게 책임을 물을 수 없다.</li>
+        <li><b>【수수료와 결과의 분리】</b> "을"의 자문료 청구권은 "을"이 견적서에 명시된 과업 수행과 산출물 납품 사실에 기초하며, 기관의 심사 결과(승인, 부결, 조건 변경 등)와는 무관하게 발생한다. "갑"은 기관의 심사 결과를 이유로 "을"의 자문료 지급을 거부하거나 감액을 주장할 수 없다.</li>
+      </ol></section>
+      <section class="clause"><h2>제 8 조 【위약벌 및 손해배상】</h2><ol>
+        <li>다음 각 호의 사유가 발생한 경우, "갑"은 "갑"의 중대한 신뢰 훼손 및 "을"의 영업비밀(컨설팅 전략) 침해에 대한 징벌적 위약벌 및 손해배상으로서, 사전 교부된 『심화경영자문 용역 견적서』상의 총 견적 합계액(공급가액 기준)의 <b>200%에 해당하는 금액</b>을 "을"에게 즉시 지급하여야 한다.
+          <div class="subpoints">① "갑"이 정당한 사유 없이 본 계약을 일방적으로 해지하거나, "을"의 자문 개시를 거부·방해하여 "을"이 정상적인 과업을 수행할 기회를 박탈한 경우. (단, "을"의 중대한 귀책사유, 폐업, 천재지변 등은 정당한 사유로 본다.)<br>② "갑"이 동일한 자문 또는 컨설팅 목적(자금, 인증 등)으로 타 업체와 이중 계약하여 업무를 진행한 경우<br>③ "갑"이 확정된 자문 수수료 또는 실비 비용을 약정된 기한 내에 고의로 지급하지 아니한 경우<br>④ <b>【지식재산권 침해 및 탈취】</b> "갑"이 "을"이 제공한 산출물(경영진단 분석보고서, 전략설계서, 가이드북 등)의 내용을 활용하여 독자적으로 업무를 진행하거나, 자문 효용을 취득하고도 수수료 지급을 회피하는 경우</div>
+        </li>
+        <li><b>【입증 회피 시 과업 전량 수행 간주】</b> "갑"이 "을"의 과업 수행 사실(산출물 수령 여부, 자문 내역 등)에 대한 확인을 회피하거나, 『과업 수행 완료 확인서』의 서명을 정당한 사유 없이 거부하는 경우, "을"의 과업은 견적서에 명시된 <b>전체 범위(P1~P6)가 100% 수행된 것으로 간주</b>한다. 이 경우 "을"은 견적서 상의 총 견적 합계액 전액을 청구할 수 있으며, "갑"은 이에 대하여 어떠한 이의도 제기할 수 없다.</li>
+        <li><b>【채권 추심 및 법적 조치 비용의 부담】</b> "갑"이 본 계약에 따른 수수료 지급 의무를 지연하거나 거부하여 "을"이 채권 추심, 가압류, 민사 소송 등 법적 조치를 취하게 되는 경우, 이에 소요되는 제반 비용(변호사 수임료, 인지대, 송달료, 추심 수수료 등 일체)은 전액 "갑"이 부담한다.</li>
+      </ol></section>
+    </div>
+    <div class="page-foot"><div><strong>비벨온 그룹 경영지원센터</strong>www.bivelon.com · TEL 1688-2684 · FAX 0504-417-4620</div><span class="page-num">3 / 5</span><b>BIVELON GROUP</b></div>
+  </article>
+  <!-- 계약서 본문: 제9조~제14조 -->
+  <article class="page">
+    <div class="page-head"><div class="brandline"><div class="mark">BIVE<span class="gold-type">LON</span></div><div><strong>비벨온 그룹 경영지원센터</strong><small>BIVELON GROUP · MANAGEMENT SUPPORT CENTER</small></div></div><span class="tag">AGREEMENT</span></div>
+    <div class="page-body">
+      <section class="clause"><h2>제 9 조 【과업 수행 사실의 은폐 및 수수료 회피 금지】</h2><ol>
+        <li>"갑"이 "을"로부터 산출물을 납품받거나 자문 용역을 제공받았음에도 불구하고, 수수료 지급을 회피할 목적으로 과업이 수행되지 않았다거나 산출물을 수령하지 않았다는 등의 허위 사실을 주장하는 경우, 이는 "을"에 대한 명백한 기망 행위이자 중대한 계약 위반으로 간주한다.</li>
+        <li>"갑"이 위 제1항의 허위 사실을 주장하거나, 고의로 "을"의 과업 수행 결과를 은폐하여 "을"의 청구권 행사를 방해한 경우, "갑"의 행위는 제8조 제1항의 위약 사유에 해당한다.</li>
+        <li>이 경우 "을"은 제6조 제2항에 따른 '과업 완료 간주에 의한 견적서 총액 청구권'을 행사함과 동시에, 이와 별개로 제8조 제1항에 명시된 위약벌(견적 합계액의 배수)을 합산하여 손해배상으로 청구할 수 있으며, "갑"은 이에 이의를 제기할 수 없다.</li>
+      </ol></section>
+      <section class="clause"><h2>제 10 조 【비밀유지의무】</h2><ol>
+        <li>"갑"과 "을"은 본 계약의 체결 및 이행 과정에서 취득한 상대방의 영업비밀, 재무정보, 기술정보 등을 제3자에게 유출하거나 본 계약의 목적 외의 용도로 사용하여서는 아니 된다.</li>
+        <li>특히 "갑"은 "을"이 제공한 산출물(경영진단 분석보고서, 자금조달 전략설계서, 심사 대응 가이드북 등) 및 그 안에 포함된 자문 전략, 재무 구조화 논리, 심사 대응 시나리오 등이 "을"의 고유한 영업비밀(노하우)임을 인정하며, 이를 타 기업 등에 유포하거나 외부 컨설팅 목적으로 재가공하여 사용할 수 없다. 본 항 위반 시 "갑"은 제8조에 준하는 손해배상 책임을 진다.</li>
+        <li>본 조의 비밀유지의무는 본 계약이 종료되거나 해지된 이후에도 1년간 유효하다.</li>
+      </ol></section>
+      <section class="clause"><h2>제 11 조 【권리·의무의 양도금지 및 예외】</h2><p>본 계약에 따른 권리와 의무는 상대방의 사전 서면 동의 없이 제3자에게 양도하거나 담보로 제공할 수 없다. 단, "갑"이 약정된 수수료 또는 위약금 등의 지급 의무를 불이행하여, "을"이 채권 추심 또는 법적 대응을 위해 해당 청구권을 신용정보회사나 법무법인 등에 위임(양도)하는 경우에는 예외로 한다.</p></section>
+      <section class="clause"><h2>제 12 조 【계약기간 및 효력의 연장】</h2><ol>
+        <li>본 계약의 유효기간은 계약 체결일로부터 1년으로 한다. 단, 기간 만료 30일 전까지 서면에 의한 계약 종료 통보가 없는 한, 본 계약은 동일한 조건으로 1년씩 자동 연장된다.</li>
+        <li>제1항에도 불구하고, 계약 만료 시점에 『심화경영자문 용역 견적서』에 따른 특정 프로젝트의 과업이 진행 중이거나 수수료 정산이 완료되지 않은 경우, 해당 과업의 종결 및 수수료 전액 지급이 완료될 때까지 본 계약의 효력은 연장된 것으로 본다.</li>
+      </ol></section>
+      <section class="clause"><h2>제 13 조 【지식재산권의 귀속 및 사용권 한정】</h2><p>"을"이 본 계약 수행과 관련하여 "갑"에게 제공한 경영진단 분석보고서, 자금조달 전략설계서, 사업계획서 검토의견서, 심사 대응 가이드북, 자금집행 가이드, 사후 경영자문 보고서 등 일체의 산출물에 대한 모든 저작권 및 지식재산권은 "을"에게 귀속된다. "갑"은 해당 결과물을 본 계약의 목적(당해 기관의 자금 조달 및 인증 신청)을 달성하기 위한 범위 내에서만 사용할 수 있는 '한정적 사용권'만을 가지며, 제3자에게 임의로 양도, 대여, 복제, 배포할 수 없다.</p></section>
+      <section class="clause"><h2>제 14 조 【계약의 해지 및 과업 수행 방해 제재】</h2><ol>
+        <li>양 당사자는 다음 각 호의 사유가 발생한 경우 서면 통보로써 본 계약을 해지할 수 있다.<div class="subpoints">① 일방 당사자가 파산, 회생절차 개시 신청, 가압류, 체납처분 등으로 인해 정상적인 사업 영위가 불가능한 경우<br>② 일방 당사자가 본 계약상의 중대한 의무를 위반하고, 상대방으로부터 시정 요구를 받은 날로부터 7일 이내에 이를 시정하지 아니한 경우</div></li>
+        <li><b>【연락 두절 제재】</b> "갑"이 "을"의 과업 수행에 필요한 자료 요청, 산출물 교부, 일정 협의 등 주요 시점에 정당한 사유 없이 영업일 기준 5일 이상 "을"의 연락을 회피하거나 대응을 거부하는 경우, "을"은 이를 "갑"의 고의적인 과업 수행 방해로 간주한다. 이 경우 "을"은 즉시 계약을 해지할 수 있으며, 동시에 제6조 제2항에 의거하여 과업 전량 수행 간주에 따른 용역 수수료 전액(견적 합계액) 및 제8조에 따른 손해배상을 청구한다.</li>
+      </ol></section>
+    </div>
+    <div class="page-foot"><div><strong>비벨온 그룹 경영지원센터</strong>www.bivelon.com · TEL 1688-2684 · FAX 0504-417-4620</div><span class="page-num">4 / 5</span><b>BIVELON GROUP</b></div>
+  </article>
+  <!-- 계약서 본문: 제15조~제17조 및 당사자 서명 -->
+  <article class="page">
+    <div class="page-head"><div class="brandline"><div class="mark">BIVE<span class="gold-type">LON</span></div><div><strong>비벨온 그룹 경영지원센터</strong><small>BIVELON GROUP · MANAGEMENT SUPPORT CENTER</small></div></div><span class="tag">AGREEMENT</span></div>
+    <div class="page-body">
+      <section class="clause"><h2>제 15 조 【기타사항 및 계약의 완전성】</h2><ol>
+        <li>본 계약 내용의 변경, 추가 또는 삭제는 양 당사자의 기명날인이 포함된 서면 합의서(또는 별첨 견적서)에 의해서만 유효하다.</li>
+        <li>본 계약서와 상호 합의 하에 작성된 『심화경영자문 용역 견적서』 간에 내용이 충돌할 경우, 특약의 성격을 지닌 견적서의 내용이 본 계약서에 우선하여 효력을 발생한다.</li>
+      </ol></section>
+      <section class="clause"><h2>제 16 조 【분쟁해결 및 관할법원】</h2><p>본 계약의 해석 및 이행과 관련하여 분쟁이 발생할 경우 양 당사자는 신의성실의 원칙에 입각하여 상호 원만히 협의하여 해결한다. 만약 협의가 이루어지지 아니하여 소송이 제기되는 경우, "을"의 본점 소재지를 관할하는 법원을 제1심 전속적 합의관할법원으로 한다.</p></section>
+      <section class="clause"><h2>제 17 조 【특약사항】</h2><p>상기 기재사항 이외에 "갑"과 "을"은 아래의 내용을 특약사항으로 정하며, 본 계약서의 다른 조항과 상충될 경우 본 특약사항을 최우선하여 적용한다.</p><div class="special" style="min-height:72px;white-space:pre-wrap" data-bind="specialTerms"></div></section>
+      <div class="bank"><strong>전용 입금 계좌　 케이뱅크 : 100-300-917786　 예금주 : 이승수(비벨온)</strong><small>※ 본 전용 입금 계좌로 수납된 금액에 한하여 당사에 대한 정당한 결제로 인정되며, 정상적으로 세금계산서가 발행됩니다.</small></div>
+      <p class="confirm">위와 같이 본 계약이 유효하게 성립하였음을 확인하며<br>본 계약서 2통을 작성하여 각각 서명(또는 기명날인)한 후 "갑"과 "을"이 각 1통씩 보관한다.</p>
+      <div class="sig-date" data-bind="date"></div>
+      <div class="sig-grid">
+        <div class="sig-card"><h3>의뢰인 "갑"</h3>
+          <div class="sig-row"><span>회사명</span><strong data-bind="company"></strong></div><div class="sig-row"><span>사업자등록번호</span><strong data-bind="businessNumber"></strong></div><div class="sig-row"><span>연락처</span><strong data-bind="phone"></strong></div><div class="sig-row"><span>이메일</span><strong data-bind="email"></strong></div><div class="sig-row"><span>대표자</span><strong data-bind="representative"></strong><img class="sig-img" data-signature="client" alt="의뢰인 대표자 서명"><span class="sig-placeholder" data-signature-placeholder="client">서명/인</span></div>
+        </div>
+        <div class="sig-card"><h3>수임인 "을"</h3>
+          <div class="sig-row"><span>회사명</span><strong>비벨온 그룹 · 경영지원센터</strong></div><div class="sig-row"><span>사업자등록번호</span><strong>556-13-02345</strong></div><div class="sig-row"><span>담당 컨설턴트</span><strong data-bind="consultant"></strong><img class="sig-img" data-signature="consultant" alt="수임인 담당자 서명"><span class="sig-placeholder" data-signature-placeholder="consultant">서명/인</span></div><div class="sig-row"><span>담당 연락처</span><strong data-bind="consultantPhone"></strong></div><div class="sig-row"><span>고객상담센터</span><strong>1688-2684</strong></div>
+        </div>
+      </div>
+    </div>
+    <div class="page-foot"><div><strong>비벨온 그룹 경영지원센터</strong>www.bivelon.com · TEL 1688-2684 · FAX 0504-417-4620</div><span class="page-num">5 / 5</span><b>BIVELON GROUP</b></div>
+  </article>
+  <!-- 견적서 내용 수정 위치 -->
+  <article class="page" id="quotePage">
+    <div class="page-head"><div class="brandline"><div class="mark">BIVE<span class="gold-type">LON</span></div><div><strong>비벨온 그룹 경영지원센터</strong><small>BIVELON GROUP · MANAGEMENT SUPPORT CENTER</small></div></div><span class="tag">QUOTATION</span></div>
+    <div class="quote-meta" style="display:flex;justify-content:space-between;margin-top:12px;padding-bottom:9px;border-bottom:1px solid #d5d5d5;color:#111b35;font-weight:800"><span>문서번호　<span data-bind="quoteNo"></span></span><span>견적일자　<span data-bind="date"></span></span></div>
+    <h2 class="quote-title" style="text-align:center;margin:12px 0;color:#111b35;font-size:27px">심화경영자문 용역 사전 견적서</h2>
+    <div class="quote-target" style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 18px;border-radius:5px;background:#111b35;color:#f1ce81"><div><small style="display:block;color:#aebed0;font-size:10px;font-weight:900">TARGET FUND &amp; PROJECT</small><strong style="display:block;color:white" data-bind="purpose"></strong></div><span>목표 자금(예상치) <b data-bind="target"></b></span></div>
+    <h3 class="quote-section-title" style="margin:7px 0 6px;padding-left:10px;border-left:4px solid #d2a33a;color:#111b35;font-size:16px">과업 단계별 수수료 산출 내역 및 납품 산출물</h3>
+    <table style="width:100%;border-collapse:collapse;font-size:10.5px;line-height:1.5">
+      <colgroup><col style="width:4%"><col style="width:22%"><col style="width:32%"><col style="width:26%"><col style="width:16%"></colgroup>
+      <thead><tr style="background:#111b35;color:white"><th style="padding:7px 5px">P</th><th>과업명</th><th>세부 수행 내용</th><th>납품 산출물</th><th>금액(원)</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><b>경영 기초진단 및 재무분석</b></td><td>— 사업자 신용등급 분석 및 재무상태 점검<br>— 업종별 정책자금 매칭 분석<br>— 수혜이력 및 중복지원 여부 확인</td><td>『경영진단 분석보고서』</td><td class="phase-amount" data-phase="1">0</td></tr>
+        <tr><td>2</td><td><b>자금전략 설계 및 기관 매칭</b></td><td>— 자금 종류 / 한도 / 금리 비교분석<br>— 최적 자금 포트폴리오 설계<br>— 신청 시기 및 순서 전략 수립</td><td>『자금조달 전략설계서』</td><td class="phase-amount" data-phase="2">0</td></tr>
+        <tr><td>3</td><td><b>사업계획서 구조화 및 신청</b></td><td>— 사업 현황 및 성장전략 구조화 지도<br>— 자금 사용계획서 / 배분표 설계 가이드<br>— 매출추정 / 손익분석 근거자료 검토</td><td>『사업계획서 검토의견서』</td><td class="phase-amount" data-phase="3">0</td></tr>
+        <tr><td>4</td><td><b>심사 대응 및 실사 방어</b></td><td>— 심사기준별 예상 질의 분석<br>— 면접 시나리오 설계 및 모의 대응<br>— 현장실사 대비 체크포인트 가이드</td><td>『심사 대응 가이드북』</td><td class="phase-amount" data-phase="4">0</td></tr>
+        <tr><td>5</td><td><b>자금집행 관리 및 증빙 체계</b></td><td>— 자금 집행 절차 및 증빙 가이드<br>— 사후점검(모니터링) 대비 자문<br>— 증빙서류 체계 설계 및 체크리스트</td><td>『자금집행 가이드 &amp; 증빙 체크리스트』</td><td class="phase-amount" data-phase="5">0</td></tr>
+        <tr><td>6</td><td><b>사후 경영자문 및 추가전략</b></td><td>— 재무구조 변동 분석 및 개선 방향<br>— 추가 자금연계 전략 수립<br>— 신용등급 관리 플랜</td><td>『사후 경영자문 보고서』</td><td class="phase-amount" data-phase="6">0</td></tr>
+        <tr style="background:#f7f0e1;border-bottom:3px solid #d2a33a;color:#111b35;font-weight:900"><td colspan="4" style="text-align:center">총 견적 합계 (최대 과업 기준)</td><td style="text-align:right"><span data-bind="supply"></span></td></tr>
+      </tbody>
+    </table>
+    <div class="totals">
+      <div><small>용역 수수료 공급가액</small><b><span data-bind="supply"></span>원</b></div><div><small>부가가치세 (10%)</small><b><span data-bind="vat"></span>원</b></div><div class="grand"><small>총 견적금액 (VAT 포함)</small><b><span data-bind="grand"></span>원</b><small data-bind="korean"></small></div>
+    </div>
+    <div class="special">
+      <h3>【특약사항】 자문료 성격 및 과업 범위 변동에 따른 최종 정산 합의</h3>
+      <p>① 본 견적서의 총 용역비는 자금 조달의 성공 여부나 최종 조달 금액에 비례하여 산정되는 성공보수가 아니며, "갑"의 프로젝트 목표 달성을 위해 "을"이 수행 가능한 <b>최대 과업 범위(P1~P6)</b>를 사정하여, 투입 전문 인력의 숙련도 및 과업별 업무 난이도를 기준으로 산정한 <b>'기준 정액'</b>입니다.</p>
+      <p>② 【최종 정산】 프로젝트 종결 시, "을"은 『과업 수행 완료 확인서』를 교부하고, 각 과업 단계별 실제 수행 범위와 업무 강도를 반영한 『최종 청구서(Invoice)』를 발행합니다. 미수행 또는 경량 수행된 과업의 단가는 축소되며, <b>최종 청구 금액은 상기 총 견적 합계를 초과하지 아니합니다.</b></p>
+      <p>③ 【과업 확장】 프로젝트 진행 중 추가 기관 연계 등으로 당초 과업 외 신규 업무가 발생한 경우, "을"은 추가 과업에 대한 별도 견적을 제시하고, 양 당사자 합의 후 추가 청구서를 발행합니다.</p>
+      <p>④ 【산출물 납품】 "을"은 각 과업 단계별로 상기 표의 "납품 산출물"을 "갑"에게 교부하며, 이는 과업 수행의 객관적 증거로서 완료 확인 및 최종 정산의 기초가 됩니다.</p>
+      <p>⑤ "갑"은 "을"이 청구서를 발행한 날로부터 <b>7일 이내</b>에 지정 계좌로 청구 금액을 지급합니다.</p>
+      <p data-bind="specialTerms" style="white-space:pre-wrap"></p>
+    </div>
+    <p class="quote-confirm" style="text-align:center;margin:8px 0;color:#111b35;font-weight:900">위 산출 내역 및 특약사항에 기반하여 본 견적에 합의합니다.</p>
+    <div class="quote-signs">
+      <div class="sig-card"><h3>의뢰인 (갑)</h3><strong class="bound" data-bind="company"></strong><div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">대표자: <b><span data-bind="representative"></span><img class="sig-img" data-signature="client" alt="서명"><span class="sig-placeholder" data-signature-placeholder="client">서명/인</span></b></div></div>
+      <div class="sig-card"><h3>수임인 (을)</h3><strong>비벨온 그룹 · 경영지원센터</strong><div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">담당 컨설턴트: <b><span data-bind="consultant"></span><img class="sig-img" data-signature="consultant" alt="서명"><span class="sig-placeholder" data-signature-placeholder="consultant">서명/인</span></b></div></div>
+    </div>
+    <div class="page-foot"><div><strong>비벨온 그룹 경영지원센터</strong>www.bivelon.com · TEL 1688-2684 · FAX 0504-417-4620</div><span class="page-num">견적서</span><b>BIVELON GROUP</b></div>
+  </article>
+
+</main>
+  <aside class="panel" aria-label="계약 정보 입력">
+    <div class="group"><h2 class="group-title">고객 정보</h2>
+      <div class="field"><label>상호 (고객사명) *</label><input data-field="company" placeholder="예: 주식회사 ○○○○○"></div>
+      <div class="field"><label>대표자명 *</label><input data-field="representative" placeholder="예: 김○○"></div>
+      <div class="grid2"><div class="field"><label>사업자등록번호 *</label><input data-field="businessNumber" inputmode="numeric" placeholder="숫자 입력"></div><div class="field"><label>연락처 *</label><input data-field="phone" inputmode="tel" placeholder="010-0000-0000"></div></div>
+      <div class="field"><label>이메일 *</label><input data-field="email" type="email" placeholder="name@example.com"></div>
+    </div>
+    <div class="group"><h2 class="group-title">비벨온 담당자</h2><div class="grid2"><div class="field"><label>담당 컨설턴트</label><input data-field="consultant"></div><div class="field"><label>담당자 연락처</label><input data-field="consultantPhone" inputmode="tel"></div></div></div>
+    <div class="group"><h2 class="group-title">계약 조건</h2><div class="field"><label>연간 자문료 (부가세 별도) *</label><input data-field="annualFee" type="number" min="0" step="10000" placeholder="예: 1,000,000"></div></div>
+    <div class="group"><h2 class="group-title">견적서 설정</h2>
+      <div class="field"><label>자금명 / 사업 목적 *</label><input data-field="purpose"></div>
+      <div class="field"><label>목표 자금액 (최대치)</label><input data-field="target" inputmode="numeric" placeholder="예: 100,000,000"></div>
+      <div class="field"><label>용역 수수료 견적액 (공급가액)</label><input data-field="supply" type="number" min="0" step="10000" placeholder="직접 입력 또는 과업별 자동 합계"></div>
+      <details class="breakdown"><summary>과업별 금액 입력 (선택)</summary>
+        <div class="field"><label>P1 경영 기초진단 및 재무분석</label><input type="number" min="0" step="10000" data-phase-input="1" placeholder="0"></div><div class="field"><label>P2 자금전략 설계 및 기관 매칭</label><input type="number" min="0" step="10000" data-phase-input="2" placeholder="0"></div><div class="field"><label>P3 사업계획서 구조화 및 신청</label><input type="number" min="0" step="10000" data-phase-input="3" placeholder="0"></div><div class="field"><label>P4 심사 대응 및 실사 방어</label><input type="number" min="0" step="10000" data-phase-input="4" placeholder="0"></div><div class="field"><label>P5 자금집행 관리 및 증빙 체계</label><input type="number" min="0" step="10000" data-phase-input="5" placeholder="0"></div><div class="field"><label>P6 사후 경영자문 및 추가전략</label><input type="number" min="0" step="10000" data-phase-input="6" placeholder="0"></div>
+      </details>
+      <p class="note">과업별 금액을 입력하면 공급가액이 자동 합산됩니다. 총액을 직접 입력하면 세부 과업 금액은 '총괄 견적'으로 표시됩니다.</p>
+      <div class="field"><label>특약사항 기재 (계약서 제17조)</label><textarea data-field="specialTerms" placeholder="특약사항을 입력하세요 (선택 사항)"></textarea></div>
+    </div>
+    <p class="note">오른쪽 입력 내용은 미리보기에 즉시 반영됩니다. PDF 버튼을 누른 다음 인쇄 창에서 'PDF로 저장'을 선택하세요.</p>
+    <button type="button" class="sign-cta" onclick="openSignature()">✍ 사인하기</button>
+    <div class="sign-status" id="signStatus"></div>
+  </aside>
+</div>
+<div class="dialog" id="signDialog" role="dialog" aria-modal="true" aria-labelledby="signTitle">
+  <div class="dialog-box"><h2 id="signTitle">전자 서명 입력</h2><p>서명할 당사자를 선택한 뒤 아래 칸에 손가락이나 마우스로 서명해 주세요.</p>
+    <select id="signRole" aria-label="서명 당사자"><option value="client">의뢰인 "갑" 대표자</option><option value="consultant">수임인 "을" 담당 컨설턴트</option></select>
+    <canvas id="sigCanvas" aria-label="여기에 서명"></canvas>
+    <div class="dialog-actions"><div><button class="cancel" type="button" onclick="clearSignature()">지우기</button> <button class="cancel" type="button" onclick="closeSignature()">취소</button></div><button class="save" type="button" onclick="saveSignature()">서명 적용</button></div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+</div>
+<script>
+/* 전자계약서 기본값 및 계산 로직 수정 위치 */
+(function(){
+  function selectionTouchesDocument(){
+    var selection=window.getSelection();
+    if(!selection||selection.isCollapsed)return false;
+    for(var i=0;i<selection.rangeCount;i++){
+      var range=selection.getRangeAt(i);
+      if(Array.from(document.querySelectorAll('.page')).some(function(page){return range.intersectsNode(page)}))return true;
+    }
+    return false;
+  }
+  ['selectstart','dragstart','contextmenu'].forEach(function(eventName){
+    document.addEventListener(eventName,function(event){
+      var target=event.target instanceof Element?event.target:event.target.parentElement;
+      if(target&&target.closest('.page'))event.preventDefault();
+    });
+  });
+  ['copy','cut'].forEach(function(eventName){
+    document.addEventListener(eventName,function(event){
+      var target=event.target instanceof Element?event.target:event.target.parentElement;
+      if((target&&target.closest('.page'))||selectionTouchesDocument())event.preventDefault();
+    });
+  });
+  var defaults={company:'',representative:'',businessNumber:'',phone:'',email:'',consultant:'박동건',consultantPhone:'010-5945-9222',annualFee:'',purpose:'정책자금 (종합) 조달 목적',target:'',supply:'',specialTerms:''};
+  var contractCaseId=new URLSearchParams(window.location.search).get('case')||'';
+  var draftKey=contractCaseId?'bivelon_contract_draft_'+contractCaseId:'';
+  var signatures={client:'',consultant:''}, manualTotal=true, canvas=document.getElementById('sigCanvas'), ctx=canvas.getContext('2d'), drawing=false, ink=false, timer, draftRestored=false, handshakeTimer;
+  function val(key){var el=document.querySelector('[data-field="'+key+'"]');return el?el.value.trim():''}
+  function num(value){return Number(String(value||'').replace(/[^\d]/g,''))||0}
+  function money(value){return Math.round(Number(value)||0).toLocaleString('en-US')}
+  function dateParts(){var a=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date()).split('-');return a}
+  function dateText(){var a=dateParts();return a[0]+'년 '+Number(a[1])+'월 '+Number(a[2])+'일'}
+  function docDay(){return dateParts().join('')}
+  function docDate(){return dateParts().join('/')}
+  function supply(){return manualTotal?num(val('supply')):Array.from(document.querySelectorAll('[data-phase-input]')).reduce(function(t,x){return t+num(x.value)},0)}
+  function koreanAmount(value){
+    var n=Math.max(0,Math.floor(Number(value)||0));if(!n)return '금 영원 정';
+    var d=['','일','이','삼','사','오','육','칠','팔','구'],u=['','십','백','천'],big=['','만','억','조','경'],groups=[];
+    while(n>0&&groups.length<big.length){groups.push(n%10000);n=Math.floor(n/10000)}
+    var out='';groups.forEach(function(g,gi){if(!g)return;var part='';for(var i=0;i<4;i++){var digit=Math.floor(g/Math.pow(10,3-i))%10;if(digit)part+=(digit===1&&i!==3?'':d[digit])+u[3-i]}out=part+big[gi]+out});
+    return '금 '+out+'원 정'
+  }
+  function bind(name,value,fallback){document.querySelectorAll('[data-bind="'+name+'"]').forEach(function(el){el.textContent=value||fallback||''})}
+  function saveDraft(){
+    if(!draftKey)return;
+    var fields={};Object.keys(defaults).forEach(function(k){fields[k]=document.querySelector('[data-field="'+k+'"]').value});
+    var phaseValues=Array.from(document.querySelectorAll('[data-phase-input]')).map(function(x){return x.value});
+    try{localStorage.setItem(draftKey,JSON.stringify({fields:fields,phaseValues:phaseValues,signatures:signatures,manualTotal:manualTotal}))}catch(e){}
+  }
+  function restoreDraft(){
+    if(!draftKey)return;
+    try{
+      var saved=JSON.parse(localStorage.getItem(draftKey)||'null');if(!saved)return;
+      Object.keys(defaults).forEach(function(k){if(saved.fields&&saved.fields[k]!==undefined)document.querySelector('[data-field="'+k+'"]').value=saved.fields[k]});
+      document.querySelectorAll('[data-phase-input]').forEach(function(input,index){input.value=saved.phaseValues&&saved.phaseValues[index]!==undefined?saved.phaseValues[index]:''});
+      if(saved.signatures)signatures=saved.signatures;
+      if(typeof saved.manualTotal==='boolean')manualTotal=saved.manualTotal;
+      draftRestored=true;
+    }catch(e){}
+  }
+  function applyCustomerData(customer){
+    if(!customer||draftRestored)return;
+    ['company','representative','phone','purpose'].forEach(function(key){if(customer[key])document.querySelector('[data-field="'+key+'"]').value=customer[key]});
+    draftRestored=true;render();saveDraft();
+  }
+  function render(){
+    var fee=supply(),vat=Math.round(fee*.1),grand=fee+vat,company=val('company')||'{{상호명}}';
+    bind('company',val('company'),'{{상호명}}');bind('representative',val('representative'),'{{대표자명}}');bind('businessNumber',val('businessNumber'),'{{사업자등록번호}}');
+    bind('phone',val('phone'),'{{연락처}}');bind('email',val('email'),'{{이메일}}');bind('consultant',val('consultant'),'{{담당자명}}');bind('consultantPhone',val('consultantPhone'),'{{담당자 연락처}}');
+    bind('annualFee',val('annualFee')?money(num(val('annualFee'))):'{{연간자문료}}');bind('specialTerms',val('specialTerms'),'');
+    bind('date',dateText());bind('contractNo','BIV-CTR-'+docDate());bind('quoteNo','BIV-EST-'+docDate());bind('toParty',company+' '+(val('representative')||'{{대표자명}}')+' 귀하');
+    bind('purpose',val('purpose')||'정책자금 (종합) 조달 목적');bind('target',val('target')?money(num(val('target')))+'원':'금액 미지정');
+    bind('supply',money(fee));bind('vat',money(vat));bind('grand',money(grand));bind('korean',koreanAmount(grand));
+    document.querySelectorAll('[data-phase]').forEach(function(cell){var input=document.querySelector('[data-phase-input="'+cell.dataset.phase+'"]');cell.textContent=manualTotal&&fee?'총괄 견적':money(input?num(input.value):0)});
+    document.getElementById('signStatus').innerHTML='의뢰인 대표자 서명: '+(signatures.client?'완료':'미입력')+'<br>비벨온 담당자 서명: '+(signatures.consultant?'완료':'미입력');
+    document.querySelectorAll('[data-signature]').forEach(function(img){var role=img.dataset.signature;if(signatures[role]){img.src=signatures[role];img.style.display='inline-block'}else{img.removeAttribute('src');img.style.display='none'}});
+    document.querySelectorAll('[data-signature-placeholder]').forEach(function(el){el.style.display=signatures[el.dataset.signaturePlaceholder]?'none':'inline-flex'});
+  }
+  function toast(message){var el=document.getElementById('toast');el.textContent=message;el.classList.add('show');clearTimeout(timer);timer=setTimeout(function(){el.classList.remove('show')},2200)}
+  document.querySelectorAll('[data-field]').forEach(function(input){input.addEventListener('input',function(){if(input.dataset.field==='supply'){manualTotal=true;document.querySelectorAll('[data-phase-input]').forEach(function(x){x.value=''})}render();saveDraft()})});
+  document.querySelectorAll('[data-phase-input]').forEach(function(input){input.addEventListener('input',function(){manualTotal=false;var sum=Array.from(document.querySelectorAll('[data-phase-input]')).reduce(function(t,x){return t+num(x.value)},0);document.querySelector('[data-field="supply"]').value=sum||'';render();saveDraft()})});
+  window.resetContract=function(){Object.keys(defaults).forEach(function(k){document.querySelector('[data-field="'+k+'"]').value=defaults[k]});document.querySelectorAll('[data-phase-input]').forEach(function(x){x.value=''});signatures={client:'',consultant:''};manualTotal=true;draftRestored=true;render();saveDraft();toast('입력 내용과 서명을 초기화했습니다.')};
+  window.downloadPdf=function(){render();window.print()};
+  function resizeCanvas(){var r=canvas.getBoundingClientRect(),ratio=Math.max(window.devicePixelRatio||1,1);canvas.width=Math.max(1,Math.round(r.width*ratio));canvas.height=Math.max(1,Math.round(r.height*ratio));ctx=canvas.getContext('2d');ctx.setTransform(ratio,0,0,ratio,0,0);ctx.strokeStyle='#162d49';ctx.lineWidth=2.4;ctx.lineCap='round';ctx.lineJoin='round'}
+  function point(e){var r=canvas.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top}}
+  canvas.addEventListener('pointerdown',function(e){e.preventDefault();drawing=true;ink=true;canvas.setPointerCapture(e.pointerId);var p=point(e);ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(p.x+.01,p.y+.01);ctx.stroke()});
+  canvas.addEventListener('pointermove',function(e){if(!drawing)return;e.preventDefault();var p=point(e);ctx.lineTo(p.x,p.y);ctx.stroke()});
+  ['pointerup','pointercancel','lostpointercapture'].forEach(function(e){canvas.addEventListener(e,function(){drawing=false})});
+  window.openSignature=function(){document.getElementById('signDialog').classList.add('open');setTimeout(resizeCanvas,20)};
+  window.closeSignature=function(){document.getElementById('signDialog').classList.remove('open');drawing=false};
+  window.clearSignature=function(){resizeCanvas();ctx.clearRect(0,0,canvas.width,canvas.height);ink=false};
+  window.saveSignature=function(){if(!ink){toast('서명을 먼저 입력해 주세요.');return}var role=document.getElementById('signRole').value;signatures[role]=canvas.toDataURL('image/png');render();saveDraft();closeSignature();toast(role==='client'?'의뢰인 대표자 서명을 적용했습니다.':'담당 컨설턴트 서명을 적용했습니다.');window.clearSignature()};
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeSignature()});
+  Object.keys(defaults).forEach(function(k){document.querySelector('[data-field="'+k+'"]').value=defaults[k]});
+  restoreDraft();
+  window.addEventListener('message',function(event){
+    if(event.source!==window.opener||!event.data||event.data.type!=='bivelon-contract-data'||event.data.caseId!==contractCaseId)return;
+    if(handshakeTimer)clearInterval(handshakeTimer);
+    applyCustomerData(event.data.customer);
+  });
+  if(contractCaseId&&window.opener){
+    var attempts=0;
+    handshakeTimer=setInterval(function(){
+      if(!window.opener||window.opener.closed||attempts>=40){clearInterval(handshakeTimer);return}
+      window.opener.postMessage({type:'bivelon-contract-ready',caseId:contractCaseId},'*');attempts++;
+    },250);
+  }
+  render();
+  window.setInterval(render,60000);
+  window.addEventListener('focus',render);
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)render()});
+})();
+</script>
+</body>
+</html>
