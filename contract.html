@@ -92,7 +92,7 @@ button{cursor:pointer}
         <li>"갑"의 경영환경 분석 및 개선 방안 제시</li><li>재무·회계·세무·인사·노무 등 경영 관련 자문</li><li>정부 정책자금·보증·금융기관 대출 등 자금 조달 관련 자문</li><li>사업계획서·제안서 등 경영 관련 문서 작성·검토 지원</li><li>기타 당사자 간 합의한 경영 자문 업무</li>
       </ol><p>본 조의 업무 수행 시, 소통(유선, 메신저, 대면 등)이 발생한 날은 해당 업체의 재무 데이터 분석 및 전략 구상을 위한 "을"의 상시 업무 대기 및 집중 분석 시간이 포함된 것으로 보아, 실제 소통 시간과 관계없이 합리적인 범위 내에서 1일로 인정한다.</p></section>
       <section class="clause"><h2>제4조 【계약기간】</h2><p>본 자문 계약의 기간은 계약 체결일로부터 365일(1년)로 정한다.</p></section>
-      <section class="clause"><h2>제5조 【자문인 고용비 및 자문료의 지급】</h2><ol><li><b>자문인 고용비</b><div class="subpoints">(기준) 연매출 10억 이상 기업 100만원(1개월 약 8만원)<br>연매출 10억 미만 기업 50만원(1개월 약 4만원)<br>본 계약 체결과 동시에 금 <b class="bound" data-bind="annualFee"></b>원(부가세 별도)을 지급한다.</div></li></ol></section>
+      <section class="clause"><h2>제5조 【자문인 고용비 및 자문료의 지급】</h2><ol><li><b>자문인 고용비</b><div class="subpoints">(기준) 연매출 10억 이상 기업 100만원(1개월 약 8만원)<br>연매출 10억 미만 기업 50만원(1개월 약 4만원)<br>계약금 및 자문료의 산정·지급 방법은 본 조 제2항에 따른다.</div></li></ol></section>
     </div>
     <div class="page-foot"><div><strong>비벨온 그룹 경영지원센터</strong>www.bivelon.com · TEL 055-7878-6361 · E-Mail pfc9222@naver.com</div><span class="page-num">1 / 5</span><b>BIVELON GROUP</b></div>
   </article>
@@ -102,8 +102,11 @@ button{cursor:pointer}
     <div class="page-head"><div class="brandline"><div class="mark">BIVE<span class="gold-type">LON</span></div><div><strong>비벨온 그룹 경영지원센터</strong><small>BIVELON GROUP · MANAGEMENT SUPPORT CENTER</small></div></div><span class="tag">AGREEMENT</span></div>
     <div class="page-body">
       <section class="clause"><ol start="2">
-        <li><b>자문료의 책정</b><p>용역 수수료 공급가액은 정책자금 최종 승인 금액의 5%로 산정한다. 최종 승인 전 견적은 입력한 목표 자금액에 5%를 적용하여 산출하며, 최종 승인 금액이 확정되면 해당 금액을 기준으로 공급가액을 확정한다. 부가가치세 10%는 별도 청구한다.</p>
-          <div class="subpoints">1) 희망 자문업무 [<span class="bound" data-bind="consultingRequest"></span>]<br>2) 예상 용역 수수료 공급가액 [<span class="bound" data-bind="supply"></span>원](부가세 별도)</div>
+        <li><b>자문료의 책정</b><div class="subpoints">
+          2-1) 희망 자문업무 [<span class="bound" data-bind="consultingRequest"></span>]<br>
+          2-2) 본 계약 체결과 동시에 금 <b class="bound" data-bind="contractDeposit"></b>원을 계약금으로 지급한다. 본 계약 체결과 동시에 계약금 지급이 어려운 경우에는 첫 자문료 발생 시 해당 자문료와 계약금을 함께 지급한다.<br>
+          2-3) 수수료율은 최종 승인 금액의 <b class="bound" data-bind="feeRate"></b>%로 하며, 예상 용역 수수료 공급가액은 <b class="bound" data-bind="supply"></b>원(부가세 별도)으로 산정한다. 최종 승인 금액 확정 후 해당 승인 금액에 약정 수수료율을 적용하여 최종 공급가액을 확정하고, 부가가치세 10%는 별도 청구한다.
+        </div>
         </li>
         <li><b>자문료의 지급 및 위약금</b><p>자문료는 자문범위에 따른 단계별 수행 또는 자문 제공 사실을 기준으로, "을"의 통지일로부터 7일 이내 지급한다. "갑"의 계약 파기, 자료 미제공, 허위자료 제공, 연락두절 등 신의성실 원칙 위반행위가 발생한 경우 "을"은 다음 각 호를 위약금(손해배상의 예정 및 위약벌)으로 합산하여 청구한다.</p>
           <div class="subpoints">1) 실무 투입 비용(월 8시간 기준): 제3조 【자문인의 역할】에 따른 업무 수행 일수 × 당해 연도 최저임금법상 일급<br>2) 위약벌: 미지급 자문료와 동일한 금액을 위약벌로 한다. (손해배상과 별도로 청구 가능)<br>위 위약금은 손해배상액의 예정으로 하며, 별도의 손해가 발생하는 경우 추가 청구할 수 있다.</div>
@@ -187,7 +190,7 @@ button{cursor:pointer}
         <tr><td>4</td><td><b>심사 대응 및 실사 방어</b></td><td>— 심사기준별 예상 질의 분석<br>— 면접 시나리오 설계 및 모의 대응<br>— 현장실사 대비 체크포인트 가이드</td><td>『심사 대응 가이드북』</td><td class="phase-amount" data-phase="4">0</td></tr>
         <tr><td>5</td><td><b>자금집행 관리 및 증빙 체계</b></td><td>— 자금 집행 절차 및 증빙 가이드<br>— 사후점검(모니터링) 대비 자문<br>— 증빙서류 체계 설계 및 체크리스트</td><td>『자금집행 가이드 &amp; 증빙 체크리스트』</td><td class="phase-amount" data-phase="5">0</td></tr>
         <tr><td>6</td><td><b>사후 경영자문 및 추가전략</b></td><td>— 재무구조 변동 분석 및 개선 방향<br>— 추가 자금연계 전략 수립<br>— 신용등급 관리 플랜</td><td>『사후 경영자문 보고서』</td><td class="phase-amount" data-phase="6">0</td></tr>
-        <tr style="background:#f7f0e1;border-bottom:3px solid #d2a33a;color:#111b35;font-weight:900"><td colspan="4" style="text-align:center">용역 수수료 공급가액 (최종 승인 금액의 5%)</td><td style="text-align:right"><span data-bind="supply"></span></td></tr>
+        <tr style="background:#f7f0e1;border-bottom:3px solid #d2a33a;color:#111b35;font-weight:900"><td colspan="4" style="text-align:center">용역 수수료 공급가액 (최종 승인 금액의 <span data-bind="feeRate"></span>%)</td><td style="text-align:right"><span data-bind="supply"></span></td></tr>
       </tbody>
     </table>
     <div class="totals">
@@ -195,8 +198,8 @@ button{cursor:pointer}
     </div>
     <div class="special">
       <h3>【특약사항】 최종 승인 금액 기준 용역 수수료 및 최종 정산</h3>
-      <p>① 본 견적서의 예상 용역 수수료 공급가액은 입력한 목표 자금액의 <b>5%</b>이며, 정책자금 최종 승인 금액 확정 후에는 실제 승인 금액의 <b>5%</b>를 최종 공급가액으로 산정합니다.</p>
-      <p>② 부가가치세는 공급가액의 <b>10%</b>(최종 승인 금액의 <b>0.5%</b>)를 별도로 산정합니다. 따라서 최종 견적금액은 최종 승인 금액의 5%에 해당하는 공급가액과 그 공급가액의 10%에 해당하는 부가가치세를 합산한 금액입니다.</p>
+      <p>① 본 견적서의 예상 용역 수수료 공급가액은 입력한 희망 자문업무 금액의 약정 수수료율(<b><span data-bind="feeRate"></span>%</b>)을 적용하여 산정하며, 정책자금 최종 승인 금액 확정 후에는 실제 승인 금액에 같은 수수료율을 적용하여 최종 공급가액을 산정합니다.</p>
+      <p>② 부가가치세는 공급가액의 <b>10%</b>를 별도로 산정합니다. 따라서 최종 견적금액은 최종 승인 금액에 약정 수수료율을 적용한 공급가액과 그 공급가액의 10%에 해당하는 부가가치세를 합산한 금액입니다.</p>
       <p>③ 최종 승인 금액이 확정되면 "을"은 확정된 공급가액과 부가가치세를 기재한 최종 청구서를 발행합니다.</p>
       <p>④ "을"은 각 과업 단계별로 상기 표의 "납품 산출물"을 "갑"에게 교부하며, 이는 과업 수행의 객관적 증거로서 완료 확인의 기초가 됩니다.</p>
       <p>⑤ "갑"은 "을"이 청구서를 발행한 날로부터 <b>7일 이내</b>에 지정 계좌로 청구 금액을 지급합니다.</p>
@@ -218,13 +221,14 @@ button{cursor:pointer}
       <div class="field"><label>이메일 *</label><input data-field="email" type="email" placeholder="name@example.com"></div>
     </div>
     <div class="group"><h2 class="group-title">비벨온 담당자</h2><div class="grid2"><div class="field"><label>담당 컨설턴트</label><input data-field="consultant"></div><div class="field"><label>담당자 연락처</label><input data-field="consultantPhone" inputmode="tel"></div></div></div>
-    <div class="group"><h2 class="group-title">계약 조건</h2><div class="field"><label>자문인 고용비 (부가세 별도) *</label><input data-field="annualFee" type="text" inputmode="numeric" placeholder="예: 1,000,000"></div></div>
+    <div class="group"><h2 class="group-title">계약 조건</h2><div class="field"><label>계약금 (부가세 별도) *</label><input data-field="contractDeposit" type="text" inputmode="numeric" placeholder="예: 1,000,000"></div></div>
     <div class="group"><h2 class="group-title">계약서 특약사항 (제7조)</h2><div class="field"><label>특약 내용 (선택)</label><textarea data-field="specialTerms" placeholder="제7조에 추가할 특약사항을 입력하세요."></textarea></div></div>
     <div class="group"><h2 class="group-title">견적서 설정</h2>
-      <div class="field"><label>자금명 / 사업 목적 *</label><input data-field="purpose"></div>
-      <div class="field"><label>목표 자금액 (최종 승인 금액 입력 시 최종 확정)</label><input data-field="target" type="text" inputmode="numeric" placeholder="예: 100,000,000"></div>
-      <div class="field"><label>예상 용역 수수료 공급가액 (목표 자금액의 5%)</label><input data-field="supply" type="text" inputmode="numeric" placeholder="목표 자금액 입력 시 자동 계산" readonly></div>
-      <p class="note">예상 공급가액은 목표 자금액의 5%, 부가가치세는 공급가액의 10%로 자동 계산됩니다. 최종 승인 금액이 확정되면 목표 자금액을 실제 승인 금액으로 갱신해 주세요.</p>
+      <div class="field"><label>희망 자문업무 / 자금명 *</label><input data-field="purpose"></div>
+      <div class="field"><label>희망 자문업무 금액 (최종 승인 금액 입력 시 최종 확정)</label><input data-field="target" type="text" inputmode="numeric" placeholder="예: 100,000,000"></div>
+      <div class="field"><label>약정 수수료율 (%)</label><input data-field="feeRate" type="number" inputmode="decimal" min="0" max="100" step="0.1" placeholder="5"></div>
+      <div class="field"><label>예상 용역 수수료 공급가액</label><input data-field="supply" type="text" inputmode="numeric" placeholder="자동 계산" readonly></div>
+      <p class="note">희망 자문업무 금액 × 약정 수수료율로 예상 공급가액을 계산합니다. 최종 승인 금액이 확정되면 금액을 갱신해 주세요. 부가가치세는 공급가액의 10%입니다.</p>
     </div>
     <p class="note">오른쪽 입력 내용은 미리보기에 즉시 반영됩니다. PDF 버튼을 누른 다음 인쇄 창에서 'PDF로 저장'을 선택하세요.</p>
     <button type="button" class="sign-cta" onclick="openSignature()">✍ 사인하기</button>
@@ -264,21 +268,22 @@ button{cursor:pointer}
       if((target&&target.closest('.page'))||selectionTouchesDocument())event.preventDefault();
     });
   });
-  var defaults={company:'',representative:'',businessNumber:'',phone:'',email:'',consultant:'박동건',consultantPhone:'010-5945-9222',annualFee:'',purpose:'정책자금 (종합) 조달 목적',target:'',supply:'',specialTerms:''};
+  var defaults={company:'',representative:'',businessNumber:'',phone:'',email:'',consultant:'박동건',consultantPhone:'010-5945-9222',contractDeposit:'',purpose:'정책자금 (종합) 조달 목적',target:'',feeRate:'5',supply:'',specialTerms:''};
   var contractCaseId=new URLSearchParams(window.location.search).get('case')||'';
   var draftKey=contractCaseId?'bivelon_contract_draft_'+contractCaseId:'';
   var signatures={client:'',consultant:''}, canvas=document.getElementById('sigCanvas'), ctx=canvas.getContext('2d'), drawing=false, ink=false, timer, draftRestored=false, handshakeTimer;
   function val(key){var el=document.querySelector('[data-field="'+key+'"]');return el?el.value.trim():''}
   function num(value){return Number(String(value||'').replace(/[^\d]/g,''))||0}
   function formatThousandsInput(input){var before=input.value,caret=input.selectionStart===null?before.length:input.selectionStart,digitsBefore=(before.slice(0,caret).match(/\d/g)||[]).length,digits=before.replace(/\D/g,''),formatted=digits.replace(/\B(?=(\d{3})+(?!\d))/g,',');input.value=formatted;var next=0,count=0;while(next<formatted.length&&count<digitsBefore){if(/\d/.test(formatted.charAt(next)))count++;next++}if(document.activeElement===input)input.setSelectionRange(next,next)}
-  var numericMoneyInputs=document.querySelectorAll('[data-field="annualFee"],[data-field="target"],[data-field="supply"],[data-phase-input]');
+  var numericMoneyInputs=document.querySelectorAll('[data-field="contractDeposit"],[data-field="target"],[data-field="supply"]');
   numericMoneyInputs.forEach(function(input){formatThousandsInput(input);input.addEventListener('input',function(){formatThousandsInput(input)})});
   function money(value){return Math.round(Number(value)||0).toLocaleString('en-US')}
   function dateParts(){var a=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date()).split('-');return a}
   function dateText(){var a=dateParts();return a[0]+'년 '+Number(a[1])+'월 '+Number(a[2])+'일'}
   function docDay(){return dateParts().join('')}
   function docDate(){return dateParts().join('/')}
-  function supply(){return Math.round(num(val('target'))*.05)}
+  function feeRate(){var rate=Number(val('feeRate'));return Number.isFinite(rate)?Math.min(100,Math.max(0,rate)):0}
+  function supply(){return Math.round(num(val('target'))*feeRate()/100)}
   function koreanAmount(value){
     var n=Math.max(0,Math.floor(Number(value)||0));if(!n)return '금 영원 정';
     var d=['','일','이','삼','사','오','육','칠','팔','구'],u=['','십','백','천'],big=['','만','억','조','경'],groups=[];
@@ -297,6 +302,7 @@ button{cursor:pointer}
     try{
       var saved=JSON.parse(localStorage.getItem(draftKey)||'null');if(!saved)return;
       Object.keys(defaults).forEach(function(k){if(saved.fields&&saved.fields[k]!==undefined)document.querySelector('[data-field="'+k+'"]').value=saved.fields[k]});
+      if(saved.fields&&saved.fields.contractDeposit===undefined&&saved.fields.annualFee!==undefined)document.querySelector('[data-field="contractDeposit"]').value=saved.fields.annualFee;
       if(saved.fields&&saved.fields.consultantPhone==='055-7878-6361')document.querySelector('[data-field="consultantPhone"]').value=defaults.consultantPhone;
       if(saved.signatures)signatures=saved.signatures;
       draftRestored=true;
@@ -311,9 +317,9 @@ button{cursor:pointer}
     var fee=supply(),vat=Math.round(fee*.1),grand=fee+vat,company=val('company')||'{{상호명}}';
     bind('company',val('company'),'{{상호명}}');bind('representative',val('representative'),'{{대표자명}}');bind('businessNumber',val('businessNumber'),'{{사업자등록번호}}');
     bind('phone',val('phone'),'{{연락처}}');bind('email',val('email'),'{{이메일}}');bind('consultant',val('consultant'),'{{담당자명}}');bind('consultantPhone',val('consultantPhone'),'{{담당자 연락처}}');
-    bind('annualFee',val('annualFee')?money(num(val('annualFee'))):'{{연간자문료}}');var specialTerms=val('specialTerms');bind('specialTerms',specialTerms,'');
+    bind('contractDeposit',val('contractDeposit')?money(num(val('contractDeposit'))):'{{계약금}}');var specialTerms=val('specialTerms');bind('specialTerms',specialTerms,'');
     bind('date',dateText());bind('contractNo','BIV-CTR-'+docDate());bind('quoteNo','BIV-EST-'+docDate());bind('toParty',company+' '+(val('representative')||'{{대표자명}}')+' 귀하');
-    bind('purpose',val('purpose')||'정책자금 (종합) 조달 목적');bind('target',val('target')?money(num(val('target')))+'원':'금액 미지정');bind('consultingRequest',(val('target')?money(num(val('target')))+'원 가량의 ':'')+(val('purpose')||'사업자금 확보')+'에 대한 자문');
+    bind('purpose',val('purpose')||'정책자금 (종합) 조달 목적');bind('target',val('target')?money(num(val('target')))+'원':'금액 미지정');bind('feeRate',String(feeRate()));var targetAmount=num(val('target')),consultingRequest=(val('purpose')||'사업자금 확보')+(targetAmount?' (희망 자문업무 금액 '+money(targetAmount)+'원)':'')+' 관련 자문';bind('consultingRequest',consultingRequest);
     bind('supply',money(fee));bind('vat',money(vat));bind('grand',money(grand));bind('korean',koreanAmount(grand));
     var supplyInput=document.querySelector('[data-field="supply"]');if(supplyInput)supplyInput.value=fee?money(fee):'';
     document.querySelectorAll('[data-phase]').forEach(function(cell){cell.textContent=fee?'포함':'—'});
@@ -322,7 +328,7 @@ button{cursor:pointer}
     document.querySelectorAll('[data-signature-placeholder]').forEach(function(el){el.style.display=signatures[el.dataset.signaturePlaceholder]?'none':'inline-flex'});
   }
   function toast(message){var el=document.getElementById('toast');el.textContent=message;el.classList.add('show');clearTimeout(timer);timer=setTimeout(function(){el.classList.remove('show')},2200)}
-  document.querySelectorAll('[data-field]').forEach(function(input){input.addEventListener('input',function(){render();saveDraft()})});
+  document.querySelectorAll('[data-field]').forEach(function(input){input.addEventListener('input',function(){if(input.dataset.field==='feeRate'&&Number(input.value)>100)input.value='100';render();saveDraft()})});
   window.resetContract=function(){Object.keys(defaults).forEach(function(k){document.querySelector('[data-field="'+k+'"]').value=defaults[k]});signatures={client:'',consultant:''};draftRestored=true;render();saveDraft();toast('입력 내용과 서명을 초기화했습니다.')};
   window.downloadPdf=function(){render();window.print()};
   function resizeCanvas(){var r=canvas.getBoundingClientRect(),ratio=Math.max(window.devicePixelRatio||1,1);canvas.width=Math.max(1,Math.round(r.width*ratio));canvas.height=Math.max(1,Math.round(r.height*ratio));ctx=canvas.getContext('2d');ctx.setTransform(ratio,0,0,ratio,0,0);ctx.strokeStyle='#162d49';ctx.lineWidth=2.4;ctx.lineCap='round';ctx.lineJoin='round'}
