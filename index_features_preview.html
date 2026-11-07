@@ -1,0 +1,2126 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="description" content="비벨온 기업자금 진단. 정책자금, 보증, 기업지원사업을 기업 상황에 맞춰 검토하고 성장전략을 함께 설계합니다.">
+    <title>BIVELON | 고객 서비스 기능 미리보기</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+        body { font-family: 'Pretendard', sans-serif; scroll-behavior: smooth; overflow-x: hidden; }
+
+        /* 전체 드래그 금지 (모바일에서 UX 방해 방지를 위해 주석 처리 가능) */
+        body { -webkit-user-select: none; user-select: none; }
+        input, textarea { -webkit-user-select: text; user-select: text; }
+
+        /* 🎨 메인 컬러 테마 */
+        .bg-bivelon-primary { background-color: #102238; }
+        .text-bivelon-primary { color: #805b20; }
+        .bg-bivelon-soft { background-color: #f6f5f2; }
+
+        /* 무한 스크롤 애니메이션 */
+        @keyframes ticker {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-50%); }
+        }
+        .ticker-container { height: 320px; overflow: hidden; position: relative; }
+        @media (min-width: 768px) { .ticker-container { height: 450px; } }
+
+        .ticker-move { animation: ticker 35s linear infinite; }
+
+        /* 체크박스/라디오 버튼 커스텀 */
+        input[type="radio"], input[type="checkbox"] {
+            accent-color: #805b20;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        header { transition: all 0.4s ease; }
+        header.scrolled {
+            background-color: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            padding-top: 0.75rem;
+            padding-bottom: 0.75rem;
+        }
+
+        /* 네비게이션 활성화 스타일 */
+        .nav-link.active {
+            color: #805b20 !important;
+            font-weight: 800;
+        }
+
+        #btn-apply { transition: all 0.3s ease; }
+        header.scrolled #btn-apply {
+            background-color: #edc96f !important;
+            color: #102238 !important;
+        }
+
+        /* 부드러운 펄스 애니메이션 */
+        @keyframes soft-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .group:hover .bounce-target {
+            animation: soft-pulse 1.2s ease-in-out infinite;
+        }
+
+        /* LED 빛이 회전하는 애니메이션 */
+        @keyframes rotate-gradient {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .led-border-container {
+            position: relative;
+            padding: 2px;
+            border-radius: 9999px;
+            overflow: hidden;
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .led-light {
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            top: -25%;
+            left: -25%;
+            background: conic-gradient(
+                transparent,
+                rgba(206, 158, 62, 0.8),
+                rgba(255, 226, 151, 1),
+                transparent 30%
+            );
+            animation: rotate-gradient 3s linear infinite;
+        }
+
+        .led-content {
+            position: relative;
+            background: #0c1724;
+            border-radius: 9999px;
+            padding: 6px 18px;
+            z-index: 1;
+        }
+
+        @media (min-width: 768px) {
+            .led-content { padding: 8px 24px; }
+        }
+
+        /* AI 진단/리디자인 통합 스타일 */
+        :root { --navy:#102238; --soft:#f6f5f2; }
+        * { box-sizing: border-box; }
+        input, textarea, button, select { font: inherit; }
+        .gradient-text {
+            background: linear-gradient(90deg, #fff0bb, #edc96f 55%, #f5d991);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .hero-grid {
+            background-image:
+                linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px);
+            background-size: 42px 42px;
+        }
+        .glass {
+            background: rgba(255,255,255,.09);
+            border: 1px solid rgba(255,255,255,.14);
+            backdrop-filter: blur(18px);
+        }
+        .shadow-blue { box-shadow: 0 18px 60px rgba(16,34,56,.10); }
+        .card-hover { transition: .25s ease; }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 55px rgba(15,23,42,.09);
+        }
+        .step-line:after {
+            content:'';
+            position:absolute;
+            top:26px;
+            left:calc(50% + 26px);
+            right:calc(-50% + 26px);
+            height:1px;
+            background:#9d8654;
+        }
+        @media(max-width:767px){ .step-line:after { display:none; } }
+        .fade-up { animation: fadeUp .7s ease both; }
+        @keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:none} }
+        .pulse-ring { animation: pulseRing 2.2s infinite; }
+        @keyframes pulseRing {
+            0%,100%{box-shadow:0 0 0 0 rgba(237,201,111,.25)}
+            50%{box-shadow:0 0 0 12px rgba(237,201,111,0)}
+        }
+        .progress { transition: width .3s ease; }
+
+        /* 모달 스크롤바 커스텀 */
+        .policy-scroll::-webkit-scrollbar { width: 6px; }
+        .policy-scroll::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+        .policy-scroll::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
+        .policy-scroll::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
+
+        /* =========================================
+           퀵메뉴 관련 스타일
+           ========================================= */
+        /* 퀵메뉴 기본 상태: 닫힘 */
+        #quickMenuContainer .quick-btn {
+            width: 40px;
+            touch-action: manipulation;
+        }
+
+        #quickMenuContainer .quick-btn > span {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* 태블릿 및 PC 기본 아이콘 크기 */
+        @media (min-width: 768px) {
+            #quickMenuContainer .quick-btn {
+                width: 56px;
+            }
+        }
+
+        /* 실제 탭으로 열린 상태 */
+        #quickMenuContainer.force-open .quick-btn {
+            width: 100px;
+        }
+
+        #quickMenuContainer.force-open .quick-btn > span {
+            opacity: 1;
+        }
+
+        @media (min-width: 768px) {
+            #quickMenuContainer.force-open .quick-btn {
+                width: 140px;
+            }
+        }
+
+        /* 마우스 hover는 큰 화면 + 정밀 포인터 환경에서만 허용 */
+        @media (min-width: 1025px) and (hover: hover) and (pointer: fine) {
+            #quickMenuContainer:hover .quick-btn {
+                width: 140px;
+            }
+
+            #quickMenuContainer:hover .quick-btn > span {
+                opacity: 1;
+            }
+        }
+
+        /* 스크롤 중에는 내부 패널만 투명하게 변경 */
+        #quickMenuContainer.is-scrolling > div > div:last-child {
+            background: rgba(255, 255, 255, 0.25) !important;
+            backdrop-filter: blur(8px);
+        }
+
+        /* 명함 테마: 색상·그림자만 변경하고 기존 배치와 동작은 유지합니다. */
+        body.text-gray-900 { color: #102238; }
+        body .text-gray-900, body .text-gray-800 { color: #102238; }
+        body .text-gray-700 { color: #344052; }
+        body .text-gray-600, body .text-gray-500,
+        body .text-gray-400, body .text-slate-500 { color: #596270; }
+        body .bg-gray-50, body .bg-slate-100,
+        body [class~="bg-[#f4f8ff]"] { background-color: #f6f5f2; }
+        body .bg-gray-100 { background-color: #eeece6; }
+        body .border-gray-100, body .border-blue-100 { border-color: #e2dccf; }
+        body .border-gray-200, body .border-blue-200 { border-color: #d4cbbb; }
+
+        /* 밝은 바탕의 골드 글자는 충분히 짙게 표현합니다. */
+        body .text-blue-600, body .text-blue-700,
+        body .text-cyan-700, body .text-indigo-600,
+        body [class~="text-[#0066FF]"], body .text-blue-100 { color: #805b20; }
+        body .bg-blue-50, body .bg-cyan-50, body .bg-indigo-50 { background-color: #f7f2e6; }
+        body .bg-blue-100 { background-color: #f1e6c9; }
+        body .bg-blue-600, body [class~="bg-[#0066FF]"],
+        body .bg-gray-950, body .bg-gray-800 { background-color: #102238; }
+        body .bg-blue-400 { background-color: #edc96f; }
+        body .border-blue-600 { border-color: #805b20; }
+        body [class~="hover:bg-blue-500"]:hover,
+        body [class~="hover:bg-blue-600"]:hover,
+        body [class~="hover:bg-blue-700"]:hover { background-color: #263c52; }
+        body [class~="hover:bg-blue-50"]:hover,
+        body [class~="hover:bg-cyan-50"]:hover { background-color: #f1e6c9; }
+        body [class~="hover:text-blue-600"]:hover,
+        body .group:hover [class~="group-hover:text-blue-600"] { color: #805b20; }
+        body [class~="hover:border-blue-200"]:hover,
+        body [class~="hover:border-blue-300"]:hover,
+        body [class~="focus:border-blue-500"]:focus { border-color: #805b20; }
+        body .accent-blue-600 { accent-color: #805b20; }
+        body .shadow-blue-100 { --tw-shadow-color: rgba(128,91,32,.14); }
+        body input::placeholder, body textarea::placeholder { color: #667080; }
+
+        /* 어두운 영역은 명함 앞면의 블랙·네이비와 밝은 골드를 사용합니다. */
+        body #top > section:first-child {
+            background-image: linear-gradient(90deg, rgba(7,10,14,.96) 0%, rgba(10,20,32,.91) 48%, rgba(16,34,56,.86) 100%), url('https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069') !important;
+        }
+        body [class~="bg-[#07152f]"], body #contact-section { background-color: #0c1929; }
+        body .text-blue-200, body .text-blue-300, body .text-cyan-300 { color: #f3d98e; }
+        body [class~="text-blue-100/85"], body [class~="text-blue-100/70"] { color: #e0e3e8; }
+        body [class~="text-white/45"], body [class~="text-white/50"],
+        body [class~="text-white/55"] { color: #c2c8d1; }
+        body [class~="bg-blue-600/20"], body [class~="bg-blue-500/20"] { background-color: rgba(206,158,62,.16); }
+        body [class~="bg-blue-500/10"], body [class~="bg-cyan-400/10"],
+        body [class~="bg-cyan-500/10"] { background-color: rgba(237,201,111,.08); }
+        body .led-border-container { box-shadow: 0 0 15px rgba(237,201,111,.2); }
+        body .glass { background-color: rgba(255,255,255,.07); border-color: rgba(237,201,111,.24); }
+        body #top > section:first-child .pulse-ring,
+        body #process .bg-blue-600 {
+            background-color: #edc96f;
+            color: #102238;
+        }
+        body #top > section:first-child .pulse-ring:hover { background-color: #f6db94; }
+        body #main-header:not(.scrolled) .nav-link.active { color: #f3d98e !important; }
+        body #main-header .nav-link:hover { color: #f3d98e !important; }
+        body #main-header.scrolled .nav-link:hover { color: #805b20 !important; }
+        body #main-header.scrolled #header-text { color: #102238 !important; }
+        body #main-header.scrolled #header-logo { filter: brightness(0) saturate(100%); }
+        body #btn-apply { background-color: #edc96f; color: #102238; }
+        body #btn-apply:hover { background-color: #f6db94 !important; }
+
+        /* 퀵메뉴와 선택 상태에도 같은 색상 체계를 적용합니다. */
+        body #quickMenuContainer > div > div:first-child {
+            background: conic-gradient(transparent, rgba(255,226,151,.5), rgba(206,158,62,.9), transparent 40%) !important;
+        }
+        body #quickMenuContainer > div > div:last-child {
+            background-image: linear-gradient(to bottom, rgba(7,10,14,.92), rgba(16,34,56,.92));
+            border-color: rgba(237,201,111,.3);
+        }
+        body #quickMenuContainer [class~="bg-[#0066FF]"] { background-color: #edc96f; }
+        body #quickMenuContainer [class~="bg-[#0066FF]"] .text-white { color: #102238; }
+        body .option.border-blue-600 { background-color: #f1e6c9; }
+        body input:not([type="radio"]):not([type="checkbox"]), body textarea { border-color: #b4bac1; }
+        body input:not([type="radio"]):not([type="checkbox"]):focus,
+        body textarea:focus { border-color: #805b20; box-shadow: 0 0 0 3px rgba(128,91,32,.16); }
+
+        /* 명함의 금박·레이어 질감: 요소의 크기, 간격, 위치는 유지합니다. */
+        body #top > section:first-child {
+            background-image:
+                radial-gradient(ellipse at 80% 15%, rgba(221,179,89,.18), transparent 55%),
+                linear-gradient(90deg, rgba(7,10,14,.97) 0%, rgba(10,20,32,.90) 48%, rgba(16,34,56,.80) 100%),
+                url('https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069') !important;
+            box-shadow: inset 0 -1px 0 rgba(237,201,111,.55);
+        }
+        body .hero-grid {
+            background-image:
+                radial-gradient(ellipse at 100% 0%, transparent 54%, rgba(237,201,111,.22) 54.1%, transparent 54.3%, transparent 65%, rgba(237,201,111,.12) 65.1%, transparent 65.3%),
+                linear-gradient(rgba(237,201,111,.035) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(237,201,111,.035) 1px, transparent 1px);
+            background-size: 100% 100%, 42px 42px, 42px 42px;
+        }
+        body #top > section:first-child h1 { text-shadow: 0 4px 24px rgba(0,0,0,.24); }
+        body .gradient-text { filter: drop-shadow(0 2px 10px rgba(237,201,111,.12)); }
+        body #top > section:first-child .relative.bg-white {
+            background-image: radial-gradient(ellipse at 100% 0%, rgba(237,201,111,.17), transparent 60%);
+            box-shadow: inset 0 2px 0 #edc96f, inset 0 0 0 1px rgba(237,201,111,.45), 0 28px 70px rgba(0,0,0,.32), 0 0 45px rgba(237,201,111,.06);
+        }
+        body #top > section:nth-child(2) {
+            background-image: linear-gradient(90deg, #f5f1e8, #fff 45%, #f5f1e8);
+            border-color: #ddd3bd;
+            box-shadow: 0 5px 20px rgba(16,34,56,.04);
+        }
+        body #top > section:nth-child(4), body #about, body #service {
+            background-image:
+                linear-gradient(135deg, transparent 72%, rgba(191,157,90,.055) 72%, rgba(191,157,90,.055) 84%, transparent 84%),
+                radial-gradient(ellipse at 100% 0%, rgba(222,210,181,.20), transparent 60%);
+            box-shadow: inset 0 -1px 0 rgba(16,34,56,.06);
+        }
+        body #diagnosis, body #cases {
+            background-image:
+                radial-gradient(ellipse at 0% 0%, rgba(211,177,107,.18), transparent 55%),
+                radial-gradient(ellipse at 100% 100%, rgba(16,34,56,.06), transparent 55%),
+                radial-gradient(rgba(128,91,32,.10) .7px, transparent .7px);
+            background-size: 100% 100%, 100% 100%, 18px 18px;
+            box-shadow: inset 0 1px 0 #e8e0d1, inset 0 -1px 0 #e8e0d1;
+        }
+        body .card-hover {
+            border-color: #e1d8c8;
+            background-image: linear-gradient(145deg, rgba(255,255,255,.96), rgba(250,247,239,.85));
+            box-shadow: inset 0 3px 0 rgba(185,143,60,.65), 0 8px 24px rgba(16,34,56,.055);
+        }
+        body .card-hover:hover {
+            border-color: #b99a5a;
+            box-shadow: inset 0 3px 0 #b58b3d, 0 20px 45px rgba(16,34,56,.12);
+        }
+        body #about .card-hover {
+            background-image:
+                linear-gradient(135deg, transparent 75%, rgba(211,177,107,.08) 75%),
+                linear-gradient(145deg, #fff, #f7f4ed);
+        }
+        body #about .card-hover > .bg-blue-50,
+        body #top > section:first-child .w-11 {
+            background-image: linear-gradient(135deg, #fff7df, #ead7a4);
+            box-shadow: inset 0 0 0 1px rgba(185,143,60,.26), 0 4px 12px rgba(128,91,32,.08);
+        }
+        body #diagnosis .shadow-blue {
+            border-color: #d6c59e;
+            box-shadow: inset 0 3px 0 #c5a35d, 0 22px 60px rgba(16,34,56,.11), 0 4px 12px rgba(128,91,32,.04);
+        }
+        body #diagnosis .option {
+            background-image: linear-gradient(145deg, rgba(255,255,255,.6), rgba(246,243,236,.25));
+        }
+        body #diagnosis .option.border-blue-600 {
+            box-shadow: inset 0 0 0 1px rgba(128,91,32,.13), 0 3px 12px rgba(128,91,32,.08);
+        }
+        body #process, body #contact-section {
+            background-image:
+                radial-gradient(ellipse at 100% 0%, transparent 44%, rgba(237,201,111,.16) 44.1%, transparent 44.3%, transparent 58%, rgba(237,201,111,.08) 58.1%, transparent 58.3%),
+                radial-gradient(ellipse at 0% 100%, rgba(196,153,70,.14), transparent 60%),
+                linear-gradient(120deg, #080f19, #14283d);
+            box-shadow: inset 0 1px 0 rgba(237,201,111,.35), inset 0 -1px 0 rgba(237,201,111,.2);
+        }
+        body #process .rounded-full.bg-blue-600 {
+            background-image: linear-gradient(135deg, #fff0b9, #e3b953);
+            box-shadow: 0 0 0 6px rgba(237,201,111,.07), 0 8px 24px rgba(0,0,0,.24);
+        }
+        body #process .rounded-full.bg-white {
+            background-image: linear-gradient(135deg, #fff, #efe6ce);
+            box-shadow: 0 0 0 6px rgba(255,255,255,.06), 0 8px 24px rgba(0,0,0,.24);
+        }
+        body #service .card-hover:first-child {
+            background-color: #102238;
+            background-image: radial-gradient(ellipse at 100% 0%, rgba(237,201,111,.18), transparent 75%), linear-gradient(145deg, #102238, #1b3248);
+            border-color: #32465c;
+            color: #fff;
+        }
+        body #service .card-hover:first-child .text-blue-600 { color: #f3d98e; }
+        body #service .card-hover:first-child .text-gray-500 { color: #d6dce4; }
+        body #cases .grid > div {
+            border-color: #ded5c5;
+            background-image: linear-gradient(145deg, #fff 55%, #f4f0e5);
+            box-shadow: inset 0 3px 0 #b99a5a, 0 8px 24px rgba(16,34,56,.05);
+        }
+        body #contact-section .bg-white,
+        body #contact-section [class~="bg-white/95"] {
+            box-shadow: inset 0 3px 0 #d8b767, inset 0 0 0 1px rgba(237,201,111,.32), 0 24px 55px rgba(0,0,0,.22);
+        }
+        body #contact-section input:not([type="radio"]):not([type="checkbox"]),
+        body #contact-section textarea {
+            background-image: linear-gradient(180deg, rgba(16,34,56,.025), rgba(255,255,255,.5));
+        }
+        body #btn-apply, body #top > section:first-child .pulse-ring {
+            background-image: linear-gradient(115deg, rgba(255,248,216,.65), transparent 48%, rgba(159,107,25,.13));
+        }
+        body button.bg-blue-600, body a.bg-gray-950 {
+            background-image: linear-gradient(115deg, rgba(255,255,255,.10), transparent 65%);
+            box-shadow: inset 0 1px 0 rgba(237,201,111,.3), 0 6px 16px rgba(16,34,56,.14);
+        }
+        body #main-header.scrolled {
+            background-color: rgba(255,253,248,.98);
+            box-shadow: 0 1px 0 rgba(185,143,60,.25), 0 6px 24px rgba(16,34,56,.07);
+        }
+        body #quickMenuContainer > div {
+            box-shadow: 0 0 20px rgba(237,201,111,.16), 0 8px 24px rgba(0,0,0,.2);
+        }
+        body footer {
+            background-image: linear-gradient(110deg, #f7f5ef, #fff 55%, #f2eee4);
+            border-color: #d6c8aa;
+        }
+    </style>
+<style id="bv-preview-style">
+/* Preview additions are isolated from the original homepage. */
+.bv-preview { --ink:#102238; --gold:#edc96f; --muted:#596270; --line:#ded5c5; color:var(--ink); }
+.bv-preview *, .bv-preview *::before, .bv-preview *::after { box-sizing:border-box; }
+.bv-preview [hidden] { display:none !important; }
+.bv-preview button, .bv-preview input, .bv-preview select { font:inherit; }
+.bv-preview button, .bv-preview a { -webkit-tap-highlight-color:transparent; }
+.bv-preview button { cursor:pointer; }
+.bv-preview button:disabled { cursor:not-allowed; opacity:.45; }
+.bv-preview :is(button,a,input,select):focus-visible { outline:3px solid #b58b3d; outline-offset:3px; }
+.bv-preview input, .bv-preview select { user-select:text; min-width:0; }
+.bv-wrap { max-width:1280px; margin:auto; padding:0 24px; }
+.bv-eyebrow { font-size:12px; font-weight:800; letter-spacing:.16em; color:#805b20; }
+.bv-label { display:inline-block; padding:5px 9px; border:1px solid #d9c79e; border-radius:7px; background:#f7f2e6; color:#805b20; font-size:11px; font-weight:800; letter-spacing:.04em; }
+.bv-muted { color:var(--muted); font-size:14px; line-height:1.7; }
+.bv-note { padding:13px 16px; border:1px solid var(--line); background:#f7f5ef; border-radius:12px; color:#596270; font-size:13px; line-height:1.65; }
+.bv-preview h2 { font-size:clamp(27px,3vw,42px); line-height:1.3; font-weight:900; letter-spacing:-.04em; }
+.bv-preview h3 { font-size:20px; font-weight:800; line-height:1.4; }
+.bv-preview p { overflow-wrap:anywhere; }
+.bv-preview .bv-btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:44px; padding:11px 18px; border:1px solid #102238; border-radius:12px; background:#102238; color:white; font-size:14px; font-weight:800; text-decoration:none; }
+.bv-preview .bv-btn:hover { background:#263c52; }
+.bv-btn.bv-secondary { background:#fffdfa; border-color:#d4c7aa; color:#805b20; }
+.bv-btn.bv-secondary:hover { background:#f3ecd9; }
+.bv-btn.bv-gold { background:linear-gradient(115deg,#fff0b9,#edc96f); border-color:#d8b767; color:#102238; }
+.bv-actions { display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin-top:20px; }
+.bv-field { display:flex; flex-direction:column; gap:8px; font-size:13px; font-weight:700; }
+.bv-field input, .bv-field select { width:100%; padding:12px; background:#fffdfa; border:1px solid #b4b6b9; border-radius:10px; color:#102238; }
+.bv-field input::placeholder { color:#667080; }
+.bv-section { padding:72px 0; background:radial-gradient(ellipse at 100% 0%,#eee5d3,transparent 65%),#f6f5f2; }
+#bv-services, #cases { scroll-margin-top:100px; }
+.bv-head { display:flex; justify-content:space-between; align-items:end; flex-wrap:wrap; gap:18px; margin-bottom:28px; }
+.bv-head h2 { margin:10px 0; }
+.bv-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; }
+.bv-card { padding:24px; border:1px solid var(--line); border-radius:20px; background:linear-gradient(145deg,#fff 55%,#f5f0e4); box-shadow:inset 0 2px 0 #c7a864,0 8px 24px #10223808; }
+.bv-card h3 { margin:14px 0 10px; }
+.bv-card .bv-muted { min-height:48px; }
+.bv-card .bv-btn { width:100%; }
+.bv-card-top { display:flex; justify-content:space-between; align-items:center; gap:10px; }
+.bv-case-meta { font-size:12px; color:#596270; margin:12px 0; }
+.bv-filters { display:grid; grid-template-columns:1fr 1fr 1.4fr auto; align-items:end; gap:12px; padding:20px; border:1px solid var(--line); background:white; border-radius:18px; margin-bottom:18px; }
+.bv-empty { grid-column:1/-1; padding:40px 20px; text-align:center; border:1px dashed #c1b18f; border-radius:18px; background:#fff; }
+body #top > #bv-services { background:linear-gradient(125deg,#0b1420,#183047); padding:34px 0; box-shadow:inset 0 1px 0 #edc96f50; }
+#bv-services .bv-eyebrow { color:#edc96f; }
+.bv-service-intro { display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; color:#e6e9ee; font-size:13px; margin-bottom:18px; }
+.bv-service-grid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px; }
+.bv-service { text-align:left; color:#fff; background:#ffffff08; border:1px solid #edc96f30; border-radius:14px; padding:18px 16px; transition:background .2s,border-color .2s; }
+.bv-service:hover { background:#edc96f15; border-color:#edc96f90; }
+.bv-service b { display:block; margin:9px 0 5px; font-size:16px; }
+.bv-service small { color:#c6ced8; line-height:1.5; }
+.bv-service-number { color:#edc96f; font-size:11px; letter-spacing:.15em; }
+.bv-preview-tag { position:fixed; bottom:14px; left:14px; z-index:95; display:flex; align-items:center; gap:12px; padding:10px 14px; background:#0c1929f2; color:#eee8d9; border:1px solid #b99a5a; border-radius:12px; box-shadow:0 6px 24px #0002; font-size:12px; backdrop-filter:blur(10px); }
+.bv-preview-tag a { color:#f3d98e; font-weight:800; }
+dialog.bv-preview { width:min(980px,calc(100% - 32px)); max-height:90dvh; padding:0; border:1px solid #c3aa74; border-radius:24px; background:#fffdfa; box-shadow:0 28px 80px #0005; overflow:auto; overscroll-behavior:contain; }
+dialog.bv-preview::backdrop { background:#07111dc4; backdrop-filter:blur(6px); }
+.bv-dialog-head { display:flex; justify-content:space-between; align-items:start; gap:16px; padding:24px 28px; background:radial-gradient(ellipse at 100% 0%,#edc96f1c,transparent 70%),#102238; color:white; position:sticky; top:0; z-index:2; border-bottom:1px solid #b99a5a; }
+.bv-dialog-head .bv-eyebrow { color:#edc96f; }
+.bv-dialog-head h2 { font-size:26px; margin-top:6px; }
+.bv-close { border:1px solid #ffffff40; background:#ffffff0a; color:white; width:42px; height:42px; border-radius:12px; flex-shrink:0; font-size:24px !important; }
+.bv-dialog-body { padding:28px; }
+.bv-dialog-body > .bv-note:first-child { margin-bottom:22px; }
+.bv-two { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+.bv-panel { background:white; border:1px solid var(--line); border-radius:16px; padding:22px; }
+.bv-panel h3 { margin-bottom:12px; }
+.bv-panel + .bv-panel { margin-top:16px; }
+.bv-metrics { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin:20px 0; }
+.bv-metrics > div { padding:16px; background:#f5f1e7; border-radius:12px; }
+.bv-metrics dt { font-size:12px; color:#596270; }
+.bv-metrics dd { margin-top:6px; font-weight:800; }
+.bv-list { margin:12px 0; padding-left:20px; list-style:disc; line-height:1.9; font-size:14px; }
+.bv-timeline { list-style:none; display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin:24px 0; padding:0; }
+.bv-timeline li { border-top:3px solid #e2ddcf; padding:16px 8px; color:#667080; font-size:13px; }
+.bv-timeline li.done { border-color:#b99a5a; color:#805b20; }
+.bv-timeline li.current { border-color:#102238; background:#f2ecde; border-radius:0 0 10px 10px; color:#102238; }
+.bv-timeline b { display:block; margin:9px 0 5px; }
+.bv-check { display:flex; gap:10px; align-items:start; padding:13px 0; border-bottom:1px solid #e9e4da; font-size:14px; cursor:pointer; }
+.bv-check input { flex-shrink:0; margin-top:3px; accent-color:#805b20; }
+.bv-progress { height:7px; background:#e7e1d3; border-radius:9px; overflow:hidden; margin:14px 0; }
+.bv-progress > div { height:100%; background:linear-gradient(90deg,#b58b3d,#edc96f); transition:width .2s; }
+.bv-slots { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:12px; }
+.bv-slot { border:1px solid #c5bdac; background:white; padding:11px 5px; border-radius:10px; font-size:13px; }
+.bv-slot[aria-pressed="true"] { background:#102238; border-color:#102238; color:#f3d98e; }
+.bv-slot:disabled { background:#ece9e2; }
+.bv-inline-status { min-height:22px; margin-top:12px; color:#805b20; font-size:13px; }
+.bv-report { color:#102238; background:#fff; padding:26px; border:1px solid var(--line); border-radius:16px; }
+.bv-report-brand { display:flex; justify-content:space-between; gap:12px; border-bottom:2px solid #b99a5a; padding-bottom:18px; margin-bottom:22px; }
+.bv-report-brand strong { font-size:24px; letter-spacing:.03em; }
+.bv-report h3 { margin:22px 0 12px; }
+.bv-report p { line-height:1.8; font-size:14px; }
+.bv-report-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin:18px 0; }
+.bv-report-grid > div { background:#f7f5ef; padding:12px 16px; border-radius:10px; font-size:14px; }
+.bv-report-grid span { display:block; font-size:12px; color:#596270; margin-bottom:5px; }
+#bv-print-root { display:none; }
+@media(max-width:767px) {
+  body #top > section:first-child h1 .gradient-text { white-space:normal; padding-right:0; }
+  .bv-wrap { padding:0 20px; }
+  .bv-service-grid { grid-template-columns:repeat(2,1fr); }
+  .bv-service:last-child { grid-column:1/-1; }
+  .bv-grid, .bv-two { grid-template-columns:1fr; }
+  .bv-filters { grid-template-columns:1fr 1fr; padding:16px; }
+  .bv-filters .bv-field:nth-child(3) { grid-column:1/-1; }
+  .bv-dialog-body { padding:20px; }
+  .bv-dialog-head { padding:20px; }
+  .bv-dialog-head h2 { font-size:22px; }
+  .bv-metrics { grid-template-columns:1fr; }
+  .bv-timeline { grid-template-columns:1fr; gap:0; }
+  .bv-timeline li { border-top:0; border-left:3px solid #e2ddcf; padding:10px 16px; }
+  .bv-timeline b { display:inline; margin:0 8px; }
+  .bv-report { padding:18px; }
+  .bv-report-brand { flex-wrap:wrap; }
+  .bv-report-grid { grid-template-columns:1fr; }
+  .bv-preview-tag { font-size:11px; gap:8px; padding:9px 11px; }
+  .bv-section { padding:52px 0; }
+}
+@media print {
+  body > * { display:none !important; }
+  body > #bv-print-root { display:block !important; }
+  #bv-print-root .bv-report { border:0; padding:0; }
+  #bv-print-root .bv-report-grid { grid-template-columns:1fr 1fr; }
+  #bv-print-root h3 { break-after:avoid; }
+  #bv-print-root li, #bv-print-root .bv-report-grid > div { break-inside:avoid; }
+  body { background:white !important; color:#102238; }
+  @page { size:A4; margin:16mm; }
+}
+
+</style>
+</head>
+<body class="bg-white text-gray-900">
+<header id="main-header" class="fixed w-full z-50 top-0 left-0 py-4 px-6 md:py-5">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+        <div onclick="resetAndReload()" 
+             class="flex items-center gap-3 cursor-pointer group z-[60] transition-all active:scale-[0.98]">
+            <img src="logo_image_de.png" alt="BIVELON" id="header-logo" class="h-6 md:h-8 w-auto object-contain brightness-0 invert transition-colors">
+            <div id="header-text" class="logo-text text-xl md:text-2xl font-black tracking-tighter text-white transition-colors">BIVELON</div>
+        </div>
+
+        <nav class="hidden md:flex items-center gap-7 font-bold text-base">
+            <a href="#diagnosis" class="nav-link text-white hover:text-blue-200 transition-colors">기업자금 진단</a>
+            <a href="#about" class="nav-link text-white hover:text-blue-200 transition-colors">왜 비벨온인가</a>
+            <a href="#service" class="nav-link text-white hover:text-blue-200 transition-colors">서비스</a>
+            <a href="#process" class="nav-link text-white hover:text-blue-200 transition-colors">프로세스</a>
+            <!-- <a href="contract.html" class="text-white border border-white/40 px-4 py-2.5 rounded-full hover:bg-white/10 transition">전자계약서</a> -->
+            <a href="#contact-section" id="btn-apply" class="bg-white text-[#0066FF] px-6 py-2.5 rounded-full hover:bg-blue-50 transition-all flex items-center shadow-md">무료 상담 신청</a>
+        </nav>
+
+        <button id="mobile-menu-btn" class="md:hidden text-white z-[60] p-2 focus:outline-none" aria-label="메뉴">
+            <svg id="menu-icon" xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+            </svg>
+        </button>
+
+        <div id="mobile-menu" class="fixed inset-0 bg-white translate-x-full transition-transform duration-300 md:hidden flex flex-col items-center justify-center gap-7 text-xl font-black text-gray-900 z-[55]">
+            <a href="#diagnosis" class="mobile-nav-link hover:text-blue-600 transition-colors">기업자금 진단</a>
+            <a href="#about" class="mobile-nav-link hover:text-blue-600 transition-colors">왜 비벨온인가</a>
+            <a href="#service" class="mobile-nav-link hover:text-blue-600 transition-colors">서비스</a>
+            <a href="#process" class="mobile-nav-link hover:text-blue-600 transition-colors">프로세스</a>
+            <!-- <a href="contract.html" class="mobile-nav-link text-blue-700 border border-blue-200 px-8 py-3 rounded-full">전자계약서 작성</a> -->
+            <a href="#contact-section" class="mobile-nav-link bg-blue-600 text-white px-8 py-3 rounded-full shadow-lg">무료 상담 신청</a>
+        </div>
+    </div>
+</header>
+<main id="top">
+    <!-- HERO -->
+    <section class="relative overflow-hidden text-white pt-36 pb-16 md:pt-44 md:pb-24 px-6 bg-gray-900 bg-cover bg-center"
+        style="background-image: linear-gradient(90deg, rgba(0,43,91,0.93) 0%, rgba(0,37,92,0.82) 48%, rgba(0,22,70,0.76) 100%), url('https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069');">
+        <div class="absolute inset-0 hero-grid opacity-60 pointer-events-none"></div>
+        <div class="absolute -top-40 -right-40 w-[520px] h-[520px] rounded-full bg-blue-600/20 blur-3xl"></div>
+        <div class="absolute bottom-0 -left-40 w-[420px] h-[420px] rounded-full bg-cyan-400/10 blur-3xl"></div>
+
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="grid lg:grid-cols-[1.05fr_.95fr] gap-10 xl:gap-14 items-center">
+                <div class="fade-up">
+                    <div class="led-border-container shadow-[0_0_15px_rgba(0,102,255,0.4)] mb-6 md:mb-8">
+                        <div class="led-light"></div>
+                        <div class="led-content">
+                            <span class="text-blue-300 font-bold text-xs md:text-sm tracking-wide">기업자금 · 정책자금 · 성장전략</span>
+                        </div>
+                    </div>
+
+                    <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-[48px] xl:text-[56px] font-black leading-[1.16] tracking-tight">
+                        대표님 회사가<br>
+                        <span class="gradient-text italic inline-block whitespace-nowrap pr-5">지금 활용할 수 있는 자금</span><br>
+                        부터 확인해보세요.
+                    </h1>
+
+                    <p class="mt-7 text-lg md:text-xl text-blue-100/85 leading-relaxed max-w-2xl">
+                        정책자금을 몰라도 괜찮습니다.<br class="hidden md:block">
+                        기업의 업종·업력·매출·자금 목적을 바탕으로<br class="hidden md:block">
+                        우선 검토할 자금과 준비할 사항을 함께 찾아드립니다.
+                    </p>
+
+                    <div class="mt-9 flex flex-col sm:flex-row gap-3">
+                        <a href="#diagnosis" class="pulse-ring inline-flex justify-center items-center px-7 py-4 bg-[#0066FF] rounded-2xl font-black text-lg hover:bg-blue-500 transition">
+                            3분 무료 기업자금 진단 →
+                        </a>
+                        <a href="#process" class="inline-flex justify-center items-center px-7 py-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl font-bold hover:bg-white/15 transition">
+                            어떻게 진행되나요?
+                        </a>
+                    </div>
+                    <p class="mt-4 text-xs text-white/55">※ 온라인 진단은 사전 검토용이며 실제 지원 가능 여부·한도를 보장하지 않습니다.</p>
+                </div>
+
+                <div class="relative fade-up" style="animation-delay:.12s">
+                    <div class="absolute -inset-4 bg-blue-500/10 blur-2xl rounded-[40px]"></div>
+                    <div class="relative bg-white text-gray-900 rounded-[28px] p-5 sm:p-7 shadow-2xl">
+                        <div class="flex items-center justify-between mb-6">
+                            <div>
+                                <p class="text-xs font-bold text-blue-600">BIVELON CHECK</p>
+                                <h2 class="text-2xl font-black mt-1">기업자금 사전진단</h2>
+                            </div>
+                            <div class="w-11 h-11 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center font-black">AI</div>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="p-4 rounded-2xl bg-gray-50 border border-gray-100">
+                                <p class="text-xs text-gray-500 font-bold">진단 항목</p>
+                                <p class="font-bold mt-1">업종 · 업력 · 매출 · 지역 · 필요금액 · 자금용도</p>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="p-4 rounded-2xl bg-blue-50"><p class="text-xs text-blue-600 font-bold">CHECK 01</p><p class="font-black mt-1">정책자금</p></div>
+                                <div class="p-4 rounded-2xl bg-cyan-50"><p class="text-xs text-cyan-700 font-bold">CHECK 02</p><p class="font-black mt-1">보증·융자</p></div>
+                                <div class="p-4 rounded-2xl bg-indigo-50"><p class="text-xs text-indigo-600 font-bold">CHECK 03</p><p class="font-black mt-1">지원사업</p></div>
+                                <div class="p-4 rounded-2xl bg-slate-100"><p class="text-xs text-slate-500 font-bold">CHECK 04</p><p class="font-black mt-1">준비사항</p></div>
+                            </div>
+                            <a href="#diagnosis" class="block text-center w-full bg-gray-950 text-white py-4 rounded-2xl font-black hover:bg-blue-600 transition">내 회사 진단하기</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TRUST STRIP -->
+    <section class="border-b bg-white">
+        <div class="max-w-7xl mx-auto px-5 lg:px-8 py-5 flex flex-wrap justify-center lg:justify-between gap-x-8 gap-y-3 text-sm font-bold text-gray-500">
+            <span>✓ 업종별 기업 상황 분석</span><span>✓ 자금 목적별 검토</span><span>✓ 전문가 상담 연결</span><span>✓ 정책·지원사업 지속 업데이트</span>
+        </div>
+    </section>
+
+<section id="bv-services" class="bv-preview" aria-label="새로운 고객 서비스 체험">
+  <div class="bv-wrap">
+    <div class="bv-service-intro"><span class="bv-eyebrow">BIVELON CLIENT EXPERIENCE</span><span>새로운 서비스 미리보기 · 샘플 데이터로 자유롭게 체험하세요</span></div>
+    <div class="bv-service-grid">
+      <button class="bv-service" data-bv="cases"><span class="bv-service-number">01 / DISCOVER</span><b>맞춤 상담 사례</b><small>우리 회사와 비슷한 사례 찾기 ↗</small></button>
+      <button class="bv-service" data-bv="report"><span class="bv-service-number">02 / REPORT</span><b>기업자금 리포트</b><small>진단을 한 장의 보고서로 ↗</small></button>
+      <button class="bv-service" data-bv="portal"><span class="bv-service-number">03 / MY BIVELON</span><b>나의 상담 현황</b><small>진행 단계와 준비사항 확인 ↗</small></button>
+      <button class="bv-service" data-bv="programs"><span class="bv-service-number">04 / OPPORTUNITY</span><b>지원사업 일정</b><small>관심 사업과 마감일 한눈에 ↗</small></button>
+      <button class="bv-service" data-bv="booking"><span class="bv-service-number">05 / RESERVATION</span><b>상담 시간 예약</b><small>편한 시간에 전문가 만나기 ↗</small></button>
+    </div>
+  </div>
+</section>
+
+    <!-- PROBLEM -->
+    <section class="py-20 lg:py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-5 lg:px-8">
+            <div class="max-w-3xl">
+                <p class="text-blue-600 font-black text-sm tracking-widest">대표님이 어려운 이유는</p>
+                <h2 class="mt-3 text-3xl lg:text-5xl font-black leading-tight">
+                    정책자금이 어려운 게 아니라,<br>
+                    <span class="text-gray-400">어디서부터 봐야 할지 모르기 때문입니다.</span>
+                </h2>
+            </div>
+            <div class="grid md:grid-cols-3 gap-5 mt-12">
+                <div class="card-hover p-7 rounded-3xl border bg-gray-50">
+                    <div class="text-3xl font-black text-blue-100">01</div>
+                    <h3 class="mt-6 text-xl font-black">무엇을 받을 수 있는지 모름</h3>
+                    <p class="mt-3 text-gray-500 leading-relaxed">정책자금, 보증, 지원사업이 각각 달라서 내 회사에 맞는 선택지를 찾기 어렵습니다.</p>
+                </div>
+                <div class="card-hover p-7 rounded-3xl border bg-gray-50">
+                    <div class="text-3xl font-black text-blue-100">02</div>
+                    <h3 class="mt-6 text-xl font-black">조건을 읽어도 내 상황과 연결이 안 됨</h3>
+                    <p class="mt-3 text-gray-500 leading-relaxed">업종·업력·매출·부채·자금용도에 따라 검토 포인트가 달라집니다.</p>
+                </div>
+                <div class="card-hover p-7 rounded-3xl border bg-gray-50">
+                    <div class="text-3xl font-black text-blue-100">03</div>
+                    <h3 class="mt-6 text-xl font-black">신청 전에 준비해야 할 것이 많음</h3>
+                    <p class="mt-3 text-gray-500 leading-relaxed">자금 자체보다 재무상태와 증빙, 사업계획 등을 어떻게 준비할지가 중요합니다.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI DIAGNOSIS -->
+    <section id="diagnosis" class="py-20 lg:py-28 bg-[#f4f8ff]">
+        <div class="max-w-5xl mx-auto px-5 lg:px-8">
+            <div class="text-center">
+                <span class="inline-flex px-4 py-2 rounded-full bg-blue-100 text-blue-700 text-xs font-black">AI PRE-CHECK</span>
+                <h2 class="mt-4 text-3xl lg:text-5xl font-black">3분이면 충분합니다.</h2>
+                <p class="mt-4 text-gray-500">현재 기업 상황을 알려주시면 우선 검토할 방향을 정리해드립니다.</p>
+            </div>
+
+            <div class="mt-10 bg-white rounded-[30px] shadow-blue border border-blue-100 overflow-hidden">
+                <div class="px-6 sm:px-9 pt-7">
+                    <div class="flex justify-between text-xs font-bold text-gray-400">
+                        <span id="stepLabel">STEP 1 / 6</span><span id="stepPercent">17%</span>
+                    </div>
+                    <div class="mt-3 h-2 bg-gray-100 rounded-full overflow-hidden">
+                        <div id="progress" class="progress h-full bg-blue-600 rounded-full" style="width:17%"></div>
+                    </div>
+                </div>
+
+                <form id="diagnosisForm" class="p-6 sm:p-9" onsubmit="return false;">
+                    <div id="questions"></div>
+                    <div class="mt-8 flex gap-3">
+                        <button type="button" id="prevBtn" class="hidden w-1/3 py-4 rounded-2xl border font-bold">이전</button>
+                        <button type="button" id="nextBtn" class="w-full py-4 rounded-2xl bg-blue-600 text-white font-black text-lg hover:bg-blue-700">다음</button>
+                    </div>
+                </form>
+
+                <div id="result" class="hidden p-6 sm:p-9">
+                    <div class="rounded-3xl bg-[#07152f] text-white p-7 sm:p-9">
+                        <p class="text-blue-300 text-sm font-bold">BIVELON PRE-CHECK</p>
+                        <h3 class="mt-2 text-3xl font-black">진단 결과가 준비되었습니다.</h3>
+                        <p class="mt-3 text-blue-100/70">아래 결과는 입력정보를 기준으로 한 사전 검토입니다. 정확한 판단은 전문가 상담을 통해 확인합니다.</p>
+                        <div class="mt-7 rounded-2xl bg-white/5 border border-white/10 p-5 sm:p-6">
+                            <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
+                                <div>
+                                    <p class="text-xs text-blue-200">AI 기업자금 적합도</p>
+                                    <p id="resultScore" class="mt-1 text-4xl font-black">78<span class="text-xl text-blue-200"> / 100</span></p>
+                                </div>
+                                <span id="resultBadge" class="inline-flex w-fit px-3 py-2 rounded-full bg-blue-500/20 text-blue-200 text-xs font-black">우선 검토 가능성 높음</span>
+                            </div>
+                            <div class="mt-4 h-2 bg-white/10 rounded-full overflow-hidden"><div id="resultScoreBar" class="h-full bg-blue-400 rounded-full transition-all" style="width:78%"></div></div>
+                        </div>
+                        <div class="grid sm:grid-cols-3 gap-3 mt-4">
+                            <div class="glass rounded-2xl p-5"><p class="text-xs text-blue-200">1순위 검토</p><p id="resultMain" class="mt-2 font-black text-xl">정책자금</p></div>
+                            <div class="glass rounded-2xl p-5"><p class="text-xs text-blue-200">2순위 방향</p><p id="resultSecondary" class="mt-2 font-black text-xl">보증 연계</p></div>
+                            <div class="glass rounded-2xl p-5"><p class="text-xs text-blue-200">자금 목적</p><p id="resultPurpose" class="mt-2 font-black text-xl">운전자금</p></div>
+                        </div>
+                        <div class="mt-4 glass rounded-2xl p-5">
+                            <p class="text-xs text-blue-200">AI가 이렇게 판단한 이유</p>
+                            <p id="resultSummary" class="mt-2 text-sm sm:text-base text-white/85 leading-relaxed">입력하신 기업 상황을 종합해 자금 방향을 분석합니다.</p>
+                        </div>
+                        <div class="mt-4 grid md:grid-cols-2 gap-4">
+                            <div class="glass rounded-2xl p-5">
+                                <p class="text-xs text-blue-200">추천 준비사항</p>
+                                <ul id="resultChecklist" class="mt-3 space-y-2 text-sm text-white/80"></ul>
+                            </div>
+                            <div class="glass rounded-2xl p-5">
+                                <p class="text-xs text-blue-200">상담에서 확인할 부분</p>
+                                <p id="resultAction" class="mt-3 text-sm text-white/80 leading-relaxed"></p>
+                            </div>
+                        </div>
+                        <div class="mt-5 text-xs text-white/45">※ 본 결과는 홈페이지 입력정보를 바탕으로 한 AI 사전분석입니다. 실제 정책자금·보증·지원사업의 가능 여부와 금액은 관계기관 심사 및 추가 자료 확인에 따라 달라질 수 있습니다.</div>
+                    </div>
+<div class="bv-preview" style="margin-top:20px"><button type="button" class="bv-btn bv-gold" data-bv="report" style="width:100%">진단 리포트 확인 · 저장 →</button></div>
+                    <div class="mt-6 p-6 rounded-3xl border bg-gray-50">
+                        <h4 class="font-black text-xl">전문가에게 결과를 확인받아보세요.</h4>
+                        <p class="mt-2 text-gray-500">비벨온 전문가가 기업 상황을 추가로 확인하고 실제 검토 가능한 방향을 안내해드립니다.</p>
+                        <div class="grid sm:grid-cols-2 gap-3 mt-5">
+                            <button type="button" id="goConsult" class="w-full py-4 bg-blue-600 text-white rounded-2xl font-black">무료 정밀상담 신청하기 →</button>
+                            <button type="button" id="restartDiagnosis" class="w-full py-4 border border-gray-200 bg-white rounded-2xl font-bold">진단 다시하기</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHY -->
+    <section id="about" class="py-20 lg:py-28 bg-white">
+        <div class="max-w-7xl mx-auto px-5 lg:px-8">
+            <div class="text-center">
+                <p class="text-blue-600 font-black text-sm tracking-widest">WHY BIVELON</p>
+                <h2 class="mt-3 text-3xl lg:text-5xl font-black">단순히 자금만 보는 게 아닙니다.</h2>
+                <p class="mt-4 text-gray-500">기업의 현재 상태와 앞으로의 성장까지 함께 봅니다.</p>
+            </div>
+            <div class="grid lg:grid-cols-3 gap-6 mt-12">
+                <div class="card-hover p-8 rounded-3xl border">
+                    <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center font-black">01</div>
+                    <h3 class="mt-6 text-2xl font-black">Insight</h3>
+                    <p class="mt-3 text-gray-500 leading-relaxed">업종·업력·매출·재무·자금 목적을 종합해 기업의 현재 상황을 파악합니다.</p>
+                </div>
+                <div class="card-hover p-8 rounded-3xl border">
+                    <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center font-black">02</div>
+                    <h3 class="mt-6 text-2xl font-black">Strategy</h3>
+                    <p class="mt-3 text-gray-500 leading-relaxed">무조건 신청하기보다 어떤 자금과 어떤 준비가 우선인지 전략을 설계합니다.</p>
+                </div>
+                <div class="card-hover p-8 rounded-3xl border">
+                    <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center font-black">03</div>
+                    <h3 class="mt-6 text-2xl font-black">Execution</h3>
+                    <p class="mt-3 text-gray-500 leading-relaxed">검토에서 끝나지 않고 실제 진행에 필요한 자료와 절차를 함께 준비합니다.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOW -->
+    <section id="process" class="py-20 lg:py-28 bg-[#07152f] text-white">
+        <div class="max-w-7xl mx-auto px-5 lg:px-8">
+            <div class="text-center">
+                <p class="text-blue-300 font-black text-sm tracking-widest">HOW IT WORKS</p>
+                <h2 class="mt-3 text-3xl lg:text-5xl font-black">복잡한 과정을 단순하게</h2>
+                <p class="mt-4 text-white/50">진단 → 사전분석 → 전문가 검토 → 실행 전략으로 연결합니다.</p>
+            </div>
+            <div class="grid md:grid-cols-4 gap-8 mt-14">
+                <div class="relative text-center step-line">
+                    <div class="mx-auto w-14 h-14 rounded-full bg-blue-600 flex items-center justify-center font-black text-xl">1</div>
+                    <h3 class="mt-5 font-black text-lg">간편 진단</h3><p class="mt-2 text-sm text-white/55">기업 기본정보 입력</p>
+                </div>
+                <div class="relative text-center step-line">
+                    <div class="mx-auto w-14 h-14 rounded-full bg-blue-600 flex items-center justify-center font-black text-xl">2</div>
+                    <h3 class="mt-5 font-black text-lg">AI 사전분석</h3><p class="mt-2 text-sm text-white/55">우선 검토 방향 정리</p>
+                </div>
+                <div class="relative text-center step-line">
+                    <div class="mx-auto w-14 h-14 rounded-full bg-blue-600 flex items-center justify-center font-black text-xl">3</div>
+                    <h3 class="mt-5 font-black text-lg">전문가 검토</h3><p class="mt-2 text-sm text-white/55">추가정보 확인 및 상담</p>
+                </div>
+                <div class="relative text-center">
+                    <div class="mx-auto w-14 h-14 rounded-full bg-white text-blue-600 flex items-center justify-center font-black text-xl">4</div>
+                    <h3 class="mt-5 font-black text-lg">실행 전략</h3><p class="mt-2 text-sm text-white/55">필요한 절차와 준비 진행</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICE -->
+    <section id="service" class="py-20 lg:py-28 bg-white">
+        <div class="max-w-7xl mx-auto px-5 lg:px-8">
+            <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
+                <div>
+                    <p class="text-blue-600 font-black text-sm tracking-widest">BIVELON SERVICE</p>
+                    <h2 class="mt-3 text-3xl lg:text-5xl font-black">기업 상황에 따라<br>필요한 것만 연결합니다.</h2>
+                </div>
+                <p class="text-gray-500 max-w-xl leading-relaxed">정책자금만이 답은 아닙니다. 기업의 자금 목적과 성장 단계에 따라 적절한 전략을 함께 검토합니다.</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5 mt-12">
+                <div class="card-hover p-7 rounded-3xl bg-blue-50 border border-blue-100"><span class="text-blue-600 font-black">01</span><h3 class="mt-5 text-xl font-black">정책자금</h3><p class="mt-3 text-gray-500 text-sm leading-relaxed">중소기업·소상공인 정책자금 등 기업 상황에 맞는 자금 검토</p></div>
+                <div class="card-hover p-7 rounded-3xl bg-gray-50 border"><span class="text-blue-600 font-black">02</span><h3 class="mt-5 text-xl font-black">보증·융자</h3><p class="mt-3 text-gray-500 text-sm leading-relaxed">보증기관 및 금융 활용 가능성을 함께 검토</p></div>
+                <div class="card-hover p-7 rounded-3xl bg-gray-50 border"><span class="text-blue-600 font-black">03</span><h3 class="mt-5 text-xl font-black">기업지원사업</h3><p class="mt-3 text-gray-500 text-sm leading-relaxed">기술·인력·수출·판로 등 기업 성장에 필요한 지원사업 탐색</p></div>
+                <div class="card-hover p-7 rounded-3xl bg-gray-50 border"><span class="text-blue-600 font-black">04</span><h3 class="mt-5 text-xl font-black">성장전략</h3><p class="mt-3 text-gray-500 text-sm leading-relaxed">자금 이후 기업의 구조와 사업계획까지 연결하는 전략 자문</p></div>
+            </div>
+        </div>
+    </section>
+
+<section id="cases" class="bv-preview bv-section">
+ <div class="bv-wrap">
+  <div class="bv-head"><div><p class="bv-eyebrow">BUSINESS STORIES</p><h2>우리 회사와 닮은<br>성장의 다음 장면.</h2><p class="bv-muted">업종과 자금 목적을 골라, 어떤 준비와 검토가 필요한지 살펴보세요.</p></div><span class="bv-label">가상 사례 · 기능 체험용</span></div>
+  <div class="bv-filters">
+   <label class="bv-field">업종<select id="bv-case-industry"><option value="">전체 업종</option><option>제조업</option><option>건설업</option><option>도소매업</option><option>서비스업</option><option>음식점업</option><option>IT·정보통신업</option></select></label>
+   <label class="bv-field">자금 목적<select id="bv-case-purpose"><option value="">전체 목적</option><option>시설자금</option><option>운전자금</option><option>사업확장</option></select></label>
+   <label class="bv-field">키워드 검색<input id="bv-case-query" type="search" placeholder="예: 설비, 재고, 매장"></label>
+   <button class="bv-btn bv-secondary" id="bv-case-reset">초기화</button>
+  </div>
+  <p id="bv-case-count" class="bv-muted" aria-live="polite" style="margin-bottom:16px"></p>
+  <div id="bv-case-list" class="bv-grid"></div>
+  <p class="bv-muted" style="margin-top:22px;font-size:12px">※ 모든 사례는 체험을 위해 만든 가상 시나리오입니다. 실제 고객 실적이나 자금 승인 사례가 아닙니다.</p>
+ </div>
+</section>
+
+</main>
+
+<section id="contact-section" class="bg-[#002B5B] py-20 md:py-24 px-4 md:px-10 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl -mr-48 -mt-48"></div>
+        <div class="absolute bottom-0 left-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl -ml-48 -mb-48"></div>
+
+        <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16 relative z-10">
+            <div class="w-full lg:w-5/12 space-y-10 md:space-y-12">
+                <div class="space-y-4">
+                    <h2 class="text-xl md:text-2xl font-black text-blue-300 uppercase tracking-widest text-center lg:text-left">상담 요청 현황 <span style="font-size:12px">(샘플 화면)</span></h2>
+                    <div class="bg-white/95 backdrop-blur-md rounded-3xl p-6 md:p-8 shadow-2xl">
+                        <div class="ticker-container">
+                            <div id="consulting-ticker" class="ticker-move space-y-3 text-xs md:text-sm">
+                                <div class="text-center py-10 text-gray-400">Loading data...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <h2 class="text-xl md:text-2xl font-black text-cyan-300 uppercase tracking-widest text-center lg:text-left">자금 승인 현황 <span style="font-size:12px">(샘플 화면)</span></h2>
+                    <div class="bg-white/95 backdrop-blur-md rounded-3xl p-6 md:p-8 shadow-2xl">
+                        <div class="ticker-container">
+                            <div id="approval-ticker" class="ticker-move space-y-3 text-xs md:text-sm">
+                                <div class="text-center py-10 text-gray-400">Loading data...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w-full lg:w-7/12 bg-white rounded-[30px] md:rounded-[40px] p-6 md:p-12 shadow-2xl">
+                <h2 class="text-3xl md:text-4xl font-black text-gray-900 mb-2">무료 상담 신청</h2>
+                <p class="text-gray-500 mb-8 md:mb-10 text-base md:text-lg">기능 미리보기입니다. 입력 내용은 실제로 접수되지 않습니다.</p>
+                
+                <form id="consulting-form" method="POST" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold text-gray-700">회사명</label>
+                            <input name="company" type="text" class="w-full p-4 rounded-xl bg-gray-50 border border-gray-100 focus:border-blue-500 outline-none transition-all" placeholder="기업명을 입력하세요" required>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold text-gray-700">대표자</label>
+                            <input name="owner" type="text" class="w-full p-4 rounded-xl bg-gray-50 border border-gray-100 focus:border-blue-500 outline-none transition-all" required>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold text-gray-700">대표자 연락처</label>
+                            <input name="phone" type="tel" id="phone-input" class="w-full p-4 rounded-xl bg-gray-50 border border-gray-100 focus:border-blue-500 outline-none transition-all" placeholder="01012345678 (숫자만 입력)" oninput="handlePhoneInput(this)" required>
+                        </div>      
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold text-gray-700">지역</label>
+                            <input name="region" type="text" class="w-full p-4 rounded-xl bg-gray-50 border border-gray-100 focus:border-blue-500 outline-none transition-all" required>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <p class="font-bold text-gray-800">업종을 체크해 주세요.</p>
+                        <div class="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+                            <label class="flex items-center gap-2 cursor-pointer group"><input type="radio" name="biz_type" value="제조" required><span class="group-hover:text-blue-600">제조</span></label>
+                            <label class="flex items-center gap-2 cursor-pointer group"><input type="radio" name="biz_type" value="도소매" required><span class="group-hover:text-blue-600">도소매</span></label>
+                            <label class="flex items-center gap-2 cursor-pointer group"><input type="radio" name="biz_type" value="음식점" required><span class="group-hover:text-blue-600">음식점</span></label>
+                            <label class="flex items-center gap-2 cursor-pointer group"><input type="radio" name="biz_type" value="IT정보통신" required><span class="group-hover:text-blue-600">IT정보통신</span></label>
+                            <label class="flex items-center gap-2 cursor-pointer group"><input type="radio" name="biz_type" value="그 외" required><span class="group-hover:text-blue-600">그 외</span></label>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <p class="font-bold text-gray-800">연매출을 체크해 주세요.</p>
+                        <div class="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+                            <label class="flex items-center gap-2 cursor-pointer group"><input type="radio" name="sales" value="1억 미만" required><span>1억 미만</span></label>
+                            <label class="flex items-center gap-2 cursor-pointer group"><input type="radio" name="sales" value="1억~5억" required><span>1억~5억</span></label>
+                            <label class="flex items-center gap-2 cursor-pointer group"><input type="radio" name="sales" value="5억~10억" required><span>5억~10억</span></label>
+                            <label class="flex items-center gap-2 cursor-pointer group"><input type="radio" name="sales" value="10억 이상" required><span>10억 이상</span></label>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <p class="font-bold text-gray-800">필요자금을 체크해 주세요.</p>
+                        <div class="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+                            <label class="flex items-center gap-2 cursor-pointer group"><input type="radio" name="fund" value="운전자금" required><span>운전자금</span></label>
+                            <label class="flex items-center gap-2 cursor-pointer group"><input type="radio" name="fund" value="시설자금" required><span>시설자금</span></label>
+                            <label class="flex items-center gap-2 cursor-pointer group"><input type="radio" name="fund" value="창업자금" required><span>창업자금</span></label>
+                            <label class="flex items-center gap-2 cursor-pointer group"><input type="radio" name="fund" value="그 외" required><span>그 외</span></label>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <p class="font-bold text-gray-800">신청자의 현재 상황</p>
+                        <div class="flex flex-col gap-3 text-sm">
+                            <label class="flex items-center gap-3 cursor-pointer group p-4 bg-gray-50 rounded-xl border border-transparent hover:border-blue-200 hover:bg-blue-50 transition-all">
+                                <input type="radio" name="status" value="자금만 있다면 바로 진행" class="w-5 h-5" required>
+                                <span class="text-gray-700">자금만 받을 수 있다면 바로 진행하고 싶습니다.</span>
+                            </label>
+                            <label class="flex items-center gap-3 cursor-pointer group p-4 bg-gray-50 rounded-xl border border-transparent hover:border-blue-200 hover:bg-blue-50 transition-all">
+                                <input type="radio" name="status" value="수수료 있으면 불가" class="w-5 h-5" required>
+                                <span class="text-gray-700">자금은 필요하지만 수수료가 있으면 진행하지 않겠습니다.</span>
+                            </label>
+                            <label class="flex items-center gap-3 cursor-pointer group p-4 bg-gray-50 rounded-xl border border-transparent hover:border-blue-200 hover:bg-blue-50 transition-all">
+                                <input type="radio" name="status" value="단순 상담 희망" class="w-5 h-5" required>
+                                <span class="text-gray-700">단순히 상담을 한번 받아보고 싶습니다.</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2 pt-4">
+                        <label class="text-sm font-bold text-gray-700">문의내용</label>
+                        <textarea name="message" rows="4" class="w-full p-4 rounded-xl bg-gray-50 border border-gray-100 focus:border-blue-500 outline-none resize-none transition-all" placeholder="상세한 문의 내용을 입력해주세요."></textarea>
+                    </div>
+
+                    <!-- [테스트용 주석 처리] 개인정보 동의 없이 제출 가능하도록 임시 비활성화 -->
+                    <div class="flex items-center gap-3 py-2 border-t pt-6">
+                        <input type="checkbox" id="agree" class="accent-blue-600 cursor-pointer" onclick="event.preventDefault(); openPolicyModal();" required>
+                        <label class="text-sm text-gray-600 cursor-pointer" onclick="openPolicyModal();">개인정보 수집 및 이용 동의</label>
+                        <button type="button" onclick="openPolicyModal()" class="text-blue-600 text-xs underline font-bold">자세히 보기</button>
+                    </div>
+                    <!--[테스트용 주석 처리] 개인정보 동의 없이 제출 가능하도록 임시 비활성화 -->
+
+                    <input type="hidden" name="diagnosis_industry" id="diagnosis-industry">
+                    <input type="hidden" name="diagnosis_age" id="diagnosis-age">
+                    <input type="hidden" name="diagnosis_sales" id="diagnosis-sales">
+                    <input type="hidden" name="diagnosis_purpose" id="diagnosis-purpose">
+                    <input type="hidden" name="diagnosis_amount" id="diagnosis-amount">
+                    <input type="hidden" name="diagnosis_region" id="diagnosis-region">
+                    <input type="hidden" name="diagnosis_main" id="diagnosis-main">
+                    <input type="hidden" name="diagnosis_tip" id="diagnosis-tip">
+                    <input type="hidden" name="diagnosis_score" id="diagnosis-score">
+                    <input type="hidden" name="diagnosis_secondary" id="diagnosis-secondary">
+                    <input type="hidden" name="diagnosis_summary" id="diagnosis-summary">
+
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-5 rounded-2xl text-xl shadow-xl shadow-blue-100 transition-all transform hover:-translate-y-1">
+                        무료 상담 신청하기
+                    </button>
+                </form>
+            </div>
+        </div>
+    
+    <!-- ▼ 퀵메뉴 시작 (기존.html 소스 기반) ▼ -->
+    <div id="quickMenuContainer" class="fixed right-2 top-[25%] -translate-y-1/2 z-[90] md:right-6 group">
+        <div class="relative p-[1.5px] md:p-[2px] rounded-[26px] md:rounded-[32px] overflow-hidden shadow-[0_0_20px_rgba(0,102,255,0.4)] transition-all duration-300">
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] -z-10" 
+                 style="background: conic-gradient(transparent, rgba(34, 211, 238, 0.5), rgba(0, 102, 255, 0.9), transparent 40%); animation: rotate-gradient 4s linear infinite;">
+            </div>
+
+            <div class="relative flex flex-col items-end gap-1.5 md:gap-3 bg-gradient-to-b from-[#00143c]/80 to-[#003399]/80 backdrop-blur-md p-1.5 md:p-2.5 rounded-[24px] md:rounded-[30px] border border-white/10 w-full h-full">
+                
+                <!-- 1. 카카오톡 문의 -->
+                <a href="https://open.kakao.com/o/sKh1Q3Li" target="_blank"
+                   class="quick-btn relative flex items-center w-10 h-10 md:w-14 md:h-14 bg-[#FEE500] rounded-full shadow-sm transition-all duration-300 overflow-hidden" 
+                   title="카카오톡 문의">
+                    <span class="absolute right-10 md:right-14 whitespace-nowrap opacity-0 transition-opacity duration-300 font-extrabold text-[#371D1E] text-[11px] md:text-base">카카오톡</span>
+                    <div class="absolute right-0 w-10 h-10 md:w-14 md:h-14 flex items-center justify-center shrink-0">
+                        <svg viewBox="0 0 24 24" class="w-5 h-5 md:w-7 md:h-7" fill="#371D1E">
+                            <path d="M12 3c-5.52 0-10 3.53-10 7.89 0 2.8 1.83 5.26 4.67 6.64-.16.6-.58 2.15-.67 2.45-.1.35.13.34.34.2.16-.1 2.2-1.42 3.09-2.02.83.1 1.69.15 2.57.15 5.52 0 10-3.53 10-7.89S17.52 3 12 3z"/>
+                        </svg>
+                    </div>
+                </a>
+
+                <!-- 2. 전화 상담 -->
+                <a href="tel:050-7878-6361"
+                   class="quick-btn relative flex items-center w-10 h-10 md:w-14 md:h-14 bg-[#0066FF] rounded-full shadow-sm transition-all duration-300 overflow-hidden" 
+                   title="전화 상담">
+                    <span class="absolute right-10 md:right-14 whitespace-nowrap opacity-0 transition-opacity duration-300 font-bold text-white text-[11px] md:text-base">전화상담</span>
+                    <div class="absolute right-0 w-10 h-10 md:w-14 md:h-14 flex items-center justify-center shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 md:w-7 md:h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                        </svg>
+                    </div>
+                </a>
+
+                <!-- 3. 상담 문의 -->
+                <a href="#contact-section"
+                   class="quick-btn relative flex items-center w-10 h-10 md:w-14 md:h-14 bg-gray-800 rounded-full shadow-sm transition-all duration-300 overflow-hidden" 
+                   title="상담 신청하기">
+                    <span class="absolute right-10 md:right-14 whitespace-nowrap opacity-0 transition-opacity duration-300 font-bold text-white text-[11px] md:text-base">상담문의</span>
+                    <div class="absolute right-0 w-10 h-10 md:w-14 md:h-14 flex items-center justify-center shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 md:w-7 md:h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                    </div>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="bg-gray-50 py-12 md:py-16 px-6 border-t text-gray-500">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8 md:gap-10">
+        <div class="text-center md:text-left">
+            <div class="text-2xl font-black mb-4 tracking-tighter text-blue-600">BIVELON</div>
+            
+            <div class="text-sm leading-relaxed flex flex-col md:flex-row items-center md:items-start gap-1 md:gap-3">
+                <span class="whitespace-nowrap">
+                    <a href="tel:050-7878-6361" class="hover:text-blue-600">대표번호: 050-7878-6361</a>
+                </span>
+                <span class="hidden md:inline text-gray-300">|</span>
+                
+                <span class="whitespace-nowrap">사업자등록번호: 758-01-03762</span>
+                <span class="hidden md:inline text-gray-300">|</span>
+                
+                <span class="whitespace-nowrap">이메일: pfc9222@naver.com</span>
+            </div>
+        </div>
+        <div class="text-xs italic opacity-60">© 2026 BIVELON. All Rights Reserved.</div>
+    </div>
+</footer>
+
+    <!-- 완료 안내 모달 -->
+    <div id="successModal" class="fixed inset-0 z-[110] hidden items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+        <div class="bg-white w-full max-w-md rounded-[32px] p-8 md:p-10 shadow-2xl transform transition-all scale-95 opacity-0 duration-300" id="successModalContent">
+            <div class="text-center">
+                <div class="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-black text-gray-900 mb-4">상담 신청 완료!</h3>
+                <p class="text-gray-600 leading-relaxed mb-8">
+                    소중한 정보를 남겨주셔서 감사합니다.<br>
+                    담당 전문가가 내용을 검토한 후<br>
+                    <span class="text-blue-600 font-bold">빠른 시일 내에 연락드리겠습니다.</span>
+                </p>
+                <button onclick="closeSuccessModal()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl shadow-lg shadow-blue-100 transition-all">확인</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 전체화면 개인정보처리방침 모달 (동적으로 policy.txt 불러오기 적용) -->
+    <div id="policyModal" class="fixed inset-0 z-[150] bg-white hidden flex-col transition-opacity duration-300 opacity-0" aria-hidden="true">
+        
+        <!-- 헤더 영역 -->
+        <div class="flex items-center justify-between px-6 md:px-10 py-5 border-b border-gray-200 shrink-0 bg-white">
+            <h3 id="policyModalTitle" class="text-xl md:text-2xl font-black text-gray-900">이용약관 및 개인정보처리방침</h3>
+            <button type="button" onclick="closePolicyModal()" class="text-gray-400 hover:text-gray-700 focus:outline-none transition-colors" aria-label="닫기">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- 컨텐츠 (스크롤) 영역 -->
+        <div class="flex-1 overflow-y-auto bg-gray-50/50 p-6 md:p-10 policy-scroll">
+            <div id="policyContent" class="max-w-4xl mx-auto bg-white p-6 md:p-10 rounded-2xl border border-gray-100 shadow-sm text-sm text-gray-700 leading-relaxed whitespace-pre-wrap font-medium">이용약관 및 개인정보처리방침을 불러오는 중입니다...</div>
+        </div>
+
+        <!-- 하단 고정 버튼 영역 -->
+        <div class="p-4 md:p-6 border-t border-gray-200 bg-white shrink-0 shadow-[0_-4px_15px_rgba(0,0,0,0.03)]">
+            
+            <!-- 1. 로딩 중 버튼 (초기 상태) -->
+            <div id="loadingButtons" class="max-w-2xl mx-auto flex gap-3 md:gap-4">
+                <button type="button" disabled class="w-full bg-gray-100 text-gray-400 py-3.5 md:py-4 rounded-xl font-black text-lg cursor-not-allowed transition-colors">불러오는 중...</button>
+            </div>
+            
+            <!-- 2. 정상 로드 후 액션 버튼 (동의/비동의) -->
+            <div id="actionButtons" class="max-w-2xl mx-auto hidden gap-3 md:gap-4">
+                <button type="button" onclick="disagreePolicy()" class="flex-1 bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 py-3.5 md:py-4 rounded-xl font-black text-lg transition-colors">비동의</button>
+                <button type="button" onclick="agreePolicy()" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3.5 md:py-4 rounded-xl font-black text-lg shadow-lg shadow-blue-100 transition-colors">동의</button>
+            </div>
+            
+            <!-- 3. 로드 실패 시 에러 버튼 (닫기 전용) -->
+            <div id="errorButtons" class="max-w-2xl mx-auto hidden gap-3 md:gap-4">
+                <button type="button" onclick="closePolicyModal()" class="w-full bg-gray-200 hover:bg-gray-300 text-gray-700 py-3.5 md:py-4 rounded-xl font-black text-lg transition-colors">닫기</button>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+        const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+
+        if (menuBtn) {
+            menuBtn.addEventListener('click', () => {
+                const isOpened = mobileMenu.classList.contains('translate-x-0');
+                if(isOpened) {
+                    mobileMenu.classList.remove('translate-x-0');
+                    mobileMenu.classList.add('translate-x-full');
+                    menuIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />';
+                    menuBtn.classList.remove('text-gray-900');
+                    menuBtn.classList.add('text-white');
+                } else {
+                    mobileMenu.classList.add('translate-x-0');
+                    mobileMenu.classList.remove('translate-x-full');
+                    menuIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />';
+                    menuBtn.classList.add('text-gray-900');
+                    menuBtn.classList.remove('text-white');
+                }
+            });
+        }
+
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('translate-x-0');
+                mobileMenu.classList.add('translate-x-full');
+                menuIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />';
+                menuBtn.classList.remove('text-gray-900');
+                menuBtn.classList.add('text-white');
+            });
+        });
+
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('main-header');
+            const logo = document.getElementById('header-logo');
+            const headerText = document.getElementById('header-text');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const mBtn = document.getElementById('mobile-menu-btn');
+
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+                logo.classList.remove('brightness-0', 'invert');
+                headerText.style.color = '#0066FF';
+                mBtn.classList.remove('text-white');
+                mBtn.classList.add('text-gray-900');
+                navLinks.forEach(l => { if(!l.classList.contains('active')) l.style.color = '#4B5563'; });
+            } else {
+                header.classList.remove('scrolled');
+                logo.classList.add('brightness-0', 'invert');
+                headerText.style.color = 'white';
+                mBtn.classList.add('text-white');
+                mBtn.classList.remove('text-gray-900');
+                navLinks.forEach(l => { if(!l.classList.contains('active')) l.style.color = 'white'; });
+            }
+        });
+
+        /* 기존 상담/승인 현황 데이터 유지 */
+        const consultingData = [
+            { name: "메*레븐", owner: "박*빈", region: "부산", phone: "010-****-4576" },
+            { name: "무*수산", owner: "조*진", region: "대구", phone: "010-****-2155" },
+            { name: "밀*베이커리", owner: "이*욱", region: "대구", phone: "010-****-9667" },
+            { name: "박*먼트", owner: "박*규", region: "대구", phone: "010-****-2451" },
+            { name: "진*종합건설", owner: "신*원", region: "부산", phone: "010-****-5319" },
+            { name: "60*치킨 부산 감천점", owner: "이*규", region: "부산", phone: "010-****-5149" },
+            { name: "고*섬유", owner: "김*식", region: "대구", phone: "010-****-8634" },
+            { name: "(주)*나푸드", owner: "신*현", region: "부산", phone: "010-****-8522" },
+            { name: "경*", owner: "권*열", region: "대구", phone: "010-****-9702" },
+            { name: "도*메디", owner: "김*욱", region: "대구", phone: "010-****-2015" },
+            { name: "수*란트", owner: "송*수", region: "부산", phone: "010-****-5790" },
+            { name: "승*건설", owner: "조*제", region: "대구", phone: "010-****-1362" },
+            { name: "포*인터", owner: "송*건", region: "대구", phone: "010-****-9282" },
+            { name: "조*친구들", owner: "이*돈", region: "대구", phone: "010-****-9181" },
+            { name: "디*이치(DH)무역", owner: "박*철", region: "대구", phone: "010-****-5992" },
+            { name: "이*씨클럽", owner: "서*임", region: "대구", phone: "010-****-8290" },
+            { name: "뷰*프로", owner: "이*희", region: "대구", phone: "010-****-5189" },
+            { name: "영*생고기육회", owner: "홍*길", region: "대구", phone: "010-****-1398" },
+            { name: "주*회사인연", owner: "김*종", region: "대구", phone: "010-****-1101" },
+            { name: "암*문화커피", owner: "신*모", region: "대구", phone: "010-****-0118" },
+            { name: "뉴*스트가방", owner: "문*채", region: "부산", phone: "010-****-1680" },
+            { name: "라*테크", owner: "강*동", region: "부산", phone: "010-****-0067" },
+            { name: "Nw* corporation", owner: "추*국", region: "부산", phone: "010-****-8917" },
+            { name: "바*칼코리아", owner: "김*동", region: "부산", phone: "010-****-5184" },
+            { name: "(주)*노에이블랩", owner: "이*모", region: "부산", phone: "010-****-0380" },
+            { name: "동*사랑", owner: "김*무", region: "대구", phone: "010-****-4440" },
+            { name: "제*비커뮤니케이션", owner: "류*렬", region: "부산", phone: "010-****-0115" },
+            { name: "비*거부동산관리업", owner: "하*의", region: "대구", phone: "010-****-3426" },
+            { name: "그*피스갈비", owner: "이*진", region: "부산", phone: "010-****-2503" },
+            { name: "발*가지재송직영점", owner: "최*규", region: "부산", phone: "010-****-8173" },
+            { name: "커*스성서클럽", owner: "박*희", region: "대구", phone: "010-****-5139" },
+            { name: "(주)*앤북", owner: "김*남", region: "부산", phone: "010-****-4275" },
+            { name: "레*안음악학원", owner: "정*선", region: "부산", phone: "010-****-6951" },
+            { name: "실*로드", owner: "신*산", region: "대구", phone: "010-****-3443" },
+            { name: "Sn* 케미칼", owner: "국*원", region: "부산", phone: "010-****-0523" },
+            { name: "신*철학관", owner: "신*경", region: "대구", phone: "010-****-3832" },
+            { name: "해*반점", owner: "한*수", region: "부산", phone: "010-****-0119" },
+            { name: "굿*스크린골프", owner: "성*명", region: "대구", phone: "010-****-9798" },
+            { name: "서*홍주유소", owner: "서*홍", region: "대구", phone: "010-****-4443" },
+            { name: "개*화물", owner: "전*조", region: "대구", phone: "010-****-2942" },
+            { name: "(주)*성시스템", owner: "김*현", region: "부산", phone: "010-****-6197" },
+            { name: "(주)*성안전산업", owner: "박*철", region: "대구", phone: "010-****-7774" },
+            { name: "한*북부리드", owner: "성*호", region: "대구", phone: "010-****-5143" },
+            { name: "해*은", owner: "김*수", region: "부산", phone: "010-****-8484" },
+            { name: "ab*-trading.co", owner: "전*미", region: "대구", phone: "010-****-0786" },
+            { name: "(주)*시아모델부산", owner: "임*자", region: "부산", phone: "010-****-3435" },
+            { name: "케*에스모터스", owner: "김*학", region: "부산", phone: "010-****-9410" },
+            { name: "문*음식연구원", owner: "김*정", region: "대구", phone: "010-****-7986" },
+            { name: "동*창호", owner: "최*률", region: "부산", phone: "010-****-6204" },
+            { name: "대*하이테크", owner: "김*업", region: "대구", phone: "010-****-2032" },
+        ];
+
+        const approvalData = [
+            { name: "민*이엔씨", type: "건설업", result: "6천만원 승인!" },
+            { name: "(주)*앤북", type: "도소매업", result: "8천만원 승인!" },
+            { name: "60*부산감천점", type: "음식점업", result: "5천만원 승인!" },
+            { name: "국*산업", type: "제조업", result: "8천만원 승인!" },
+            { name: "모*의정원", type: "서비스업", result: "3천만원 승인!" },
+            { name: "육*", type: "음식점업", result: "6천만원 승인!" },
+            { name: "이*가", type: "음식점업", result: "8천만원 승인!" },
+            { name: "청*구리", type: "제조업", result: "1억 8천만원 승인!" },
+            { name: "보*테크", type: "제조업", result: "5천만원 승인!" },
+            { name: "시*니처", type: "서비스업", result: "3천만원 승인!" },
+            { name: "팜*리", type: "기타업", result: "4천만원 승인!" },
+            { name: "에*도료", type: "건설업", result: "6천만원 승인!" },
+            { name: "내*방", type: "도소매업", result: "2천만원 승인!" },
+            { name: "갤*리모터스", type: "제조업", result: "1억 2천만원 승인!" },
+            { name: "은*수식당", type: "음식점업", result: "9천만원 승인!" },
+            { name: "진*섭조형", type: "서비스업", result: "5천만원 승인!" },
+            { name: "우*기업로직스", type: "운수업", result: "4천만원 승인!" },
+            { name: "펀*어킹", type: "음식점업", result: "8천만원 승인!" },
+            { name: "지*범물사진관", type: "서비스업", result: "6천만원 승인!" },
+            { name: "슈*리페어", type: "서비스업", result: "5천만원 승인!" },
+            { name: "비*큐가야점", type: "음식점업", result: "4천만원 승인!" },
+            { name: "남*산업개발", type: "건설업", result: "6천만원 승인!" },
+            { name: "장*포차", type: "음식점업", result: "4천만원 승인!" },
+            { name: "바*로마트", type: "서비스업", result: "6천만원 승인!" },
+            { name: "화*이엔씨", type: "건설업", result: "1억 3천만원 승인!" },
+            { name: "태*전기(주)", type: "건설업", result: "2억원 승인!" },
+            { name: "민*이엔씨", type: "건설업", result: "6천만원 승인!" },
+            { name: "(주)*앤북", type: "도소매업", result: "8천만원 승인!" },
+            { name: "60*부산감천점", type: "음식점업", result: "5천만원 승인!" },
+            { name: "국*산업", type: "제조업", result: "8천만원 승인!" },
+            { name: "모*의정원", type: "서비스업", result: "3천만원 승인!" },
+            { name: "육*", type: "음식점업", result: "6천만원 승인!" },
+            { name: "이*가", type: "음식점업", result: "8천만원 승인!" },
+            { name: "청*구리 친환경벽지", type: "제조업", result: "1억 8천만원 승인!" },
+            { name: "혜*수학교습소", type: "서비스업", result: "3천만원 승인!" },
+            { name: "보*테크", type: "제조업", result: "5천만원 승인!" },
+            { name: "시*니처", type: "서비스업", result: "3천만원 승인!" },
+            { name: "팜*리", type: "기타업", result: "4천만원 승인!" },
+            { name: "에*도료", type: "건설업", result: "6천만원 승인!" },
+            { name: "내*방", type: "도소매업", result: "2천만원 승인!" },
+            { name: "갤*리모터스", type: "제조업", result: "1억 2천만원 승인!" },
+            { name: "은*수식당 부산영도남항점", type: "음식점업", result: "9천만원 승인!" },
+            { name: "진*섭조형연구소", type: "서비스업", result: "5천만원 승인!" },
+            { name: "우*기업로직스", type: "운수업", result: "4천만원 승인!" },
+            { name: "펀*어킹 포항문덕점", type: "음식점업", result: "8천만원 승인!" },
+            { name: "마*", type: "서비스업", result: "4천만원 승인!" },
+            { name: "지*범물대표사진관", type: "서비스업", result: "6천만원 승인!" },
+            { name: "슈*리페어", type: "서비스업", result: "5천만원 승인!" },
+            { name: "천*이엔씨", type: "건설업", result: "4천만원 승인!" },
+            { name: "비*큐가야대로점", type: "음식점업", result: "4천만원 승인!" },
+            { name: "가*기프트", type: "도소매업", result: "4천만원 승인!" },
+            { name: "(주)*양산업개발", type: "건설업", result: "6천만원 승인!" },
+        ];
+
+        function renderTickers() {
+            const consultingTicker = document.getElementById('consulting-ticker');
+            const approvalTicker = document.getElementById('approval-ticker');
+            if (!consultingTicker || !approvalTicker) return;
+
+            const consultingHtml = consultingData.map(d => `
+                <div class="flex justify-between border-b border-gray-50 py-4 px-2 hover:bg-blue-50">
+                    <span class="w-1/3 font-bold text-gray-800 truncate">${d.name}</span>
+                    <span class="w-1/3 text-center text-gray-500">${d.region}</span>
+                    <span class="w-1/3 text-right font-medium">${d.phone}</span>
+                </div>`).join('');
+            consultingTicker.innerHTML = consultingHtml + consultingHtml;
+            consultingTicker.style.animation = 'none';
+            void consultingTicker.offsetWidth;
+            consultingTicker.style.animation = null;
+
+            const approvalHtml = approvalData.map(d => `
+                <div class="flex justify-between border-b border-gray-50 py-4 px-2 hover:bg-cyan-50">
+                    <span class="w-1/3 font-bold text-gray-800 truncate">${d.name}</span>
+                    <span class="w-1/3 text-center text-gray-400 truncate">${d.type}</span>
+                    <span class="w-1/3 text-right text-blue-600 font-extrabold">${d.result}</span>
+                </div>`).join('');
+            approvalTicker.innerHTML = approvalHtml + approvalHtml;
+            approvalTicker.style.animation = 'none';
+            void approvalTicker.offsetWidth;
+            approvalTicker.style.animation = null;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderTickers();
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section[id]');
+            const options = { root: null, rootMargin: '-10% 0px -70% 0px', threshold: 0 };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            const isScrolled = document.getElementById('main-header').classList.contains('scrolled');
+                            link.style.color = isScrolled ? '#4B5563' : 'white';
+                        });
+                        const activeLink = document.querySelector(`.nav-link[href="#${id}"]`);
+                        if (activeLink) {
+                            activeLink.classList.add('active');
+                            activeLink.style.color = '#0066FF';
+                        }
+                    }
+                });
+            }, options);
+            sections.forEach(section => observer.observe(section));
+        });
+
+        function handlePhoneInput(input) {
+            const nonNumericPattern = /[^0-9]/g;
+            if (nonNumericPattern.test(input.value)) {
+                alert("연락처는 숫자만 입력 가능합니다.");
+                input.value = input.value.replace(nonNumericPattern, '');
+            }
+            if (input.value.length > 11) input.value = input.value.slice(0, 11);
+        }
+
+        function openSuccessModal() {
+            const modal = document.getElementById('successModal');
+            const content = document.getElementById('successModalContent');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => {
+                content.classList.remove('scale-95', 'opacity-0');
+                content.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        function closeSuccessModal() {
+            const modal = document.getElementById('successModal');
+            const content = document.getElementById('successModalContent');
+            content.classList.remove('scale-100', 'opacity-100');
+            content.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        function resetAndReload() {
+            if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+            window.scrollTo(0, 0);
+            location.reload();
+        }
+
+        /* =========================
+           AI 기업자금 사전진단
+           ========================= */
+        const questions = [
+            {key:'industry', title:'대표님 회사의 업종은 무엇인가요?', options:['제조업','건설업','도소매업','서비스업','음식점업','운수업','IT·정보통신업','기타']},
+            {key:'age', title:'사업을 시작하신 지 얼마나 되었나요?', options:['1년 미만','1~3년','3~7년','7~10년','10년 이상']},
+            {key:'sales', title:'최근 연매출은 어느 정도인가요?', options:['1억 미만','1억~5억','5억~10억','10억~30억','30억 이상']},
+            {key:'purpose', title:'가장 필요한 자금의 목적은 무엇인가요?', options:['운전자금','시설자금','대환·금융비용','사업확장','아직 잘 모르겠습니다']},
+            {key:'amount', title:'필요하다고 생각하는 자금 규모는?', options:['3천만원 미만','3천만~1억원','1억~3억원','3억~5억원','5억원 이상']},
+            {key:'region', title:'사업장 지역을 선택해주세요.', options:['서울·경기','부산','대구','경남','울산','광주·전라','대전·충청','강원·제주']}
+        ];
+        let step = 0;
+        let answers = {};
+
+        function renderQuestion() {
+            const q = questions[step];
+            const questionsEl = document.getElementById('questions');
+            if (!questionsEl) return;
+
+            document.getElementById('stepLabel').textContent = `STEP ${step+1} / ${questions.length}`;
+            document.getElementById('stepPercent').textContent = Math.round(((step+1)/questions.length)*100) + '%';
+            document.getElementById('progress').style.width = ((step+1)/questions.length*100) + '%';
+
+            questionsEl.innerHTML = `
+                <div>
+                    <p class="text-xs text-blue-600 font-black">기업자금 PRE-CHECK</p>
+                    <h3 class="mt-3 text-2xl sm:text-3xl font-black">${q.title}</h3>
+                    <div class="grid sm:grid-cols-2 gap-3 mt-8">
+                        ${q.options.map(o => `
+                            <label class="option p-4 sm:p-5 rounded-2xl border-2 cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition ${answers[q.key]===o?'border-blue-600 bg-blue-50':''}">
+                                <input class="sr-only" type="radio" name="q" value="${o}" ${answers[q.key]===o?'checked':''}>
+                                <span class="font-bold">${o}</span>
+                            </label>`).join('')}
+                    </div>
+                </div>`;
+
+            document.querySelectorAll('.option').forEach(el => {
+                el.addEventListener('click', () => {
+                    document.querySelectorAll('.option').forEach(x => x.classList.remove('border-blue-600','bg-blue-50'));
+                    el.classList.add('border-blue-600','bg-blue-50');
+                    const radio = el.querySelector('input[type="radio"]');
+                    if (radio) radio.checked = true;
+                });
+            });
+
+            document.getElementById('prevBtn').classList.toggle('hidden', step === 0);
+            document.getElementById('nextBtn').textContent = step === questions.length - 1 ? '결과 확인하기 →' : '다음 →';
+        }
+
+        function mapIndustry(value) {
+            const map = {
+                '제조업':'제조',
+                '도소매업':'도소매',
+                '음식점업':'음식점',
+                'IT·정보통신업':'IT정보통신'
+            };
+            return map[value] || '그 외';
+        }
+
+        function mapSales(value) {
+            if (value === '1억 미만') return '1억 미만';
+            if (value === '1억~5억') return '1억~5억';
+            if (value === '5억~10억') return '5억~10억';
+            return '10억 이상';
+        }
+
+        function mapFund(value) {
+            if (value === '운전자금') return '운전자금';
+            if (value === '시설자금') return '시설자금';
+            return '그 외';
+        }
+
+        function setDiagnosisHiddenFields(main, tip, score, secondary, summary) {
+            const fields = {
+                'diagnosis-industry': answers.industry || '',
+                'diagnosis-age': answers.age || '',
+                'diagnosis-sales': answers.sales || '',
+                'diagnosis-purpose': answers.purpose || '',
+                'diagnosis-amount': answers.amount || '',
+                'diagnosis-region': answers.region || '',
+                'diagnosis-main': main || '',
+                'diagnosis-tip': tip || '',
+                'diagnosis-score': score || '',
+                'diagnosis-secondary': secondary || '',
+                'diagnosis-summary': summary || ''
+            };
+            Object.keys(fields).forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = fields[id];
+            });
+        }
+
+        function prefillConsultForm() {
+            const form = document.getElementById('consulting-form');
+            if (!form) return;
+
+            const biz = form.querySelector(`input[name="biz_type"][value="${CSS.escape(mapIndustry(answers.industry || ''))}"]`);
+            const sales = form.querySelector(`input[name="sales"][value="${CSS.escape(mapSales(answers.sales || ''))}"]`);
+            const fund = form.querySelector(`input[name="fund"][value="${CSS.escape(mapFund(answers.purpose || ''))}"]`);
+            if (biz) biz.checked = true;
+            if (sales) sales.checked = true;
+            if (fund) fund.checked = true;
+
+            const region = form.querySelector('input[name="region"]');
+            if (region && answers.region) region.value = answers.region;
+        }
+
+        function showResult() {
+            const a = answers;
+            const purpose = a.purpose || '아직 잘 모르겠습니다';
+            const industry = a.industry || '기타';
+            const age = a.age || '3~7년';
+            const sales = a.sales || '1억~5억';
+            const amount = a.amount || '3천만~1억원';
+            const region = a.region || '서울·경기';
+
+            const score = { policy: 0, guarantee: 0, support: 0, finance: 0 };
+            const reasons = [];
+            const checklist = [];
+
+            const add = (bucket, points) => score[bucket] += points;
+
+            if (industry === '제조업') { add('policy', 18); add('finance', 12); reasons.push('제조업 특성상 시설·운전자금 모두 검토할 필요가 있습니다.'); checklist.push('최근 재무제표 및 설비·시설 투자계획'); }
+            else if (industry === '건설업') { add('guarantee', 16); add('policy', 12); reasons.push('건설업은 보증 연계와 운전자금 구조를 함께 확인하는 것이 중요합니다.'); checklist.push('수주현황·공사계약 및 금융부채 현황'); }
+            else if (industry === '도소매업') { add('policy', 12); add('finance', 10); reasons.push('매출 흐름과 재고·운전자금 수요를 중심으로 검토하는 유형입니다.'); checklist.push('최근 매출증빙 및 운전자금 사용계획'); }
+            else if (industry === '음식점업') { add('policy', 10); add('guarantee', 12); reasons.push('소상공인 성격의 운전자금과 보증 연계 가능성을 함께 볼 필요가 있습니다.'); checklist.push('최근 매출증빙 및 임차·운영비 현황'); }
+            else if (industry === 'IT·정보통신업') { add('support', 15); add('policy', 14); reasons.push('성장·기술·사업확장 관련 지원사업까지 함께 검토할 가치가 있습니다.'); checklist.push('사업계획서 및 서비스·기술 성장지표'); }
+            else if (industry === '운수업') { add('guarantee', 14); add('policy', 11); reasons.push('운영비와 차량·설비 관련 금융수요를 함께 확인하는 것이 좋습니다.'); checklist.push('차량·장비 현황 및 기존 대출내역'); }
+            else { add('policy', 10); add('guarantee', 10); reasons.push('업종만으로 특정 자금을 단정하기보다 기업 재무와 자금 목적을 함께 보는 것이 적절합니다.'); checklist.push('최근 재무자료 및 자금 사용계획'); }
+
+            if (age === '1년 미만') { add('support', 16); add('guarantee', 12); reasons.push('초기기업은 창업·성장 지원과 보증 연계 여부가 중요합니다.'); checklist.push('사업계획서 및 초기 매출·투자 현황'); }
+            else if (age === '1~3년') { add('policy', 12); add('support', 12); reasons.push('초기 성장단계라 정책자금과 지원사업을 함께 비교할 가치가 있습니다.'); }
+            else if (age === '3~7년') { add('policy', 14); add('guarantee', 8); reasons.push('사업 운영 이력이 있어 일반적인 정책금융 검토 범위가 넓어질 수 있습니다.'); }
+            else if (age === '7~10년') { add('policy', 15); add('finance', 10); reasons.push('운영기간이 긴 기업으로 성장·운전자금 및 금융구조를 함께 보는 것이 좋습니다.'); }
+            else { add('policy', 13); add('finance', 14); reasons.push('장기 운영기업은 재무구조와 기존 금융비용을 함께 분석하는 것이 중요합니다.'); checklist.push('최근 2개년 재무제표 및 기존 금융기관 대출현황'); }
+
+            if (sales === '1억 미만') { add('support', 13); add('guarantee', 12); }
+            else if (sales === '1억~5억') { add('guarantee', 12); add('policy', 8); }
+            else if (sales === '5억~10억') { add('policy', 13); add('guarantee', 10); }
+            else if (sales === '10억~30억') { add('policy', 16); add('finance', 12); reasons.push('매출 규모를 고려하면 단순 소액자금보다 기업금융 구조를 함께 검토하는 것이 유리합니다.'); }
+            else { add('policy', 17); add('finance', 16); add('support', 8); reasons.push('매출 규모가 큰 편이므로 정책금융뿐 아니라 금융구조·성장지원까지 폭넓게 비교할 필요가 있습니다.'); checklist.push('재무비율·부채현황 및 중장기 사업계획'); }
+
+            if (purpose === '운전자금') { add('policy', 22); add('guarantee', 14); reasons.push('운전자금 수요가 명확해 정책자금과 보증 연계를 우선 비교하는 것이 적절합니다.'); checklist.push('운전자금 사용계획 및 최근 매출증빙'); }
+            else if (purpose === '시설자금') { add('policy', 24); add('finance', 18); reasons.push('시설자금은 투자규모와 자금조달 구조를 함께 보는 것이 핵심입니다.'); checklist.push('시설 견적서·계약서 및 투자계획'); }
+            else if (purpose === '대환·금융비용') { add('guarantee', 28); add('finance', 22); add('policy', 8); reasons.push('대환·금융비용 절감 목적이므로 기존 부채와 보증 가능성을 우선 확인해야 정합니다.'); checklist.push('기존 대출 잔액·금리·만기 현황'); }
+            else if (purpose === '사업확장') { add('policy', 18); add('support', 24); add('finance', 14); reasons.push('사업확장은 정책금융과 성장지원사업을 함께 비교하는 것이 효과적입니다.'); checklist.push('확장계획·투자금액·고용계획'); }
+            else { add('policy', 8); add('support', 10); add('guarantee', 8); reasons.push('자금 목적이 아직 명확하지 않아 여러 자금 경로를 비교한 뒤 우선순위를 정하는 것이 좋습니다.'); }
+
+            if (amount === '3천만원 미만') { add('guarantee', 7); add('support', 6); }
+            else if (amount === '3천만~1억원') { add('guarantee', 10); add('policy', 8); }
+            else if (amount === '1억~3억원') { add('policy', 12); add('guarantee', 10); }
+            else if (amount === '3억~5억원') { add('policy', 16); add('finance', 12); reasons.push('필요금액이 커질수록 단일 상품보다 복수 자금원의 조합을 검토할 필요가 있습니다.'); }
+            else { add('policy', 18); add('finance', 18); add('guarantee', 12); reasons.push('대규모 자금 수요로 보여 자금원 분산과 금융구조 설계가 중요합니다.'); }
+
+            if (region !== '서울·경기') { add('support', 5); reasons.push(`${region} 소재 기업이므로 중앙정부 자금과 함께 지역 지원사업도 비교하는 것이 좋습니다.`); }
+
+            const sorted = Object.entries(score).sort((a,b) => b[1] - a[1]);
+            const labels = {policy:'정책자금', guarantee:'보증 연계', support:'기업지원사업', finance:'금융구조 개선'};
+            const mainKey = sorted[0][0];
+            const secondaryKey = sorted[1][0];
+            const rawScore = Math.round(55 + Math.min(40, sorted[0][1] * 0.55 + sorted[1][1] * 0.2));
+            const finalScore = Math.max(55, Math.min(96, rawScore));
+
+            let main = labels[mainKey];
+            let secondary = labels[secondaryKey];
+            if (purpose === '대환·금융비용') { main = '보증 연계'; secondary = '금융구조 개선'; }
+            if (purpose === '사업확장' && industry === 'IT·정보통신업') { main = '성장지원사업'; secondary = '정책자금'; }
+            if (purpose === '시설자금' && industry === '제조업') { main = '시설·정책자금'; secondary = '금융구조 개선'; }
+
+            const badge = finalScore >= 82 ? '우선 검토 가능성 높음' : finalScore >= 70 ? '복수 경로 비교 권장' : '추가 확인 후 판단 권장';
+            let summary = `${industry}, ${age}, 연매출 ${sales}, ${purpose}, 필요금액 ${amount} 조건을 종합하면 ` +
+                `현재는 「${main}」을 1순위로 보고 「${secondary}」를 함께 비교하는 전략이 적절해 보입니다. ` +
+                reasons.slice(0,3).join(' ');
+            if (purpose === '아직 잘 모르겠습니다') summary += ' 특히 자금 목적을 구체화하면 실제 검토 방향이 더 선명해질 수 있습니다.';
+
+            const action = purpose === '대환·금융비용'
+                ? '기존 대출의 잔액·금리·만기와 기업의 부채비율을 먼저 확인한 뒤 보증기관 연계 및 대환 가능성을 비교하는 것이 좋습니다.'
+                : purpose === '시설자금'
+                    ? '투자 예정 시설의 견적·계약과 자기자금 투입계획을 확인한 뒤 정책자금과 금융기관 조달을 함께 비교하는 것이 좋습니다.'
+                    : purpose === '사업확장'
+                        ? '확장에 필요한 투자금액, 고용계획, 예상 매출을 확인한 뒤 정책자금과 지원사업을 묶어 검토하는 것이 좋습니다.'
+                        : '최근 재무제표, 기존 금융부채, 세금 체납 여부, 자금 사용계획을 확인하면 실제 상담 방향을 더 정확하게 좁힐 수 있습니다.';
+
+            const uniqueChecklist = [...new Set(checklist)].slice(0,5);
+            while (uniqueChecklist.length < 3) uniqueChecklist.push('최근 재무자료 및 기업현황 확인');
+
+            document.getElementById('resultScore').innerHTML = `${finalScore}<span class="text-xl text-blue-200"> / 100</span>`;
+            document.getElementById('resultScoreBar').style.width = finalScore + '%';
+            document.getElementById('resultBadge').textContent = badge;
+            document.getElementById('resultMain').textContent = main;
+            document.getElementById('resultSecondary').textContent = secondary;
+            document.getElementById('resultPurpose').textContent = purpose === '아직 잘 모르겠습니다' ? '목적 구체화 필요' : purpose;
+            document.getElementById('resultSummary').textContent = summary;
+            document.getElementById('resultAction').textContent = action;
+            document.getElementById('resultChecklist').innerHTML = uniqueChecklist.map(item => `<li class="flex gap-2"><span class="text-blue-300">✓</span><span>${item}</span></li>`).join('');
+
+            const tip = purpose === '대환·금융비용' ? '기존대출·부채구조' : purpose === '시설자금' ? '투자계획·견적' : purpose === '사업확장' ? '사업계획·성장지표' : sales === '30억 이상' ? '재무·사업계획' : '기업현황·재무자료';
+            setDiagnosisHiddenFields(main, tip, finalScore, secondary, summary);
+
+            document.getElementById('diagnosisForm').classList.add('hidden');
+            document.getElementById('result').classList.remove('hidden');
+        }
+
+        function resetDiagnosis() {
+            step = 0;
+            answers = {};
+            document.getElementById('result').classList.add('hidden');
+            document.getElementById('diagnosisForm').classList.remove('hidden');
+            renderQuestion();
+            document.getElementById('diagnosis').scrollIntoView({behavior:'smooth', block:'start'});
+        }
+
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            const selected = document.querySelector('input[name="q"]:checked');
+            if (!selected) {
+                alert('항목을 하나 선택해주세요.');
+                return;
+            }
+            answers[questions[step].key] = selected.value;
+
+            if (step < questions.length - 1) {
+                step++;
+                renderQuestion();
+            } else {
+                showResult();
+            }
+        });
+
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            if (step > 0) {
+                step--;
+                renderQuestion();
+            }
+        });
+
+        document.getElementById('goConsult').addEventListener('click', () => {
+            prefillConsultForm();
+            document.querySelector('#contact-section').scrollIntoView({behavior:'smooth'});
+        });
+
+        document.getElementById('restartDiagnosis').addEventListener('click', resetDiagnosis);
+
+        renderQuestion();
+
+        /* Preview: live submission removed; handled locally below. */
+        /* =========================
+           전체화면 개인정보 처리방침 (파일 로드 방식)
+           ========================= */
+        let policyLoaded = false;
+
+        async function loadPolicyText() {
+            const content = document.getElementById('policyContent');
+            const loadBtn = document.getElementById('loadingButtons');
+            const actionBtn = document.getElementById('actionButtons');
+            const errorBtn = document.getElementById('errorButtons');
+
+            if (policyLoaded) {
+                // 이미 로드된 상태면 바로 액션 버튼 노출
+                loadBtn.classList.add('hidden');
+                errorBtn.classList.remove('flex');
+                errorBtn.classList.add('hidden');
+                actionBtn.classList.remove('hidden');
+                actionBtn.classList.add('flex');
+                return;
+            }
+
+            // 초기 상태: 로딩 중 (모든 액션 버튼 숨김)
+            content.textContent = '이용약관 및 개인정보처리방침을 불러오는 중입니다...';
+            loadBtn.classList.remove('hidden');
+            actionBtn.classList.remove('flex');
+            actionBtn.classList.add('hidden');
+            errorBtn.classList.remove('flex');
+            errorBtn.classList.add('hidden');
+
+            try {
+                // 브라우저 캐시 방지를 위해 시간 파라미터 추가
+                const response = await fetch('./policy.txt?t=' + new Date().getTime());
+                if (!response.ok) throw new Error('policy.txt fetch failed: ' + response.status);
+
+                const text = await response.text();
+                if (!text.trim()) throw new Error('policy.txt is empty');
+
+                content.textContent = text;
+                policyLoaded = true;
+
+                // 불러오기 성공: 동의/비동의 버튼 표시
+                loadBtn.classList.add('hidden');
+                actionBtn.classList.remove('hidden');
+                actionBtn.classList.add('flex');
+            } catch (error) {
+                console.error('개인정보처리방침 불러오기 실패:', error);
+                content.textContent = '약관을 불러오는데 실패했습니다. 잠시 후 다시 시도해 주세요.';
+                
+                // 불러오기 실패: 닫기 전용 버튼 표시 (동의 불가)
+                loadBtn.classList.add('hidden');
+                errorBtn.classList.remove('hidden');
+                errorBtn.classList.add('flex');
+            }
+        }
+
+        function openPolicyModal() {
+            const modal = document.getElementById('policyModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            
+            // 파일 로드 실행
+            loadPolicyText();
+
+            // 페이드 인 애니메이션
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+            }, 10);
+            
+            document.body.style.overflow = 'hidden'; // 배경 스크롤 방지 (기존 페이지 숨김 효과)
+        }
+
+        function closePolicyModal() {
+            const modal = document.getElementById('policyModal');
+            
+            // 페이드 아웃 애니메이션
+            modal.classList.add('opacity-0');
+            
+            setTimeout(() => {
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
+                document.body.style.overflow = ''; // 배경 스크롤 원복
+            }, 300); // transition 시간(300ms) 대기
+        }
+
+        // 동의 버튼 클릭 시
+        function agreePolicy() {
+            document.getElementById('agree').checked = true; // 자동 체크
+            closePolicyModal();
+        }
+
+        // 비동의 버튼 클릭 시
+        function disagreePolicy() {
+            alert("비동의 선택 시 상담이 거부될 수 있습니다."); // 알림창 출력
+            document.getElementById('agree').checked = false; // 체크 해제 유지
+            closePolicyModal();
+        }
+
+        /* =========================
+           모바일 퀵메뉴 터치 제어 스크립트 (기존.html)
+           ========================= */
+        (() => {
+            const container = document.getElementById('quickMenuContainer');
+            if (!container) return;
+        
+            const desktopHover = window.matchMedia(
+                '(min-width: 1025px) and (hover: hover) and (pointer: fine)'
+            );
+        
+            const MOVE_LIMIT = 10;       // 이 거리 이상 움직이면 탭이 아닌 드래그
+            const TAP_LIMIT = 600;       // 길게 누르기는 메뉴 열기에서 제외
+            const SCROLL_GUARD = 250;    // 스크롤 직후 오작동 방지 시간(ms)
+        
+            let pointerState = null;
+            let validTap = null;
+            let lastScrollAt = -Infinity;
+            let scrollTimer;
+        
+            function usesTapMenu() {
+                return !desktopHover.matches;
+            }
+        
+            function closeQuickMenu() {
+                container.classList.remove('force-open');
+            
+                const focused = document.activeElement;
+                if (focused instanceof HTMLElement && container.contains(focused)) {
+                    focused.blur();
+                }
+            }
+        
+            function clearGesture() {
+                pointerState = null;
+                validTap = null;
+            }
+        
+            function resetQuickMenu() {
+                closeQuickMenu();
+                clearGesture();
+            }
+        
+            function getQuickButton(target) {
+                return target instanceof Element
+                    ? target.closest('.quick-btn')
+                    : null;
+            }
+        
+            // 누르기 시작한 위치와 시간을 기록합니다.
+            container.addEventListener('pointerdown', (event) => {
+                if (!usesTapMenu()) return;
+            
+                clearGesture();
+            
+                if (!event.isPrimary || event.button !== 0) return;
+                if (performance.now() - lastScrollAt < SCROLL_GUARD) return;
+            
+                const button = getQuickButton(event.target);
+                if (!button) return;
+            
+                pointerState = {
+                    id: event.pointerId,
+                    button,
+                    x: event.clientX,
+                    y: event.clientY,
+                    time: performance.now(),
+                    moved: false
+                };
+            });
+        
+            // 메뉴 밖으로 손가락이 이동한 경우도 감지합니다.
+            document.addEventListener('pointermove', (event) => {
+                if (!pointerState || event.pointerId !== pointerState.id) return;
+            
+                const distance = Math.hypot(
+                    event.clientX - pointerState.x,
+                    event.clientY - pointerState.y
+                );
+            
+                if (distance > MOVE_LIMIT) {
+                    pointerState.moved = true;
+                }
+            }, { passive: true });
+        
+            // 같은 버튼에서 시작하고 끝난 짧은 탭만 인정합니다.
+            document.addEventListener('pointerup', (event) => {
+                if (!pointerState || event.pointerId !== pointerState.id) return;
+            
+                const state = pointerState;
+                const now = performance.now();
+            
+                const distance = Math.hypot(
+                    event.clientX - state.x,
+                    event.clientY - state.y
+                );
+            
+                const releasedElement = document.elementFromPoint(
+                    event.clientX,
+                    event.clientY
+                );
+            
+                const releasedButton = getQuickButton(releasedElement);
+            
+                if (
+                    !state.moved &&
+                    distance <= MOVE_LIMIT &&
+                    now - state.time <= TAP_LIMIT &&
+                    now - lastScrollAt >= SCROLL_GUARD &&
+                    releasedButton === state.button
+                ) {
+                    validTap = {
+                        button: state.button,
+                        time: now
+                    };
+                } else {
+                    validTap = null;
+                }
+            
+                pointerState = null;
+            }, { passive: true });
+        
+            document.addEventListener('pointercancel', clearGesture);
+        
+            container.addEventListener('click', (event) => {
+                const button = getQuickButton(event.target);
+                if (!button) return;
+            
+                // PC는 기존처럼 바로가기 실행
+                if (!usesTapMenu()) return;
+            
+                // 키보드 및 보조기술로 실행한 링크는 정상 동작
+                if (event.detail === 0) {
+                    resetQuickMenu();
+                    return;
+                }
+            
+                const now = performance.now();
+            
+                const isIntentionalTap =
+                    validTap &&
+                    validTap.button === button &&
+                    now - validTap.time < 700 &&
+                    now - lastScrollAt >= SCROLL_GUARD;
+            
+                validTap = null;
+            
+                // 스크롤 끝이나 드래그 후 발생한 click은 무시
+                if (!isIntentionalTap) {
+                    event.preventDefault();
+                    return;
+                }
+            
+                if (!container.classList.contains('force-open')) {
+                    // 첫 번째 탭: 펼치기만 함
+                    event.preventDefault();
+                    container.classList.add('force-open');
+                    return;
+                }
+            
+                // 두 번째 탭: 닫은 뒤 링크의 기본 동작 허용
+                // 카카오톡, tel:, 페이지 내 앵커 모두 그대로 동작합니다.
+                resetQuickMenu();
+            });
+        
+            // 외부를 누르면 닫기
+            document.addEventListener('pointerdown', (event) => {
+                if (!container.contains(event.target)) {
+                    resetQuickMenu();
+                }
+            }, { passive: true });
+        
+            // 스크롤 중에는 닫고, 탭 판정도 취소
+            window.addEventListener('scroll', () => {
+                if (!usesTapMenu()) return;
+            
+                lastScrollAt = performance.now();
+                resetQuickMenu();
+            
+                container.classList.add('is-scrolling');
+            
+                clearTimeout(scrollTimer);
+                scrollTimer = setTimeout(() => {
+                    container.classList.remove('is-scrolling');
+                }, 150);
+            }, { passive: true });
+        
+            // 다른 앱이나 페이지로 이동했다 돌아와도 닫힌 상태 유지
+            function resetAll() {
+                clearTimeout(scrollTimer);
+                container.classList.remove('is-scrolling');
+                resetQuickMenu();
+            }
+        
+            window.addEventListener('pagehide', resetAll);
+            window.addEventListener('pageshow', resetAll);
+            window.addEventListener('blur', resetAll);
+        
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) resetAll();
+            });
+        
+            desktopHover.addEventListener('change', resetAll);
+        
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape') resetAll();
+            });
+        })();
+    </script>
+
+<div class="bv-preview bv-preview-tag"><span>미리보기 · 실제 접수 없음</span><a href="#bv-services">새 기능 체험 ↑</a></div>
+<dialog id="bv-dialog" class="bv-preview" aria-labelledby="bv-dialog-title">
+ <div class="bv-dialog-head"><div><p class="bv-eyebrow" id="bv-dialog-eyebrow">BIVELON EXPERIENCE</p><h2 id="bv-dialog-title"></h2></div><button type="button" class="bv-close" id="bv-dialog-close" aria-label="창 닫기">×</button></div>
+ <div id="bv-dialog-body" class="bv-dialog-body"></div>
+</dialog>
+<div id="bv-print-root" class="bv-preview"></div>
+
+<script>
+(() => {
+  'use strict';
+  const $ = id => document.getElementById(id);
+  const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const dialog = $('bv-dialog');
+  const content = $('bv-dialog-body');
+  let dialogOpener = null;
+  let reportHTML = '';
+  const koreaDate = () => new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+  const dateAfter = days => { const d=new Date(koreaDate()+'T12:00:00Z');d.setUTCDate(d.getUTCDate()+days);return d.toISOString().slice(0,10); };
+  const prettyDate = value => value.replace(/-/g,'.');
+  const cases = [
+    {id:'manufacture',industry:'제조업',purpose:'시설자금',age:'3~7년',title:'생산설비 증설을 준비하는 제조기업',desc:'늘어난 발주에 대응하기 위한 설비 투자와 운영비를 함께 검토합니다.',situation:'기존 생산설비의 가동률이 높아져 신규 설비 도입을 계획하는 가상 기업입니다.',review:'설비 견적과 예상 생산량을 확인하고, 시설 투자비와 운전자금을 나누어 검토합니다.',outcome:'시설 견적·자기자금 계획·재무자료를 정리한 후 적합한 조달 경로를 비교하는 방향입니다.',docs:['설비 견적서','최근 재무제표','투자 및 생산계획']},
+    {id:'construction',industry:'건설업',purpose:'운전자금',age:'7~10년',title:'수주 이후 운영비가 필요한 건설기업',desc:'공사 대금 수령 전 필요한 인건비와 자재비의 흐름을 살펴봅니다.',situation:'신규 공사 계약 이후 대금 회수 시점까지 운영자금 공백이 있는 가상 기업입니다.',review:'수주계약·대금 지급조건·기존 금융부채를 바탕으로 필요한 기간과 규모를 검토합니다.',outcome:'월별 자금수지를 정리하고 보증 연계 등 검토할 선택지를 준비하는 방향입니다.',docs:['공사계약 및 수주현황','월별 자금수지','기존 대출내역']},
+    {id:'retail',industry:'도소매업',purpose:'운전자금',age:'1~3년',title:'성수기 재고 확보를 준비하는 유통기업',desc:'발주 규모와 재고 회전 주기를 바탕으로 자금 계획을 세웁니다.',situation:'성수기 물량을 미리 확보하려는 가상 유통기업입니다.',review:'매출 추이와 재고 회전율, 거래처 결제조건을 함께 검토합니다.',outcome:'발주·판매·대금 회수 일정을 연결하여 운전자금 사용계획을 구체화하는 방향입니다.',docs:['최근 매출증빙','재고 및 발주현황','자금 사용계획']},
+    {id:'service',industry:'서비스업',purpose:'사업확장',age:'3~7년',title:'새로운 지역으로 확장을 준비하는 서비스기업',desc:'신규 인력과 거점 운영에 필요한 성장 비용을 정리합니다.',situation:'기존 고객 기반을 바탕으로 새로운 지역 진출을 고려하는 가상 기업입니다.',review:'신규 거점 비용·고용계획·예상 매출을 확인하여 단계별 확장계획을 검토합니다.',outcome:'투자 항목을 구분하고 기업지원사업과 정책금융을 비교할 자료를 준비하는 방향입니다.',docs:['사업확장 계획','고용계획','기존 사업 실적']},
+    {id:'food',industry:'음식점업',purpose:'시설자금',age:'1~3년',title:'매장 운영 효율을 높이려는 외식기업',desc:'주방 설비 개선과 매장 운영의 안정성을 함께 검토합니다.',situation:'주방 설비 교체를 계획하는 가상 외식기업입니다.',review:'매장 매출·임차조건·시설 견적과 기존 금융부담을 확인합니다.',outcome:'필수 투자와 선택 투자를 나누고 감당 가능한 투자 계획을 정리하는 방향입니다.',docs:['매출증빙','임대차계약서','시설 견적서']},
+    {id:'tech',industry:'IT·정보통신업',purpose:'사업확장',age:'1~3년',title:'서비스 고도화를 준비하는 기술기업',desc:'개발 인력과 사업화 계획을 중심으로 성장 방향을 검토합니다.',situation:'출시한 서비스의 기능 고도화와 시장 확대를 준비하는 가상 기업입니다.',review:'제품 현황·고객 반응·개발 로드맵·인력 계획을 확인합니다.',outcome:'기술 및 성장지표를 정리하고 사업화 지원과 금융 조달 경로를 비교하는 방향입니다.',docs:['서비스 소개서','개발 및 사업화 계획','매출·고객 성장지표']}
+  ];
+  function open(title, eyebrow, html) {
+    if(!dialog.open) dialogOpener=document.activeElement;
+    $('bv-dialog-title').textContent=title;
+    $('bv-dialog-eyebrow').textContent=eyebrow;
+    content.innerHTML=html;
+    if(!dialog.open) dialog.showModal();
+    dialog.scrollTop=0;
+    $('bv-dialog-close').focus();
+  }
+  function close() { dialog.close(); }
+  $('bv-dialog-close').addEventListener('click',close);
+  dialog.addEventListener('close',()=>{if(dialogOpener?.isConnected)dialogOpener.focus({preventScroll:true});});
+  dialog.addEventListener('click',event=>{if(event.target===dialog){const r=dialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)close();}});
+  function download(name, text, type) {
+    const url=URL.createObjectURL(new Blob([text],{type}));
+    const link=document.createElement('a');link.href=url;link.download=name;document.body.append(link);link.click();link.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),15000);
+  }
+  function renderCases() {
+    const industry=$('bv-case-industry').value,purpose=$('bv-case-purpose').value,query=$('bv-case-query').value.trim().toLowerCase();
+    const items=cases.filter(c=>(!industry||c.industry===industry)&&(!purpose||c.purpose===purpose)&&(!query||Object.values(c).join(' ').toLowerCase().includes(query)));
+    $('bv-case-count').textContent=`조건에 맞는 가상 사례 ${items.length}건`;
+    $('bv-case-list').innerHTML=items.length?items.map((c,i)=>`<article class="bv-card"><div class="bv-card-top"><span class="bv-eyebrow">${String(i+1).padStart(2,'0')} / ${esc(c.industry)}</span><span class="bv-label">샘플</span></div><h3>${esc(c.title)}</h3><p class="bv-muted">${esc(c.desc)}</p><p class="bv-case-meta">${esc(c.age)} · ${esc(c.purpose)}</p><button class="bv-btn bv-secondary" data-bv="case" data-id="${c.id}">검토 과정 자세히 보기 →</button></article>`).join(''):'<div class="bv-empty"><h3>일치하는 사례가 없습니다.</h3><p class="bv-muted">업종이나 목적을 바꾸거나 검색어를 지워보세요.</p><button class="bv-btn bv-secondary" data-bv="reset-cases" style="margin-top:16px">조건 초기화</button></div>';
+  }
+  function resetCases() { ['bv-case-industry','bv-case-purpose','bv-case-query'].forEach(id=>$(id).value='');renderCases(); }
+  ['bv-case-industry','bv-case-purpose'].forEach(id=>$(id).addEventListener('change',renderCases));
+  $('bv-case-query').addEventListener('input',renderCases);
+  $('bv-case-reset').addEventListener('click',resetCases);
+  function openCase(id) {
+    const c=cases.find(x=>x.id===id);if(!c)return;
+    open(c.title,'CONSULTING STORY',`<p class="bv-note">가상 사례입니다. 실제 고객 실적이나 승인 결과를 의미하지 않습니다.</p><dl class="bv-metrics"><div><dt>업종</dt><dd>${esc(c.industry)}</dd></div><div><dt>업력</dt><dd>${esc(c.age)}</dd></div><div><dt>자금 목적</dt><dd>${esc(c.purpose)}</dd></div></dl>${[['01','기업의 상황',c.situation],['02','함께 검토할 부분',c.review],['03','다음 준비 방향',c.outcome]].map(([n,t,d])=>`<section class="bv-panel"><p class="bv-eyebrow">${n} / REVIEW</p><h3>${t}</h3><p class="bv-muted">${esc(d)}</p></section>`).join('')}<section class="bv-panel"><h3>상담 전 준비하면 좋은 자료</h3><ul class="bv-list">${c.docs.map(d=>`<li>${esc(d)}</li>`).join('')}</ul></section><div class="bv-actions"><button class="bv-btn bv-gold" data-bv="diagnose">내 회사도 진단해보기 →</button><button class="bv-btn bv-secondary" data-bv="booking">상담 예약 체험</button></div>`);
+  }
+  function showReport() {
+    const isReal=questions.every(q=>Boolean(answers[q.key]));
+    const data=isReal?answers:{industry:'제조업',age:'3~7년',sales:'5억~10억',purpose:'시설자금',amount:'1억~3억원',region:'서울·경기'};
+    const main=isReal?$('resultMain').textContent:'시설·정책자금';
+    const secondary=isReal?$('resultSecondary').textContent:'금융구조 개선';
+    const summary=isReal?$('resultSummary').textContent:'생산설비 투자를 준비하는 제조기업의 가상 예시입니다. 시설 투자계획과 자기자금, 운영에 필요한 자금을 구분하여 상담 준비 방향을 정리합니다.';
+    const action=isReal?$('resultAction').textContent:'투자 예정 시설의 견적과 자기자금 투입계획을 확인하고 상담에서 자금조달 경로를 비교합니다.';
+    const checklist=isReal?[...$('resultChecklist').querySelectorAll('li')].map(li=>li.textContent.replace(/^✓\s*/,'')):['최근 재무제표','설비 견적 및 투자계획','기존 금융부채 현황'];
+    reportHTML=`<article class="bv-report"><div class="bv-report-brand"><strong>BIVEL<span style="color:#805b20">ON</span></strong><span class="bv-muted">기업자금 사전검토 리포트<br>${prettyDate(koreaDate())} · ${isReal?'입력정보 기반':'샘플 리포트'}</span></div><p class="bv-eyebrow">YOUR BUSINESS, NEXT CHAPTER</p><h2 style="font-size:28px;margin-top:10px">기업의 다음 단계를 위한<br>자금 준비 가이드</h2><div class="bv-report-grid">${[['업종',data.industry],['업력',data.age],['연매출',data.sales],['지역',data.region],['자금 목적',data.purpose],['필요 규모',data.amount]].map(([k,v])=>`<div><span>${k}</span><b>${esc(v)}</b></div>`).join('')}</div><h3>01. 우선 검토 방향</h3><p><b>${esc(main)}</b> · 함께 비교할 방향: ${esc(secondary)}</p><p>${esc(summary)}</p><h3>02. 상담 준비 체크리스트</h3><ul class="bv-list">${[...new Set(checklist)].map(d=>`<li>${esc(d)}</li>`).join('')}</ul><h3>03. 상담에서 확인할 내용</h3><p>${esc(action)}</p><p class="bv-note" style="margin-top:24px">${isReal?'입력하신 정보와 홈페이지의 사전분석 규칙으로 작성한 참고자료입니다.':'기능 체험을 위한 가상 기업의 샘플 보고서입니다.'} 자금 지원 자격·금액·승인 가능성을 확정하는 자료가 아니며 관계기관 기준과 추가 자료 확인이 필요합니다.</p></article>`;
+    open('기업자금 진단 리포트','BIVELON BUSINESS REPORT',`<p class="bv-note">${isReal?'방금 진단에 입력한 정보가 반영되었습니다.':'먼저 샘플 리포트를 확인해보세요. 내 회사 진단을 완료하면 입력정보가 자동으로 반영됩니다.'}</p>${reportHTML}<div class="bv-actions"><button class="bv-btn" data-bv="report-print">인쇄 / PDF 저장</button><button class="bv-btn bv-secondary" data-bv="report-save">리포트 파일 저장</button><button class="bv-btn bv-secondary" data-bv="diagnose">${isReal?'진단 다시 확인':'내 회사 진단하기'}</button></div><p class="bv-muted" style="margin-top:12px;font-size:12px">파일 저장은 독립 HTML 보고서입니다. PDF는 인쇄 창에서 ‘PDF로 저장’을 선택하세요.</p>`);
+  }
+  function printReport() {
+    $('bv-print-root').innerHTML=reportHTML;
+    close();
+    const reopen=()=>{window.removeEventListener('afterprint',reopen);if(!dialog.open)dialog.showModal();};
+    window.addEventListener('afterprint',reopen);
+    window.print();
+  }
+  function saveReport() {
+    const css=$('bv-preview-style').textContent;
+    download(`BIVELON-report-${koreaDate()}.html`,`<!DOCTYPE html><html lang="ko"><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BIVELON 기업자금 리포트</title><style>body{margin:0;padding:24px;font-family:Arial,sans-serif;background:#f6f5f2}main{max-width:850px;margin:auto}${css}</style><body><main class="bv-preview" id="bv-print-root" style="display:block">${reportHTML}</main></body></html>`,'text/html;charset=utf-8');
+  }
+  const portalCases={
+    'BVL-DEMO-001':{name:'샘플 제조기업',stage:2,message:'설비 투자 방향을 검토하고 있습니다. 상담 전 아래 자료의 준비 여부를 확인해주세요.'},
+    'BVL-DEMO-002':{name:'샘플 서비스기업',stage:0,message:'상담 신청이 접수된 상황의 예시입니다. 담당자가 기본정보를 검토할 예정입니다.'},
+    'BVL-DEMO-003':{name:'샘플 유통기업',stage:4,message:'검토와 실행 방향 안내가 완료된 상황의 예시입니다. 자금 승인 완료를 의미하지 않습니다.'}
+  };
+  const documentChecks={};
+  function showPortal() {
+    open('나의 상담 진행 현황','MY BIVELON',`<p class="bv-note">샘플 접수번호로 고객 전용 화면을 체험합니다. 실제 고객 조회나 본인 인증 기능은 연결되지 않았습니다.</p><form id="bv-portal-form"><label class="bv-field">샘플 접수번호<input id="bv-portal-code" value="BVL-DEMO-001" autocomplete="off" required></label><div class="bv-actions"><button type="submit" class="bv-btn">진행 현황 조회</button><button type="button" class="bv-btn bv-secondary" data-bv="portal-example" data-code="BVL-DEMO-002">접수 단계 예시</button><button type="button" class="bv-btn bv-secondary" data-bv="portal-example" data-code="BVL-DEMO-003">완료 단계 예시</button></div></form><p id="bv-portal-error" class="bv-inline-status" role="status"></p><div id="bv-portal-result"></div>`);
+    $('bv-portal-form').addEventListener('submit',event=>{event.preventDefault();lookupPortal();});
+  }
+  function lookupPortal() {
+    const code=$('bv-portal-code').value.trim().toUpperCase(),item=portalCases[code];
+    $('bv-portal-error').textContent=item?'':'샘플 접수번호를 확인해주세요. BVL-DEMO-001 ~ 003을 사용할 수 있습니다.';
+    if(!item){$('bv-portal-result').innerHTML='';return;}
+    const steps=['접수 완료','담당자 검토','상담 진행','자료 준비','검토 완료'];
+    const checks=documentChecks[code]||(documentChecks[code]=[false,false,false]);
+    $('bv-portal-result').innerHTML=`<section class="bv-panel"><div class="bv-card-top"><h3>${item.name}</h3><span class="bv-label">${steps[item.stage]}</span></div><p class="bv-muted">${code} · 샘플 담당자: 비벨온 컨설팅팀</p><ol class="bv-timeline">${steps.map((s,i)=>`<li class="${i<item.stage?'done':i===item.stage?'current':''}" ${i===item.stage?'aria-current="step"':''}><span>${i<item.stage?'✓':String(i+1).padStart(2,'0')}</span><b>${s}</b><small>${i<item.stage?'완료':i===item.stage?'현재 단계':'예정'}</small></li>`).join('')}</ol><p class="bv-note">${item.message}</p></section><section class="bv-panel"><h3>내 준비자료 체크리스트</h3><p class="bv-muted">준비한 자료를 체크해보세요. 파일이 전송되거나 실제 상담 상태가 바뀌지는 않습니다.</p><p id="bv-check-count" class="bv-inline-status"></p><div class="bv-progress"><div id="bv-check-bar"></div></div>${['사업자등록증','최근 재무자료','자금 사용계획'].map((label,i)=>`<label class="bv-check"><input type="checkbox" data-check="${i}" ${checks[i]?'checked':''}>${label}</label>`).join('')}<div class="bv-actions"><button class="bv-btn bv-secondary" data-bv="booking">상담 시간 예약 체험 →</button></div></section>`;
+    const sync=()=>{const count=checks.filter(Boolean).length;$('bv-check-count').textContent=`${count} / 3개 준비 완료`;$('bv-check-bar').style.width=`${count/3*100}%`;};sync();
+    $('bv-portal-result').querySelectorAll('[data-check]').forEach(input=>input.addEventListener('change',()=>{checks[Number(input.dataset.check)]=input.checked;sync();}));
+  }
+  const programs=[
+    {id:'p1',name:'제조기업 설비 고도화 지원',region:'서울·경기',industry:'제조업',days:8,category:'시설·생산성',detail:'설비 도입 계획과 생산성 개선 목표를 정리해보는 가상 지원사업입니다.'},
+    {id:'p2',name:'초기기업 사업화 준비 지원',region:'전국',industry:'IT·정보통신업',days:14,category:'사업화',detail:'제품 소개와 시장 진출계획을 준비하는 가상 지원사업입니다.'},
+    {id:'p3',name:'지역 소상공인 운영 개선',region:'부산',industry:'음식점업',days:6,category:'운영 개선',detail:'매장 운영 개선계획을 정리하는 가상 지원사업입니다.'},
+    {id:'p4',name:'중소기업 판로 확대 프로그램',region:'전국',industry:'도소매업',days:21,category:'판로·성장',detail:'판매 채널과 신규 거래처 확보계획을 준비하는 가상 지원사업입니다.'}
+  ];
+  let savedPrograms=new Set();
+  try { const stored=JSON.parse(localStorage.getItem('bivelon_preview_favorites_v1')||'[]');if(Array.isArray(stored))savedPrograms=new Set(stored.filter(x=>programs.some(p=>p.id===x))); }catch{}
+  function showPrograms() {
+    open('우리 회사의 다음 기회','SUPPORT PROGRAM CALENDAR',`<p class="bv-note">모든 공고명과 마감일은 기능 체험용 가상 데이터입니다. 실제 모집 중인 지원사업이 아닙니다.</p><div class="bv-two"><label class="bv-field">지역<select id="bv-program-region"><option value="">전체 지역</option><option>서울·경기</option><option>부산</option></select></label><label class="bv-field">업종<select id="bv-program-industry"><option value="">전체 업종</option><option>제조업</option><option>IT·정보통신업</option><option>음식점업</option><option>도소매업</option></select></label></div><label class="bv-check" style="margin:12px 0"><input type="checkbox" id="bv-program-only">관심 사업만 보기</label><p id="bv-program-count" class="bv-muted" aria-live="polite"></p><div id="bv-program-list" class="bv-two" style="margin-top:18px"></div><p id="bv-program-status" class="bv-inline-status" role="status"></p><p class="bv-muted" style="font-size:12px">관심 목록은 이 브라우저에 저장됩니다. ‘캘린더에 저장’으로 내려받은 샘플 일정을 캘린더 앱에 추가할 수 있습니다. 자동 알림은 발송되지 않습니다.</p>`);
+    ['bv-program-region','bv-program-industry','bv-program-only'].forEach(id=>$(id).addEventListener('change',renderPrograms));renderPrograms();
+  }
+  function renderPrograms() {
+    const region=$('bv-program-region').value,industry=$('bv-program-industry').value,only=$('bv-program-only').checked;
+    const items=programs.filter(p=>(!region||p.region==='전국'||p.region===region)&&(!industry||p.industry===industry)&&(!only||savedPrograms.has(p.id)));
+    $('bv-program-count').textContent=`표시된 샘플 ${items.length}건 · 관심 사업 ${savedPrograms.size}건`;
+    $('bv-program-list').innerHTML=items.length?items.map(p=>`<article class="bv-card"><div class="bv-card-top"><span class="bv-label">샘플 · D-${p.days}</span><button class="bv-btn bv-secondary" style="width:auto;min-height:36px;padding:6px 10px" data-bv="favorite" data-id="${p.id}" aria-pressed="${savedPrograms.has(p.id)}" aria-label="${p.name} 관심 사업 ${savedPrograms.has(p.id)?'해제':'저장'}">${savedPrograms.has(p.id)?'★ 저장됨':'☆ 관심'}</button></div><h3>${p.name}</h3><p class="bv-muted">${p.detail}</p><p class="bv-case-meta">${p.region} · ${p.industry} · ${p.category}<br>예시 마감일 ${prettyDate(dateAfter(p.days))}</p><button class="bv-btn bv-secondary" data-bv="program-calendar" data-id="${p.id}">캘린더에 저장 (.ics)</button></article>`).join(''):'<div class="bv-empty"><h3>표시할 사업이 없습니다.</h3><p class="bv-muted">필터를 바꾸거나 관심 사업을 추가해보세요.</p></div>';
+  }
+  function saveCalendar(uid,title,start,end,description,allDay=false) {
+    const clean=s=>s.replace(/\\/g,'\\\\').replace(/\n/g,'\\n').replace(/,/g,'\\,').replace(/;/g,'\\;');
+    const lines=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//BIVELON//Feature Preview//KO','CALSCALE:GREGORIAN','BEGIN:VEVENT',`UID:${uid}@preview.bivelon.invalid`,`DTSTAMP:${new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d{3}Z/,'Z')}`,`DTSTART${allDay?';VALUE=DATE':''}:${start}`,`DTEND${allDay?';VALUE=DATE':''}:${end}`,`SUMMARY:${clean(title)}`,`DESCRIPTION:${clean(description)}`,'END:VEVENT','END:VCALENDAR'];
+    // Fold UTF-8 lines at 75 octets, without splitting a Korean character.
+    const folded=lines.map(line=>{let out='',part='',bytes=0;for(const ch of line){const n=new TextEncoder().encode(ch).length;if(bytes+n>75){out+=part+'\r\n';part=' ';bytes=1;}part+=ch;bytes+=n;}return out+part;}).join('\r\n')+'\r\n';
+    download('BIVELON-demo-calendar.ics',folded,'text/calendar;charset=utf-8');
+  }
+  let booking=null;
+  const times=['10:00','11:00','14:00','15:00','16:00'];
+  function bookingDays() {const result=[];for(let i=1;i<15&&result.length<7;i++){const date=dateAfter(i),weekday=new Date(date+'T12:00:00Z').getUTCDay();if(weekday!==0&&weekday!==6)result.push(date);}return result;}
+  function showBooking() {
+    if(booking){bookingReceipt();return;}
+    const days=bookingDays();
+    open('편한 시간에 만나는 비벨온','CONSULTATION RESERVATION',`<p class="bv-note">상담 예약 흐름을 체험하는 화면입니다. 실제 예약·상담 접수·문자 발송은 이루어지지 않습니다.</p><form id="bv-booking-form"><div class="bv-two"><section class="bv-panel"><h3>01. 날짜와 시간</h3><label class="bv-field">상담 희망일<select id="bv-book-date">${days.map(d=>`<option value="${d}">${prettyDate(d)} (${['일','월','화','수','목','금','토'][new Date(d+'T12:00:00Z').getUTCDay()]})</option>`).join('')}</select></label><p class="bv-muted" style="margin-top:16px">가능한 시간 · 한국시간 (KST)</p><div class="bv-slots" id="bv-book-slots"></div><p class="bv-muted" style="font-size:12px;margin-top:12px">상담 시간은 30분으로 가정한 체험 일정입니다.</p></section><section class="bv-panel" style="margin-top:0"><h3>02. 상담 내용</h3><label class="bv-field">상담 주제<select id="bv-book-topic"><option>정책자금 검토</option><option>기업 진단 결과 상담</option><option>시설 투자 및 사업확장</option><option>지원사업 준비</option></select></label><label class="bv-field" style="margin-top:16px">진행 방식<select id="bv-book-method"><option>전화 상담</option><option>화상 상담</option></select></label><p class="bv-note" style="margin-top:18px">체험에는 이름이나 연락처 입력이 필요하지 않습니다.</p></section></div><p id="bv-book-error" class="bv-inline-status" role="status"></p><div class="bv-actions"><button type="submit" class="bv-btn bv-gold">체험 예약 확인하기 →</button></div></form>`);
+    renderSlots();$('bv-book-date').addEventListener('change',renderSlots);
+    $('bv-booking-form').addEventListener('submit',event=>{event.preventDefault();const selected=$('bv-book-slots').querySelector('[aria-pressed="true"]');if(!selected){$('bv-book-error').textContent='상담 시간을 선택해주세요.';return;}booking={date:$('bv-book-date').value,time:selected.dataset.time,topic:$('bv-book-topic').value,method:$('bv-book-method').value};bookingReceipt();});
+  }
+  function renderSlots() {
+    $('bv-book-slots').innerHTML=times.map((t,i)=>`<button type="button" class="bv-slot" data-bv="slot" data-time="${t}" aria-pressed="false" ${i===1?'disabled aria-label="11시 예약 마감 예시"':''}>${t}${i===1?' · 마감':''}</button>`).join('');
+    $('bv-book-error').textContent='';
+  }
+  function bookingReceipt() {
+    open('예약 과정 체험이 완료되었습니다','RESERVATION PREVIEW',`<p class="bv-note">실제 예약이 아닙니다. 확인 문자나 알림이 발송되지 않습니다.</p><section class="bv-panel"><span class="bv-label">체험 예약 · BVL-BOOK-DEMO</span><h3 style="margin-top:20px">${prettyDate(booking.date)} ${booking.time} (KST)</h3><p class="bv-muted">30분 · ${esc(booking.method)}<br>${esc(booking.topic)}</p><div class="bv-actions"><button class="bv-btn" data-bv="booking-calendar">샘플 일정 저장 (.ics)</button><button class="bv-btn bv-secondary" data-bv="booking-change">일정 다시 선택</button><button class="bv-btn bv-secondary" data-bv="booking-cancel">체험 예약 취소</button></div></section><p class="bv-muted" style="margin-top:16px;font-size:12px">이 페이지를 새로고침하면 체험 예약은 초기화됩니다.</p>`);
+  }
+  document.addEventListener('click',event=>{
+    const button=event.target.closest('[data-bv]');if(!button)return;
+    const action=button.dataset.bv;
+    if(action==='cases')$('cases').scrollIntoView({behavior:'smooth'});
+    if(action==='reset-cases')resetCases();
+    if(action==='case')openCase(button.dataset.id);
+    if(action==='report')showReport();
+    if(action==='report-print')printReport();
+    if(action==='report-save')saveReport();
+    if(action==='diagnose'){close();$('diagnosis').scrollIntoView({behavior:'smooth'});}
+    if(action==='portal')showPortal();
+    if(action==='portal-example'){$('bv-portal-code').value=button.dataset.code;lookupPortal();}
+    if(action==='programs')showPrograms();
+    if(action==='favorite'){
+      const id=button.dataset.id;savedPrograms.has(id)?savedPrograms.delete(id):savedPrograms.add(id);
+      let message='관심 목록을 저장했습니다.';try{localStorage.setItem('bivelon_preview_favorites_v1',JSON.stringify([...savedPrograms]));}catch{message='브라우저 저장이 제한되어 현재 페이지에서만 유지됩니다.';}
+      renderPrograms();$('bv-program-status').textContent=message;
+      content.querySelector(`[data-bv="favorite"][data-id="${id}"]`)?.focus();
+    }
+    if(action==='program-calendar'){
+      const p=programs.find(x=>x.id===button.dataset.id);if(p)saveCalendar(p.id+'-'+dateAfter(p.days),`[샘플] ${p.name} 마감`,dateAfter(p.days).replace(/-/g,''),dateAfter(p.days+1).replace(/-/g,''),'비벨온 기능 체험용 가상 일정입니다. 실제 지원사업 공고가 아닙니다.',true);
+    }
+    if(action==='booking')showBooking();
+    if(action==='slot'){$('bv-book-slots').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));$('bv-book-error').textContent='';}
+    if(action==='booking-change'){booking=null;showBooking();}
+    if(action==='booking-cancel'){booking=null;open('체험 예약을 취소했습니다','RESERVATION PREVIEW','<p class="bv-note">이 페이지의 체험 예약이 취소되었습니다. 따로 내려받아 캘린더 앱에 추가한 샘플 일정은 해당 앱에서 삭제할 수 있습니다.</p><button class="bv-btn" data-bv="booking">다시 예약 체험하기</button>');}
+    if(action==='booking-calendar'&&booking){const start=new Date(`${booking.date}T${booking.time}:00+09:00`),end=new Date(start.getTime()+30*60000),format=d=>d.toISOString().replace(/[-:]/g,'').replace(/\.\d{3}Z/,'Z');saveCalendar('booking-'+start.getTime(),'[샘플] 비벨온 상담 예약',format(start),format(end),`실제 예약이 아닌 체험 일정입니다. ${booking.topic} / ${booking.method}`);}
+  });
+  // Preview consultations are local only; the live submission code is removed during build.
+  $('consulting-form').addEventListener('submit',event=>{event.preventDefault();open('상담 신청 과정 미리보기','PREVIEW ONLY','<p class="bv-note">미리보기에서는 상담 내용을 전송하거나 저장하지 않습니다. 실제 상담 신청은 기존 홈페이지에서 진행해주세요.</p><button class="bv-btn" data-bv="booking">상담 시간 예약도 체험하기 →</button>');});
+  renderCases();
+})();
+
+</script>
+</body>
+</html>

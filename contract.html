@@ -38,7 +38,7 @@ button{cursor:pointer}
 .page-head .mark{font-size:16px}.tag{padding:5px 12px;color:#b98728;border:1px solid #dec58e;font-size:10px;font-weight:900;letter-spacing:3px;white-space:nowrap}
 .page-body{min-height:850px}.page-foot{position:absolute;bottom:0;left:0;right:0;height:56px;padding:10px 68px;display:flex;align-items:center;justify-content:space-between;color:#d5deea;background:var(--blue);font-size:10px;line-height:1.4}.page-foot strong{color:#fff;display:block}.page-num{font-size:12px;font-weight:900;letter-spacing:2px}
 .preamble{margin:0 0 17px;font-size:15px;line-height:1.7;text-align:justify}.clause{margin:14px 0 16px}.clause h2{margin:0 0 8px;padding-left:11px;border-left:4px solid var(--gold);color:var(--blue);font-size:18px;line-height:1.35;font-weight:900}.clause p{margin:5px 0;text-align:justify}.clause ol{margin:5px 0 4px;padding-left:36px}.clause li{margin:4px 0;padding-left:2px;text-align:justify}.clause li::marker{color:var(--blue);font-weight:900}.subpoints{margin:5px 0 5px 24px}.bound{color:var(--blue)}[data-bind],[data-phase]{font-weight:700}
-.bank{margin:14px 0 10px;padding:14px 18px;border:2px solid var(--blue);border-radius:5px;background:#f7f9fb}.bank strong{color:var(--blue);font-size:16px}.bank small{display:block;margin-top:4px;color:#777;font-weight:700}
+.bank{margin:14px 0 10px;padding:12px 16px;border:2px solid var(--blue);border-radius:5px;background:#f7f9fb}.bank-account{padding:2px 0 8px}.bank-account+.bank-account{padding-top:8px;border-top:1px solid #d9dee7}.bank strong{color:var(--blue);font-size:15px}.bank small{display:block;margin-top:4px;color:#777;font-weight:700}.bank .tax-status{color:#c62828!important;font-weight:800}
 .confirm{text-align:center;margin:18px 0 8px;color:#555}.sig-date{text-align:center;margin:14px 0 18px;color:var(--blue);font-weight:900;font-size:18px;letter-spacing:2px}
 .sig-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.sig-card{border:1px solid #d5d8dc;border-radius:6px;padding:15px 17px 12px;min-height:218px}.sig-card h3{margin:0 0 9px;color:#b98728;font-size:14px}.sig-row{display:flex;justify-content:space-between;align-items:center;gap:8px;min-height:36px;border-bottom:1px solid #ececec}.sig-row:last-child{border:0}.sig-row>span:first-child{color:#96999d;font-weight:700;white-space:nowrap}.sig-row strong{text-align:right;overflow-wrap:anywhere}
 .sig-img{display:none;max-width:100px;max-height:36px;object-fit:contain}.sig-placeholder{display:inline-flex;align-items:center;justify-content:center;width:43px;height:43px;border:1px dashed #c9cdd1;color:#a1a5aa;font-size:9px;border-radius:50%;font-weight:500;white-space:nowrap}
@@ -46,10 +46,12 @@ button{cursor:pointer}
 .totals{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:6px 0}.totals>div{text-align:center;padding:7px 4px;border:1px solid #ddd;border-radius:4px}.totals small{display:block;color:#999;font-size:9px;font-weight:800}.totals b{display:block;margin-top:3px;font-size:17px}.totals .grand{color:#fff;background:#111b35}.totals .grand small{color:#cbd4df}.quote-signs{display:grid;grid-template-columns:1fr 1fr;gap:12px}.panel{overflow:auto;padding:18px 17px 22px;color:#e8eef5;background:var(--navy)}
 .group{padding:0 0 12px;margin:0 0 12px;border-bottom:1px solid #29415b}.group-title{color:#e4b646;font-size:12px;letter-spacing:.5px;font-weight:900;margin:0 0 11px}
 .field{min-width:0;margin-bottom:9px}.field label{display:block;margin-bottom:4px;color:#d6e0eb;font-size:10px;font-weight:700}.field input,.field textarea,.field select{width:100%;color:#fff;background:#23242a;border:1px solid #484950;border-radius:4px;padding:9px 10px;font-size:12px;outline:none}.field input:focus,.field textarea:focus{border-color:#d9ae48;box-shadow:0 0 0 2px #d9ae4820}.field input::placeholder,.field textarea::placeholder{color:#8192a6}.field textarea{min-height:86px;resize:vertical}
+.field-output{display:block;width:100%;padding:9px 10px;border:1px solid #484950;border-radius:4px;background:#23242a;color:#fff;font-size:12px;font-weight:800}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px}.required{color:#e0b343}.note{margin:0 0 13px;color:#9eafc2;font-size:10px;line-height:1.55}
 .breakdown{margin:3px 0 12px;border-top:1px solid #29415b}.breakdown summary{padding:9px 0;color:#d9e4ef;cursor:pointer;font-size:11px;font-weight:800}
 .sign-cta{display:block;width:100%;margin-top:7px;padding:12px;border:0;border-radius:5px;color:#182d44;background:#d8ab42;font-size:14px;font-weight:900}
 .sign-status{margin-top:9px;color:#a9bdd2;font-size:10px;line-height:1.7}
+.pricing-choices{display:grid;gap:8px;margin:0 0 14px}.pricing-choice{display:flex;align-items:flex-start;gap:9px;padding:11px;border:1px solid #43546a;border-radius:6px;background:#1c2430;color:#e8eef5;cursor:pointer}.pricing-choice:has(input:checked){border-color:#e4b646;background:#2b2d2d}.pricing-choice input{width:auto;margin:2px 0 0;accent-color:#e4b646}.pricing-choice strong{display:block;color:#f0cf75;font-size:11px}.pricing-choice span{font-size:10px;line-height:1.45}.mode-note{padding:8px 9px;border-radius:4px;background:#23242a;color:#b6c5d5;font-size:10px;line-height:1.5}
 .dialog{display:none;position:fixed;inset:0;z-index:20;align-items:center;justify-content:center;padding:18px;background:#07152fc0}.dialog.open{display:flex}
 .dialog-box{width:min(100%,520px);padding:22px;border-radius:12px;background:#fff;color:#17212f;box-shadow:0 20px 70px #0006}.dialog-box h2{margin:0;color:var(--blue);font-size:21px}.dialog-box p{margin:7px 0 14px;color:#667085;font-size:12px}.dialog-box select{width:100%;margin-bottom:12px;padding:10px;border:1px solid #cbd5df;border-radius:6px}
 #sigCanvas{display:block;width:100%;height:190px;border:1px solid #ccd4dd;border-radius:7px;background:repeating-linear-gradient(0deg,#fff,#fff 31px,#f1f4f7 32px);touch-action:none}
@@ -60,13 +62,16 @@ button{cursor:pointer}
 @page{size:A4;margin:0}
 @media print{html,body{width:210mm!important;min-width:0!important;height:auto!important;overflow:visible!important;background:#fff!important}body *{visibility:hidden!important}#contractApp,#contractApp *{visibility:visible!important}#contractApp{display:block!important;position:absolute!important;inset:0 auto auto 0!important;width:210mm!important;height:auto!important;overflow:visible!important;background:#fff!important}.topbar,.panel,.dialog,.toast{display:none!important}.layout,.preview{display:block!important;width:210mm!important;height:auto!important;overflow:visible!important;padding:0!important;background:#fff!important}.page{display:block!important;width:210mm!important;height:297mm!important;min-height:297mm!important;max-width:none!important;margin:0!important;padding:14mm 17mm 19mm!important;box-shadow:none!important;overflow:hidden!important;font-size:10.5pt!important;line-height:1.52!important;break-after:page!important;page-break-after:always!important}.cover{padding-left:32mm!important}.rail{width:19mm!important}.rail span{left:7mm!important}.cover-foot{left:32mm!important;bottom:19mm!important}.page-head{margin-bottom:8mm!important}.page-body{min-height:0!important}.page-foot{padding-left:17mm!important;padding-right:17mm!important;height:14mm!important}.clause{margin:2.5mm 0!important}.clause h2{font-size:13pt!important}.clause p,.clause li{margin-top:1mm!important;margin-bottom:1mm!important}.page:last-of-type{break-after:auto!important;page-break-after:auto!important}}
 @media print{#quotePage.page{display:flex!important;flex-direction:column!important;height:auto!important;min-height:297mm!important;overflow:visible!important;padding:9mm 12mm 8mm!important;break-inside:auto!important;page-break-inside:auto!important}#quotePage>*{flex-shrink:0!important}#quotePage .page-head{margin-bottom:4mm!important;padding-bottom:3mm!important}#quotePage .quote-meta{margin-top:2mm!important;padding-bottom:2mm!important}#quotePage .quote-title{font-size:20pt!important;margin:3mm 0!important}#quotePage .quote-target{padding:5px 10px!important}#quotePage .quote-section-title{margin:4px 0!important}#quotePage table{font-size:8pt!important;line-height:1.25!important}#quotePage th,#quotePage td{padding:2px 3px!important;vertical-align:middle!important}#quotePage .totals{margin:3mm 0!important}#quotePage .totals>div{padding:3px 2px!important}#quotePage .special{padding:6px 9px!important;font-size:8pt!important;line-height:1.3!important}#quotePage .special p{margin:2px 0!important}#quotePage .quote-confirm{margin:4px 0!important}#quotePage .quote-signs{gap:8px!important;break-inside:avoid!important;page-break-inside:avoid!important}#quotePage .quote-signs .sig-card{min-height:25mm!important;padding:3mm 4mm!important;break-inside:avoid!important;page-break-inside:avoid!important}#quotePage .page-foot{position:relative!important;bottom:auto!important;height:14mm!important;margin-top:auto!important;break-inside:avoid!important;page-break-inside:avoid!important}#quotePage tr,#quotePage .totals,#quotePage .special{break-inside:avoid!important;page-break-inside:avoid!important}}
+body[data-pricing-mode="percentage"] #quotePage{display:none!important}
+body[data-pricing-mode="percentage"] #quoteNavButton{display:none!important}
+@media print{body[data-pricing-mode="percentage"] .print-last-page{break-after:auto!important;page-break-after:auto!important}}
 </style>
 </head>
-<body>
+<body data-pricing-mode="percentage">
 <div id="contractApp">
 <header class="topbar">
   <div><div class="brand-title">BIVELON 계약서 + 견적서 통합 시스템</div><div class="brand-sub">고객정보 입력 / 계약 조건 입력 / 전자서명 / PDF 다운로드</div></div>
-  <div class="actions"><span class="status">● 실시간 미리보기</span><button class="btn-light" type="button" onclick="resetContract()">초기화 ↻</button><button class="btn-muted" type="button" onclick="document.getElementById('quotePage').scrollIntoView({behavior:'smooth'})">견적서 보기</button><button class="btn-gold" type="button" onclick="downloadPdf()">PDF 다운로드 ↓</button><a class="btn-muted" href="index.html">홈페이지</a></div>
+  <div class="actions"><span class="status">● 실시간 미리보기</span><button class="btn-light" type="button" onclick="resetContract()">초기화 ↻</button><button id="quoteNavButton" class="btn-muted" type="button" onclick="document.getElementById('quotePage').scrollIntoView({behavior:'smooth'})">견적서 보기</button><button class="btn-gold" type="button" onclick="downloadPdf()">PDF 다운로드 ↓</button><a class="btn-muted" href="index.html">홈페이지</a></div>
 </header>
 <div class="layout">
 <main class="preview" id="preview">
@@ -92,7 +97,7 @@ button{cursor:pointer}
         <li>"갑"의 경영환경 분석 및 개선 방안 제시</li><li>재무·회계·세무·인사·노무 등 경영 관련 자문</li><li>정부 정책자금·보증·금융기관 대출 등 자금 조달 관련 자문</li><li>사업계획서·제안서 등 경영 관련 문서 작성·검토 지원</li><li>기타 당사자 간 합의한 경영 자문 업무</li>
       </ol><p>본 조의 업무 수행 시, 소통(유선, 메신저, 대면 등)이 발생한 날은 해당 업체의 재무 데이터 분석 및 전략 구상을 위한 "을"의 상시 업무 대기 및 집중 분석 시간이 포함된 것으로 보아, 실제 소통 시간과 관계없이 합리적인 범위 내에서 1일로 인정한다.</p></section>
       <section class="clause"><h2>제4조 【계약기간】</h2><p>본 자문 계약의 기간은 계약 체결일로부터 365일(1년)로 정한다.</p></section>
-      <section class="clause"><h2>제5조 【자문인 고용비 및 자문료의 지급】</h2><ol><li><b>자문인 고용비</b><div class="subpoints">(기준) 연매출 10억 이상 기업 100만원(1개월 약 8만원)<br>연매출 10억 미만 기업 50만원(1개월 약 4만원)<br>계약금 및 자문료의 산정·지급 방법은 본 조 제2항에 따른다.</div></li></ol></section>
+      <section class="clause"><h2>제5조 【자문인 고용비 및 자문료의 지급】</h2><ol><li><b>자문인 고용비</b><div class="subpoints">(기준) 연매출 10억 이상 기업 100만원(1개월 약 8만원)<br>연매출 10억 미만 기업 50만원(1개월 약 4만원)<br>자문료 산정 방식과 지급 방법은 본 조 제2항 및 제3항에 따른다.</div></li></ol></section>
     </div>
     <div class="page-foot"><div><strong>비벨온 그룹 경영지원센터</strong>www.bivelon.com · TEL 055-7878-6361 · E-Mail pfc9222@naver.com</div><span class="page-num">1 / 5</span><b>BIVELON GROUP</b></div>
   </article>
@@ -104,8 +109,8 @@ button{cursor:pointer}
       <section class="clause"><ol start="2">
         <li><b>자문료의 책정</b><div class="subpoints">
           2-1) 희망 자문업무 [<span class="bound" data-bind="consultingRequest"></span>]<br>
-          2-2) 본 계약 체결과 동시에 금 <b class="bound" data-bind="contractDeposit"></b>원을 계약금으로 지급한다. 본 계약 체결과 동시에 계약금 지급이 어려운 경우에는 첫 자문료 발생 시 해당 자문료와 계약금을 함께 지급한다.<br>
-          2-3) 수수료율은 최종 승인 금액의 <b class="bound" data-bind="feeRate"></b>%로 하며, 예상 용역 수수료 공급가액은 <b class="bound" data-bind="supply"></b>원(부가세 별도)으로 산정한다. 최종 승인 금액 확정 후 해당 승인 금액에 약정 수수료율을 적용하여 최종 공급가액을 확정하고, 부가가치세 10%는 별도 청구한다.
+          <span data-pricing-content="percentage"><br>2-2) 자문료는 정책자금 최종 승인 금액의 <b class="bound" data-bind="feeRate"></b>% (금액: <b class="bound" data-bind="supply"></b>원)로 산정한다. 부가가치세는 별도 청구한다.</span>
+          <span data-pricing-content="fixed"><br>2-2) 희망 자문업무에 대한 정액 자문료는 <b class="bound" data-bind="supply"></b>원(부가세 별도)으로 한다. 부가가치세는 별도 청구한다.</span>
         </div>
         </li>
         <li><b>자문료의 지급 및 위약금</b><p>자문료는 자문범위에 따른 단계별 수행 또는 자문 제공 사실을 기준으로, "을"의 통지일로부터 7일 이내 지급한다. "갑"의 계약 파기, 자료 미제공, 허위자료 제공, 연락두절 등 신의성실 원칙 위반행위가 발생한 경우 "을"은 다음 각 호를 위약금(손해배상의 예정 및 위약벌)으로 합산하여 청구한다.</p>
@@ -160,7 +165,10 @@ button{cursor:pointer}
       <section class="clause"><h2>제5조 【책임의 귀속】</h2><ol><li>정책자금 신청의 최종 주체는 신청인 본인이며, 신청인이 제공한 자료의 진실성 및 정확성에 대한 책임은 신청인에게 있다.</li><li>회사는 고의 또는 중대한 과실이 없으면 신청 결과에 대한 민·형사상 책임을 부담하지 아니한다.</li></ol></section>
       <section class="clause"><h2>제6조 【자발적 동의 확인】</h2><p>본인은 본 확인서의 내용을 충분히 설명받고 이해하였으며, 개인정보 제공 및 온라인 신청 대리가 본인의 자유로운 의사에 따른 것임을 확인한다.</p></section>
       <section class="clause" id="specialTermsClause"><h2>제7조 【특약사항】</h2><p>상기 기재사항 이외에 "갑"과 "을"은 아래의 내용을 특약사항으로 정하며, 본 계약서의 다른 조항과 상충될 경우 본 특약사항을 최우선하여 적용한다.</p><div class="special" data-bind="specialTerms" style="min-height:62px;white-space:pre-wrap"></div></section>
-      <div class="bank"><strong>전용 입금 계좌　 카카오뱅크 : 3333-32-3856585　 예금주 : 서영미</strong><small>※ 본 계좌는 비벨온(BIVELON)이 지정한 자문료 수령계좌로, 해당 계좌로 입금된 자문료는 비벨온에 정상 지급된 것으로 인정되며 관련 세무증빙은 비벨온 명의로 발급됩니다.</small></div>
+      <div class="bank">
+        <div class="bank-account"><strong>전용 입금 계좌 (카카오뱅크)</strong><div>계좌번호 : 3333-32-3856585　 예금주 : 서영미</div><small class="tax-status">* 세금계산서 미발행용</small></div>
+        <div class="bank-account"><strong>입금 계좌 (카카오뱅크)</strong><div>계좌번호 : 3333-36-5753440　예금주 : 박동건(비벨온(Bivelon))</div><small class="tax-status">* 세금계산서 발행용</small></div>
+      </div>
       <div class="sig-date" data-bind="date"></div>
       <div class="sig-grid">
         <div class="sig-card"><h3>의뢰인 "갑"</h3>
@@ -178,7 +186,7 @@ button{cursor:pointer}
     <div class="page-head"><div class="brandline"><div class="mark">BIVE<span class="gold-type">LON</span></div><div><strong>비벨온 그룹 경영지원센터</strong><small>BIVELON GROUP · MANAGEMENT SUPPORT CENTER</small></div></div><span class="tag">QUOTATION</span></div>
     <div class="quote-meta" style="display:flex;justify-content:space-between;margin-top:12px;padding-bottom:9px;border-bottom:1px solid #d5d5d5;color:#111b35;font-weight:800"><span>문서번호　<span data-bind="quoteNo"></span></span><span>견적일자　<span data-bind="date"></span></span></div>
     <h2 class="quote-title" style="text-align:center;margin:12px 0;color:#111b35;font-size:27px">심화경영자문 용역 사전 견적서</h2>
-    <div class="quote-target" style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 18px;border-radius:5px;background:#111b35;color:#f1ce81"><div><small style="display:block;color:#aebed0;font-size:10px;font-weight:900">TARGET FUND &amp; PROJECT</small><strong style="display:block;color:white" data-bind="purpose"></strong></div><span>목표 자금액 (최종 승인 금액 기준) <b data-bind="target"></b></span></div>
+    <div class="quote-target" style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 18px;border-radius:5px;background:#111b35;color:#f1ce81"><div><small style="display:block;color:#aebed0;font-size:10px;font-weight:900">TARGET FUND &amp; PROJECT</small><strong style="display:block;color:white" data-bind="purpose"></strong></div><span><span data-pricing-content="percentage">목표 자금액 (최종 승인 금액 기준)</span><span data-pricing-content="fixed">희망 자문업무 금액</span> <b data-bind="target"></b></span></div>
     <h3 class="quote-section-title" style="margin:7px 0 6px;padding-left:10px;border-left:4px solid #d2a33a;color:#111b35;font-size:16px">과업 단계별 자문 내용 및 납품 산출물</h3>
     <table style="width:100%;border-collapse:collapse;font-size:10.5px;line-height:1.5">
       <colgroup><col style="width:4%"><col style="width:22%"><col style="width:32%"><col style="width:26%"><col style="width:16%"></colgroup>
@@ -190,17 +198,17 @@ button{cursor:pointer}
         <tr><td>4</td><td><b>심사 대응 및 실사 방어</b></td><td>— 심사기준별 예상 질의 분석<br>— 면접 시나리오 설계 및 모의 대응<br>— 현장실사 대비 체크포인트 가이드</td><td>『심사 대응 가이드북』</td><td class="phase-amount" data-phase="4">0</td></tr>
         <tr><td>5</td><td><b>자금집행 관리 및 증빙 체계</b></td><td>— 자금 집행 절차 및 증빙 가이드<br>— 사후점검(모니터링) 대비 자문<br>— 증빙서류 체계 설계 및 체크리스트</td><td>『자금집행 가이드 &amp; 증빙 체크리스트』</td><td class="phase-amount" data-phase="5">0</td></tr>
         <tr><td>6</td><td><b>사후 경영자문 및 추가전략</b></td><td>— 재무구조 변동 분석 및 개선 방향<br>— 추가 자금연계 전략 수립<br>— 신용등급 관리 플랜</td><td>『사후 경영자문 보고서』</td><td class="phase-amount" data-phase="6">0</td></tr>
-        <tr style="background:#f7f0e1;border-bottom:3px solid #d2a33a;color:#111b35;font-weight:900"><td colspan="4" style="text-align:center">용역 수수료 공급가액 (최종 승인 금액의 <span data-bind="feeRate"></span>%)</td><td style="text-align:right"><span data-bind="supply"></span></td></tr>
+        <tr style="background:#f7f0e1;border-bottom:3px solid #d2a33a;color:#111b35;font-weight:900"><td colspan="4" style="text-align:center">정액 자문료 공급가액</td><td style="text-align:right"><span data-bind="supply"></span></td></tr>
       </tbody>
     </table>
     <div class="totals">
       <div><small>용역 수수료 공급가액</small><b><span data-bind="supply"></span>원</b></div><div><small>부가가치세 (10%)</small><b><span data-bind="vat"></span>원</b></div><div class="grand"><small>총 견적금액 (VAT 포함)</small><b><span data-bind="grand"></span>원</b><small data-bind="korean"></small></div>
     </div>
     <div class="special">
-      <h3>【특약사항】 최종 승인 금액 기준 용역 수수료 및 최종 정산</h3>
-      <p>① 본 견적서의 예상 용역 수수료 공급가액은 입력한 희망 자문업무 금액의 약정 수수료율(<b><span data-bind="feeRate"></span>%</b>)을 적용하여 산정하며, 정책자금 최종 승인 금액 확정 후에는 실제 승인 금액에 같은 수수료율을 적용하여 최종 공급가액을 산정합니다.</p>
-      <p>② 부가가치세는 공급가액의 <b>10%</b>를 별도로 산정합니다. 따라서 최종 견적금액은 최종 승인 금액에 약정 수수료율을 적용한 공급가액과 그 공급가액의 10%에 해당하는 부가가치세를 합산한 금액입니다.</p>
-      <p>③ 최종 승인 금액이 확정되면 "을"은 확정된 공급가액과 부가가치세를 기재한 최종 청구서를 발행합니다.</p>
+      <h3>【특약사항】 정액 자문료 및 최종 정산</h3>
+      <p>① 본 견적서의 용역 수수료 공급가액은 희망 자문업무에 대하여 오른쪽 입력란에서 약정한 정액 자문료입니다.</p>
+      <p>② 부가가치세는 정액 자문료 공급가액의 <b>10%</b>를 별도로 산정합니다. 최종 견적금액은 정액 자문료 공급가액과 해당 공급가액의 부가가치세를 합산한 금액입니다.</p>
+      <p>③ 최종 청구 시 "을"은 약정 정액 자문료와 부가가치세를 기재한 청구서를 발행합니다.</p>
       <p>④ "을"은 각 과업 단계별로 상기 표의 "납품 산출물"을 "갑"에게 교부하며, 이는 과업 수행의 객관적 증거로서 완료 확인의 기초가 됩니다.</p>
       <p>⑤ "갑"은 "을"이 청구서를 발행한 날로부터 <b>7일 이내</b>에 지정 계좌로 청구 금액을 지급합니다.</p>
     </div>
@@ -221,14 +229,25 @@ button{cursor:pointer}
       <div class="field"><label>이메일 *</label><input data-field="email" type="email" placeholder="name@example.com"></div>
     </div>
     <div class="group"><h2 class="group-title">비벨온 담당자</h2><div class="grid2"><div class="field"><label>담당 컨설턴트</label><input data-field="consultant"></div><div class="field"><label>담당자 연락처</label><input data-field="consultantPhone" inputmode="tel"></div></div></div>
-    <div class="group"><h2 class="group-title">계약 조건</h2><div class="field"><label>계약금 (부가세 별도) *</label><input data-field="contractDeposit" type="text" inputmode="numeric" placeholder="예: 1,000,000"></div></div>
     <div class="group"><h2 class="group-title">계약서 특약사항 (제7조)</h2><div class="field"><label>특약 내용 (선택)</label><textarea data-field="specialTerms" placeholder="제7조에 추가할 특약사항을 입력하세요."></textarea></div></div>
+    <div class="group"><h2 class="group-title">자문료 산정 방식</h2>
+      <div class="pricing-choices" role="radiogroup" aria-label="자문료 산정 방식">
+        <label class="pricing-choice"><input type="radio" name="pricingMode" value="percentage" checked><span><strong>방법 1 · 승인금액 기준</strong>최종 승인 금액에 약정 비율을 적용합니다. 견적서 페이지는 숨겨집니다.</span></label>
+        <label class="pricing-choice"><input type="radio" name="pricingMode" value="fixed"><span><strong>방법 2 · 정액 자문료</strong>희망 자문업무에 대한 정액 자문료를 입력합니다. 견적서 페이지가 표시됩니다.</span></label>
+      </div>
+      <div class="mode-note" data-pricing-panel="percentage">계약서에는 승인 금액 기준 수수료율과 예상 공급가액이 표시됩니다.</div>
+      <div class="mode-note" data-pricing-panel="fixed" style="display:none">고정 자문료와 부가세가 포함된 견적서를 표시합니다.</div>
+    </div>
     <div class="group"><h2 class="group-title">견적서 설정</h2>
       <div class="field"><label>희망 자문업무 / 자금명 *</label><input data-field="purpose"></div>
-      <div class="field"><label>희망 자문업무 금액 (최종 승인 금액 입력 시 최종 확정)</label><input data-field="target" type="text" inputmode="numeric" placeholder="예: 100,000,000"></div>
-      <div class="field"><label>약정 수수료율 (%)</label><input data-field="feeRate" type="number" inputmode="decimal" min="0" max="100" step="0.1" placeholder="5"></div>
-      <div class="field"><label>예상 용역 수수료 공급가액</label><input data-field="supply" type="text" inputmode="numeric" placeholder="자동 계산" readonly></div>
-      <p class="note">희망 자문업무 금액 × 약정 수수료율로 예상 공급가액을 계산합니다. 최종 승인 금액이 확정되면 금액을 갱신해 주세요. 부가가치세는 공급가액의 10%입니다.</p>
+      <div class="field"><label for="targetAmount"><span data-pricing-content="percentage">희망 자문업무 금액 <!--(최종 승인 금액 입력 시 최종 확정)--></span><span data-pricing-content="fixed">희망 자문업무 금액</span></label><input id="targetAmount" data-field="target" type="text" inputmode="numeric" placeholder="예: 1,000,000"></div>
+      <div data-pricing-panel="fixed" style="display:none"><div class="field"><label>책정 정액 자문료 (부가세 별도)</label><input data-field="flatFee" type="text" inputmode="numeric" placeholder="예: 1,000,000"></div></div>
+      <div data-pricing-panel="percentage">
+        <div class="field"><label>약정 수수료율 (%)</label><input data-field="feeRate" type="number" inputmode="decimal" min="0" max="100" step="0.1" placeholder="5"></div>
+        <div class="field"><label>예상 용역 수수료 공급가액</label><output class="field-output" data-bind="supply">0</output></div>
+        <p class="note">희망 자문업무 금액 × 약정 수수료율로 공급가액을 계산합니다. 실제 승인 금액이 확정되면 금액을 갱신해 주세요.</p>
+      </div>
+      <p class="note">부가가치세는 공급가액의 10%입니다.</p>
     </div>
     <p class="note">오른쪽 입력 내용은 미리보기에 즉시 반영됩니다. PDF 버튼을 누른 다음 인쇄 창에서 'PDF로 저장'을 선택하세요.</p>
     <button type="button" class="sign-cta" onclick="openSignature()">✍ 사인하기</button>
@@ -268,22 +287,23 @@ button{cursor:pointer}
       if((target&&target.closest('.page'))||selectionTouchesDocument())event.preventDefault();
     });
   });
-  var defaults={company:'',representative:'',businessNumber:'',phone:'',email:'',consultant:'박동건',consultantPhone:'010-5945-9222',contractDeposit:'',purpose:'정책자금 (종합) 조달 목적',target:'',feeRate:'5',supply:'',specialTerms:''};
+  var defaults={company:'',representative:'',businessNumber:'',phone:'',email:'',consultant:'박동건',consultantPhone:'010-5945-9222',purpose:'정책자금 (종합) 조달 목적',target:'',feeRate:'5',flatFee:'',specialTerms:''};
   var contractCaseId=new URLSearchParams(window.location.search).get('case')||'';
   var draftKey=contractCaseId?'bivelon_contract_draft_'+contractCaseId:'';
   var signatures={client:'',consultant:''}, canvas=document.getElementById('sigCanvas'), ctx=canvas.getContext('2d'), drawing=false, ink=false, timer, draftRestored=false, handshakeTimer;
   function val(key){var el=document.querySelector('[data-field="'+key+'"]');return el?el.value.trim():''}
   function num(value){return Number(String(value||'').replace(/[^\d]/g,''))||0}
   function formatThousandsInput(input){var before=input.value,caret=input.selectionStart===null?before.length:input.selectionStart,digitsBefore=(before.slice(0,caret).match(/\d/g)||[]).length,digits=before.replace(/\D/g,''),formatted=digits.replace(/\B(?=(\d{3})+(?!\d))/g,',');input.value=formatted;var next=0,count=0;while(next<formatted.length&&count<digitsBefore){if(/\d/.test(formatted.charAt(next)))count++;next++}if(document.activeElement===input)input.setSelectionRange(next,next)}
-  var numericMoneyInputs=document.querySelectorAll('[data-field="contractDeposit"],[data-field="target"],[data-field="supply"]');
+  var numericMoneyInputs=document.querySelectorAll('[data-field="target"],[data-field="flatFee"]');
   numericMoneyInputs.forEach(function(input){formatThousandsInput(input);input.addEventListener('input',function(){formatThousandsInput(input)})});
   function money(value){return Math.round(Number(value)||0).toLocaleString('en-US')}
   function dateParts(){var a=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date()).split('-');return a}
   function dateText(){var a=dateParts();return a[0]+'년 '+Number(a[1])+'월 '+Number(a[2])+'일'}
   function docDay(){return dateParts().join('')}
   function docDate(){return dateParts().join('/')}
+  function selectedPricingMode(){var selected=document.querySelector('input[name="pricingMode"]:checked');return selected?selected.value:'percentage'}
   function feeRate(){var rate=Number(val('feeRate'));return Number.isFinite(rate)?Math.min(100,Math.max(0,rate)):0}
-  function supply(){return Math.round(num(val('target'))*feeRate()/100)}
+  function supply(){return selectedPricingMode()==='fixed'?num(val('flatFee')):Math.round(num(val('target'))*feeRate()/100)}
   function koreanAmount(value){
     var n=Math.max(0,Math.floor(Number(value)||0));if(!n)return '금 영원 정';
     var d=['','일','이','삼','사','오','육','칠','팔','구'],u=['','십','백','천'],big=['','만','억','조','경'],groups=[];
@@ -295,14 +315,14 @@ button{cursor:pointer}
   function saveDraft(){
     if(!draftKey)return;
     var fields={};Object.keys(defaults).forEach(function(k){fields[k]=document.querySelector('[data-field="'+k+'"]').value});
-    try{localStorage.setItem(draftKey,JSON.stringify({fields:fields,signatures:signatures}))}catch(e){}
+    try{localStorage.setItem(draftKey,JSON.stringify({fields:fields,signatures:signatures,pricingMode:selectedPricingMode()}))}catch(e){}
   }
   function restoreDraft(){
     if(!draftKey)return;
     try{
       var saved=JSON.parse(localStorage.getItem(draftKey)||'null');if(!saved)return;
       Object.keys(defaults).forEach(function(k){if(saved.fields&&saved.fields[k]!==undefined)document.querySelector('[data-field="'+k+'"]').value=saved.fields[k]});
-      if(saved.fields&&saved.fields.contractDeposit===undefined&&saved.fields.annualFee!==undefined)document.querySelector('[data-field="contractDeposit"]').value=saved.fields.annualFee;
+      if(saved.pricingMode==='fixed'||saved.pricingMode==='percentage')document.querySelector('input[name="pricingMode"][value="'+saved.pricingMode+'"]').checked=true;
       if(saved.fields&&saved.fields.consultantPhone==='055-7878-6361')document.querySelector('[data-field="consultantPhone"]').value=defaults.consultantPhone;
       if(saved.signatures)signatures=saved.signatures;
       draftRestored=true;
@@ -313,15 +333,16 @@ button{cursor:pointer}
     ['company','representative','phone','purpose'].forEach(function(key){if(customer[key])document.querySelector('[data-field="'+key+'"]').value=customer[key]});
     draftRestored=true;render();saveDraft();
   }
+  function updatePricingModeUI(){var mode=selectedPricingMode(),quotePage=document.getElementById('quotePage');document.body.dataset.pricingMode=mode;document.querySelectorAll('[data-pricing-content]').forEach(function(el){el.style.display=el.dataset.pricingContent===mode?'inline':'none'});document.querySelectorAll('[data-pricing-panel]').forEach(function(el){el.style.display=el.dataset.pricingPanel===mode?'block':'none'});var quoteNav=document.getElementById('quoteNavButton');if(quoteNav)quoteNav.style.display=mode==='fixed'?'':'none';if(quotePage&&quotePage.previousElementSibling)quotePage.previousElementSibling.classList.toggle('print-last-page',mode==='percentage')}
   function render(){
+    updatePricingModeUI();
     var fee=supply(),vat=Math.round(fee*.1),grand=fee+vat,company=val('company')||'{{상호명}}';
     bind('company',val('company'),'{{상호명}}');bind('representative',val('representative'),'{{대표자명}}');bind('businessNumber',val('businessNumber'),'{{사업자등록번호}}');
     bind('phone',val('phone'),'{{연락처}}');bind('email',val('email'),'{{이메일}}');bind('consultant',val('consultant'),'{{담당자명}}');bind('consultantPhone',val('consultantPhone'),'{{담당자 연락처}}');
-    bind('contractDeposit',val('contractDeposit')?money(num(val('contractDeposit'))):'{{계약금}}');var specialTerms=val('specialTerms');bind('specialTerms',specialTerms,'');
+    var specialTerms=val('specialTerms');bind('specialTerms',specialTerms,'');
     bind('date',dateText());bind('contractNo','BIV-CTR-'+docDate());bind('quoteNo','BIV-EST-'+docDate());bind('toParty',company+' '+(val('representative')||'{{대표자명}}')+' 귀하');
-    bind('purpose',val('purpose')||'정책자금 (종합) 조달 목적');bind('target',val('target')?money(num(val('target')))+'원':'금액 미지정');bind('feeRate',String(feeRate()));var targetAmount=num(val('target')),consultingRequest=(val('purpose')||'사업자금 확보')+(targetAmount?' (희망 자문업무 금액 '+money(targetAmount)+'원)':'')+' 관련 자문';bind('consultingRequest',consultingRequest);
+    bind('purpose',val('purpose')||'정책자금 (종합) 조달 목적');bind('target',val('target')?money(num(val('target')))+'원':'금액 미지정');bind('feeRate',String(feeRate()));var targetText=val('target'),targetAmount=num(targetText),consultingRequest=(val('purpose')||'사업자금 확보')+(targetText!==''?' (희망 자문업무 금액 '+money(targetAmount)+'원)':'')+' 관련 자문';bind('consultingRequest',consultingRequest);
     bind('supply',money(fee));bind('vat',money(vat));bind('grand',money(grand));bind('korean',koreanAmount(grand));
-    var supplyInput=document.querySelector('[data-field="supply"]');if(supplyInput)supplyInput.value=fee?money(fee):'';
     document.querySelectorAll('[data-phase]').forEach(function(cell){cell.textContent=fee?'포함':'—'});
     document.getElementById('signStatus').innerHTML='의뢰인 대표자 서명: '+(signatures.client?'완료':'미입력')+'<br>비벨온 담당자 서명: '+(signatures.consultant?'완료':'미입력');
     document.querySelectorAll('[data-signature]').forEach(function(img){var role=img.dataset.signature;if(signatures[role]){img.src=signatures[role];img.style.display='inline-block'}else{img.removeAttribute('src');img.style.display='none'}});
@@ -329,7 +350,8 @@ button{cursor:pointer}
   }
   function toast(message){var el=document.getElementById('toast');el.textContent=message;el.classList.add('show');clearTimeout(timer);timer=setTimeout(function(){el.classList.remove('show')},2200)}
   document.querySelectorAll('[data-field]').forEach(function(input){input.addEventListener('input',function(){if(input.dataset.field==='feeRate'&&Number(input.value)>100)input.value='100';render();saveDraft()})});
-  window.resetContract=function(){Object.keys(defaults).forEach(function(k){document.querySelector('[data-field="'+k+'"]').value=defaults[k]});signatures={client:'',consultant:''};draftRestored=true;render();saveDraft();toast('입력 내용과 서명을 초기화했습니다.')};
+  document.querySelectorAll('input[name="pricingMode"]').forEach(function(input){input.addEventListener('change',function(){var targetInput=document.querySelector('[data-field="target"]'),flatFeeInput=document.querySelector('[data-field="flatFee"]'),feeRateInput=document.querySelector('[data-field="feeRate"]');targetInput.value='';flatFeeInput.value='';feeRateInput.value=defaults.feeRate;formatThousandsInput(targetInput);formatThousandsInput(flatFeeInput);render();saveDraft()})});
+  window.resetContract=function(){Object.keys(defaults).forEach(function(k){document.querySelector('[data-field="'+k+'"]').value=defaults[k]});document.querySelector('input[name="pricingMode"][value="percentage"]').checked=true;signatures={client:'',consultant:''};draftRestored=true;render();saveDraft();toast('입력 내용과 서명을 초기화했습니다.')};
   window.downloadPdf=function(){render();window.print()};
   function resizeCanvas(){var r=canvas.getBoundingClientRect(),ratio=Math.max(window.devicePixelRatio||1,1);canvas.width=Math.max(1,Math.round(r.width*ratio));canvas.height=Math.max(1,Math.round(r.height*ratio));ctx=canvas.getContext('2d');ctx.setTransform(ratio,0,0,ratio,0,0);ctx.strokeStyle='#162d49';ctx.lineWidth=2.4;ctx.lineCap='round';ctx.lineJoin='round'}
   function point(e){var r=canvas.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top}}
@@ -343,6 +365,7 @@ button{cursor:pointer}
   document.addEventListener('keydown',function(e){if(e.key==='Escape')closeSignature()});
   Object.keys(defaults).forEach(function(k){document.querySelector('[data-field="'+k+'"]').value=defaults[k]});
   restoreDraft();
+  numericMoneyInputs.forEach(formatThousandsInput);
   window.addEventListener('message',function(event){
     if(event.source!==window.opener||!event.data||event.data.type!=='bivelon-contract-data'||event.data.caseId!==contractCaseId)return;
     if(handshakeTimer)clearInterval(handshakeTimer);

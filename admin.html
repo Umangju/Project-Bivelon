@@ -7,9 +7,146 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
-        body { font-family: 'Pretendard', sans-serif; background-color: #f1f5f9; }
+        body { font-family: 'Pretendard', sans-serif; background-color: #f6f5f2; }
         .custom-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
-        .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #b9ac91; border-radius: 3px; }
+        .custom-scroll::-webkit-scrollbar-track { background: #f2eee5; }
+        .custom-scroll::-webkit-scrollbar-thumb:hover { background: #8e774a; }
+
+        /* 홈페이지와 동일한 명함 테마. 크기·배치·관리 동작은 유지합니다. */
+        body.text-slate-800 {
+            color: #102238;
+            background-image:
+                radial-gradient(ellipse at 0% 0%, rgba(211,177,107,.15), transparent 55%),
+                radial-gradient(rgba(128,91,32,.08) .7px, transparent .7px);
+            background-size: 100% 100%, 18px 18px;
+        }
+        body .text-slate-900, body .text-slate-800 { color: #102238; }
+        body .text-slate-600 { color: #465264; }
+        body .text-slate-500, body .text-slate-400, body .text-slate-300 { color: #596270; }
+        body .bg-slate-50 { background-color: #f7f5ef; }
+        body .bg-slate-100 { background-color: #ece9e2; }
+        body .border-slate-200 { border-color: #dfd8ca; }
+        body .border-slate-300 { border-color: #b4b6b9; }
+        body .divide-slate-100 > :not([hidden]) ~ :not([hidden]) { border-color: #e9e4da; }
+        body .text-blue-600, body .text-blue-700 { color: #805b20; }
+        body .text-blue-800 { color: #213b59; }
+        body .text-blue-300 { color: #f3d98e; }
+        body .bg-blue-50, body [class~="bg-blue-50/70"] { background-color: #f7f2e6; }
+        body .bg-blue-100 { background-color: #f0e4c7; }
+        body .border-blue-100, body .border-blue-200 { border-color: #d9c79e; }
+        body .bg-blue-600, body [class~="bg-[#0066FF]"] { background-color: #102238; }
+        body [class~="hover:bg-blue-500"]:hover,
+        body [class~="hover:bg-blue-600"]:hover,
+        body [class~="hover:bg-blue-700"]:hover { background-color: #263c52; }
+        body [class~="hover:bg-blue-100"]:hover { background-color: #ecdfbd; }
+        body .accent-blue-600, body .accent-blue-500 { accent-color: #805b20; }
+
+        /* 상태별 구분은 유지하면서 채도와 대비를 조정합니다. */
+        body .text-amber-500, body .text-amber-600, body .text-amber-700 { color: #8a601b; }
+        body .text-amber-800 { color: #765015; }
+        body .bg-amber-50 { background-color: #faf4e6; }
+        body .bg-amber-100 { background-color: #f4e6c3; }
+        body .border-amber-200 { border-color: #dcc38e; }
+        body .text-indigo-600, body .text-indigo-700 { color: #35516f; }
+        body .bg-indigo-50 { background-color: #eaf0f5; }
+        body .border-indigo-200 { border-color: #b9c7d5; }
+        body .text-emerald-600, body .text-emerald-800 { color: #25614e; }
+        body .bg-emerald-100 { background-color: #e3efe7; }
+        body .border-emerald-200 { border-color: #b9d2c3; }
+        body .text-red-500, body .text-red-600, body .text-red-700 { color: #a13939; }
+        body .bg-red-100 { background-color: #f7e8e5; }
+        body .border-red-200 { border-color: #e2bdb6; }
+        body [class~="hover:text-red-700"]:hover { color: #7e2525; }
+
+        /* 블랙·네이비 배경의 골드 곡선과 은은한 빛. */
+        body #loginScreen, body #dashboard > header,
+        body #detailModal [class~="bg-[#07152f]"] {
+            background-color: #0c1929;
+            background-image:
+                radial-gradient(ellipse at 100% 0%, transparent 44%, rgba(237,201,111,.18) 44.1%, transparent 44.3%, transparent 58%, rgba(237,201,111,.09) 58.1%, transparent 58.3%),
+                radial-gradient(ellipse at 0% 100%, rgba(196,153,70,.15), transparent 60%),
+                linear-gradient(120deg, #080f19, #14283d);
+        }
+        body #loginScreen > .bg-white {
+            background-image: radial-gradient(ellipse at 100% 0%, rgba(237,201,111,.16), transparent 60%);
+            box-shadow: inset 0 3px 0 #d8b767, inset 0 0 0 1px rgba(237,201,111,.4), 0 28px 70px rgba(0,0,0,.35);
+        }
+        body #dashboard > header,
+        body #detailModal [class~="bg-[#07152f]"] {
+            background-image: radial-gradient(ellipse at 100% 0%, rgba(237,201,111,.12), transparent 65%), linear-gradient(120deg, #080f19, #14283d);
+            box-shadow: inset 0 -1px 0 rgba(237,201,111,.4), 0 6px 24px rgba(16,34,56,.1);
+        }
+        body #dashboard > header .text-slate-400,
+        body #detailModal [class~="text-white/60"] { color: #c6ced8; }
+        body #dashboard > header [class~="hover:text-white"]:hover { color: #fff; }
+        body #dashboard > header .bg-blue-600 {
+            background-color: rgba(237,201,111,.13);
+            color: #f3d98e;
+            box-shadow: inset 0 0 0 1px rgba(237,201,111,.3);
+        }
+        body #dashboard > header input { accent-color: #edc96f; }
+
+        /* 요약 카드와 데이터 패널: 얇은 금박 선과 절제된 음영. */
+        body #dashboard main > .bg-white,
+        body #dashboard main > .grid > .bg-white {
+            box-shadow: inset 0 2px 0 rgba(185,143,60,.55), 0 8px 24px rgba(16,34,56,.055);
+        }
+        body #dashboard main > .grid > .bg-white {
+            background-image: linear-gradient(135deg, transparent 70%, rgba(211,177,107,.08) 70%), linear-gradient(145deg, #fff, #faf8f2);
+        }
+        body #dashboard main > .grid > div:first-child {
+            background-color: #102238;
+            background-image: radial-gradient(ellipse at 100% 0%, rgba(237,201,111,.18), transparent 75%), linear-gradient(145deg, #102238, #1b3248);
+            border-color: #32465c;
+        }
+        body #dashboard main > .grid > div:first-child .text-slate-400 { color: #d6dce4; }
+        body #statTotal { color: #f3d98e; }
+        body #dashboard thead tr {
+            background-color: #14283d;
+            background-image: linear-gradient(110deg, rgba(255,255,255,.04), transparent);
+            color: #f1e4c6;
+            border-color: #b59b67;
+        }
+        body #tableBody > tr:nth-child(even) { background-color: #faf8f3; }
+        body #tableBody > tr:hover { background-color: #f3ecd9; }
+        body #tableBody .bg-blue-100 { background-color: #e5edf4; }
+        body #detailModal > .bg-white {
+            box-shadow: 0 28px 70px rgba(0,0,0,.3), 0 0 0 1px rgba(237,201,111,.28);
+        }
+        body #mDiagBox {
+            background-image: radial-gradient(ellipse at 100% 0%, rgba(237,201,111,.16), transparent 70%);
+            box-shadow: inset 0 2px 0 rgba(185,143,60,.5);
+        }
+
+        /* 입력과 버튼은 기존 크기로 유지하고 색·포커스만 정돈합니다. */
+        body input:not([type="checkbox"]), body select, body textarea {
+            color: #102238;
+            border-color: #b4b6b9;
+            background-color: #fffdfa;
+        }
+        body input::placeholder, body textarea::placeholder { color: #667080; }
+        body input:not([type="checkbox"]):focus, body select:focus, body textarea:focus {
+            border-color: #805b20;
+            box-shadow: 0 0 0 3px rgba(128,91,32,.14);
+        }
+        body #loginBtn, body #saveBtn {
+            background-image: linear-gradient(115deg, rgba(255,255,255,.10), transparent 65%);
+            box-shadow: inset 0 1px 0 rgba(237,201,111,.3), 0 6px 16px rgba(16,34,56,.14);
+        }
+        body #refreshBtn {
+            background-color: #edc96f;
+            background-image: linear-gradient(115deg, rgba(255,248,216,.65), transparent 48%, rgba(159,107,25,.13));
+            color: #102238;
+            box-shadow: 0 4px 12px rgba(0,0,0,.15);
+        }
+        body #refreshBtn:hover { background-color: #f6db94; }
+        body #loginBtn:disabled, body #saveBtn:disabled, body #refreshBtn:disabled {
+            background-image: none;
+            background-color: #e4e0d6;
+            color: #596270;
+            box-shadow: none;
+        }
     </style>
 </head>
 <body class="text-slate-800">
